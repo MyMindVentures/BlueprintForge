@@ -1,0 +1,189 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function userId() {
+      return request.auth.uid;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Admin rule - Hardcoded founder for bootstrap
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'lacometta33@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(userId()))
+      );
+    }
+
+    // --- Entity Validations ---
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['role', 'name', 'email', 'created_at']) &&
+             data.keys().size() <= 10 &&
+             data.role in ['admin', 'vibe_coder', 'anonymous', 'demo'] &&
+             data.name is string && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 100;
+    }
+
+    function isValidBuildRequest(data) {
+      return data.keys().hasAll(['polished_title', 'status', 'priority', 'created_at']) &&
+             data.polished_title is string && data.polished_title.size() <= 200 &&
+             data.status in ['Open', 'Claimed', 'In Progress', 'Review', 'Done'] &&
+             data.priority in ['Low', 'Medium', 'High', 'Critical'] &&
+             data.created_at == request.time;
+    }
+
+    function isValidVibeCoderProfile(data) {
+      return data.keys().hasAll(['user_id', 'username', 'stars_count']) &&
+             data.user_id == userId() &&
+             data.username is string && data.username.size() <= 50 &&
+             data.stars_count is number && data.stars_count >= 0;
+    }
+
+    // --- Collections ---
+
+    // 1. Profiles
+    match /profiles/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && uid == userId() && isValidUser(incoming());
+      allow update: if isSignedIn() && (
+        (uid == userId() && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'avatar_url', 'updated_at'])) ||
+        isAdmin()
+      );
+    }
+
+    // 2. Vibe Coder Profiles
+    match /vibe_coder_profiles/{pid} {
+      allow read: if true; // Public directory
+      allow create: if isEmailVerified() && isValidVibeCoderProfile(incoming());
+      allow update: if isSignedIn() && (
+        (existing().user_id == userId() && incoming().diff(existing()).affectedKeys().hasOnly(['skills', 'github_url', 'bio', 'status', 'username'])) ||
+        isAdmin()
+      );
+    }
+
+    // 3. Build Requests
+    match /build_requests/{rid} {
+      allow read: if true;
+      allow list: if true; // Public feed but client-side filtered usually
+      allow create: if isAdmin() && isValidBuildRequest(incoming());
+      allow update: if isSignedIn() && (
+        isAdmin() ||
+        // Builder claiming a ticket
+        (isEmailVerified() && existing().status == 'Open' && incoming().status == 'Claimed' && incoming().claimed_by == userId() && 
+         incoming().diff(existing()).affectedKeys().hasOnly(['status', 'claimed_by', 'claimed_at'])) ||
+        // Builder updating status or adding implementation notes on their claimed ticket
+        (existing().claimed_by == userId() && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'implementation_pr_url', 'implementation_notes', 'ready_for_review_at']))
+      );
+    }
+
+    // 4. Founder Visions
+    match /founder_visions/{vid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 5. Daily Signals
+    match /daily_signals/{sid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 6. App Versions
+    match /app_versions/{vid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 7. Projects
+    match /projects/{pid} {
+      allow read: if isSignedIn() && (resource.data.user_id == userId() || isAdmin());
+      allow create: if isSignedIn() && incoming().user_id == userId();
+      allow update: if isSignedIn() && (existing().user_id == userId() || isAdmin());
+      allow delete: if isSignedIn() && (existing().user_id == userId() || isAdmin());
+    }
+
+    // 8. Daily Signals
+    match /daily_signals/{sid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // 9. Agents
+    match /agents/{aid} {
+      allow read: if isSignedIn() && (resource.data.user_id == userId() || isAdmin());
+      allow create: if isSignedIn() && incoming().user_id == userId();
+      allow update: if isSignedIn() && (existing().user_id == userId() || isAdmin());
+      allow delete: if isSignedIn() && (existing().user_id == userId() || isAdmin());
+    }
+
+    // 10. Settings
+    match /settings/{uid} {
+      allow read, write: if isSignedIn() && uid == userId();
+    }
+
+    // 11. Github Settings
+    match /github_settings/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // 12. User Flows
+    match /user_flows/{fid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 13. Demo Recordings
+    match /demo_recordings/{rid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // 14. Builder Star Events
+    match /builder_star_events/{eid} {
+      allow read: if true;
+      allow create: if isAdmin();
+    }
+
+    // 15. Build Request Updates
+    match /build_request_updates/{uid} {
+      allow read: if true;
+      allow create: if isSignedIn(); // Specifically, builder who claimed it can create updates, but we'll allow all signed in for simplicity or we can tighten it. 
+      allow update: if isSignedIn() && existing().user_id == userId();
+    }
+    // 16. Demo Sessions
+    match /demo_sessions/{sid} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // 17. Notifications
+    match /notifications/{nid} {
+      allow read, write: if isSignedIn();
+    }
+  }
+}

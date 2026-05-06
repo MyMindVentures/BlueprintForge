@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-bg: #030712;
+  --color-surface: rgba(17, 24, 39, 0.7);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-accent: #3b82f6;
+  --color-text-dim: #9ca3af;
+}
+
+@layer base {
+  body {
+    @apply bg-[#030712] text-white antialiased selection:bg-accent/30 overflow-x-hidden;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.15) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-xl bg-white/[0.03] border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
+  }
+  
+  .glass-dark {
+    @apply backdrop-blur-2xl bg-black/40 border border-white/[0.05] shadow-2xl;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/[0.03] border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-500 ease-out;
+    transform-style: preserve-3d;
+  }
+
+  .glass-card:hover {
+    @apply bg-white/[0.06] border-white/[0.15] shadow-[0_20px_40px_rgba(0,0,0,0.4)];
+    transform: perspective(1000px) rotateX(2deg) rotateY(-1deg) translateY(-8px);
+  }
+
+  .glass-btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 px-6 py-2.5 rounded-xl font-bold text-white shadow-lg shadow-blue-500/20 active:scale-95 transition-all duration-200 border border-white/10 flex items-center justify-center gap-2;
+  }
+
+  .glass-btn-secondary {
+    @apply backdrop-blur-xl bg-white/[0.03] border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] px-6 py-2.5 rounded-xl font-bold text-white hover:bg-white/10 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+}
+
+/* Notion-like Markdown Reset with Glass Style */
+.markdown-body {
+  @apply text-sm leading-relaxed text-zinc-300;
+}
+
+.markdown-body h1 {
+  @apply text-2xl font-extrabold text-white mb-6 tracking-tighter mt-8 border-b border-white/10 pb-2 first:mt-0;
+}
+
+.markdown-body h2 {
+  @apply text-xl font-bold text-white mb-4 tracking-tight mt-10 flex items-center gap-2;
+}
+
+.markdown-body h3 {
+  @apply text-base font-bold text-zinc-200 mb-2 mt-6;
+}
+
+.markdown-body p {
+  @apply mb-4 leading-7 text-zinc-400;
+}
+
+.markdown-body ul, .markdown-body ol {
+  @apply mb-4 pl-5 space-y-2 text-zinc-400;
+}
+
+.markdown-body ul {
+  @apply list-disc;
+}
+
+.markdown-body ol {
+  @apply list-decimal;
+}
+
+.markdown-body code {
+  @apply px-1.5 py-0.5 bg-white/5 rounded text-blue-400 font-mono text-[11px] font-bold border border-white/5;
+}
+
+.markdown-body pre {
+  @apply p-4 bg-black/40 rounded-xl border border-white/10 overflow-x-auto mb-6 backdrop-blur-md;
+}
+
+.markdown-body table {
+  @apply block w-full border-collapse mb-6 text-[11px] rounded-lg overflow-x-auto overflow-y-hidden backdrop-blur-xl bg-white/[0.03] border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
+  white-space: nowrap;
+}
+
+.markdown-body th {
+  @apply bg-white/5 text-white font-bold p-3 text-left border-b border-white/10 uppercase tracking-wider;
+}
+
+.markdown-body td {
+  @apply p-3 border-b border-white/5 text-zinc-400;
+}

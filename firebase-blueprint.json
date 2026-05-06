@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Core identity and role information for any user.",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["admin", "builder", "visitor", "demo"] },
+        "display_name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "avatar_url": { "type": "string", "format": "uri" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["role", "display_name", "email", "created_at"]
+    },
+    "VibeCoderProfile": {
+      "title": "Vibe Coder Profile",
+      "description": "External builder profile details.",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "username": { "type": "string" },
+        "skills": { "type": "array", "items": { "type": "string" } },
+        "github_url": { "type": "string", "format": "uri" },
+        "stars_count": { "type": "number" },
+        "completed_requests_count": { "type": "number" },
+        "bio": { "type": "string" },
+        "status": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "username", "stars_count"]
+    },
+    "BuildRequest": {
+      "title": "Build Request",
+      "description": "A structured ticket generated from founder raw thought.",
+      "type": "object",
+      "properties": {
+        "raw_input": { "type": "string" },
+        "polished_title": { "type": "string" },
+        "polished_context": { "type": "string" },
+        "polished_change": { "type": "string" },
+        "status": { "type": "string", "enum": ["Open", "Claimed", "In Progress", "Review", "Done"] },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Critical"] },
+        "difficulty": { "type": "string", "enum": ["Easy", "Medium", "Hard"] },
+        "type": { "type": "string" },
+        "claimed_by": { "type": "string" },
+        "claimed_at": { "type": "string", "format": "date-time" },
+        "github_issue_url": { "type": "string" },
+        "is_current_focus": { "type": "boolean" },
+        "created_by": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["polished_title", "status", "priority", "created_at"]
+    },
+    "FounderVision": {
+      "title": "Founder Vision",
+      "description": "Strategic direction and strategy document.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "vision_statement": { "type": "string" },
+        "goal": { "type": "string" },
+        "status": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "vision_statement", "created_at"]
+    },
+    "AppVersion": {
+      "title": "App Version",
+      "description": "Release and changelog information.",
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "release_title": { "type": "string" },
+        "release_notes": { "type": "string" },
+        "new_features": { "type": "array", "items": { "type": "string" } },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["version", "release_title", "created_at"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "An app concept project.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "status": { "type": "string" },
+        "rawConcept": { "type": "string" },
+        "selectedAgentId": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "user_id": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/profiles/{userId}": {
+      "schema": "User",
+      "description": "Core user metadata."
+    },
+    "/vibe_coder_profiles/{profileId}": {
+      "schema": "VibeCoderProfile",
+      "description": "Public builder directories."
+    },
+    "/build_requests/{requestId}": {
+      "schema": "BuildRequest",
+      "description": "The live build feed tickets."
+    },
+    "/founder_visions/{visionId}": {
+      "schema": "FounderVision",
+      "description": "Directional strategy documents."
+    },
+    "/app_versions/{versionId}": {
+      "schema": "AppVersion",
+      "description": "Releases and changelogs."
+    },
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "User app concept projects."
+    }
+  }
+}

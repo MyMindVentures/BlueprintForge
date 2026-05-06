@@ -1,0 +1,8 @@
+{
+  "name": "App Concept → Structured Spec Generator",
+  "description": "Transform raw app concepts into hierarchical card structures and professional markdown specifications.",
+  "requestFramePermissions": [
+    "display-capture"
+  ],
+  "majorCapabilities": []
+}
