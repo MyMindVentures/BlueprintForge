@@ -1,12 +1,12 @@
 {
-  "name": "react-example",
+  "name": "blueprintforge-ai",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
     "start": "node dist/server.js",
-    "build": "vite build && ./node_modules/.bin/esbuild server.ts --bundle --platform=node --format=esm --outfile=dist/server.js",
+    "build": "vite build && ./node_modules/.bin/esbuild server.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server.js",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
@@ -19,7 +19,6 @@
     "debug:test": "vitest run src/services src/utils && playwright test tests/smoke"
   },
   "dependencies": {
-    "@google/genai": "^1.29.0",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.14",

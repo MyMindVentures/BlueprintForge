@@ -1,8 +1,8 @@
 import { AppSpec, AIAgent, OpenRouterModel } from "../types";
 import { AGENT_SYSTEM_PROMPT_TEMPLATE, USER_PROMPT_TEMPLATE } from "../constants";
 
-const APP_NAME = "Multi-Project App Spec Converter";
-const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://specgen-architect.vercel.app";
+const APP_NAME = "BlueprintForge AI";
+const APP_URL = typeof window !== "undefined" ? window.location.origin : "https://blueprintforge.ai";
 
 /**
  * Clean string for safe Header usage (ISO-8859-1 only)

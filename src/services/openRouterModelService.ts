@@ -7,8 +7,8 @@ export function buildModelHeaders(apiKey: string): Record<string, string> {
   return {
     "Authorization": `Bearer ${apiKey}`,
     "Content-Type": "application/json",
-    "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "https://ai.studio/build",
-    "X-OpenRouter-Title": "Multi-Project App Spec Converter"
+    "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "https://blueprintforge.ai",
+    "X-OpenRouter-Title": "BlueprintForge AI"
   };
 }
 

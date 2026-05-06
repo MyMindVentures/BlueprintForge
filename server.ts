@@ -9,8 +9,17 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const PORT = parseInt(process.env.PORT || '3000', 10);
+  const HOST = "0.0.0.0";
 
   app.use(express.json({ limit: '10mb' }));
+
+  app.get("/health", (_req, res) => {
+    res.json({
+      status: "ok",
+      app: "BlueprintForge AI",
+      timestamp: new Date().toISOString()
+    });
+  });
 
   app.all("/api/ai/*", async (req, res) => {
     try {
@@ -26,7 +35,7 @@ async function startServer() {
       const headers: Record<string, string> = {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": process.env.APP_URL || "https://ai.studio/build",
+        "HTTP-Referer": process.env.APP_URL || `http://localhost:${PORT}`,
         "X-OpenRouter-Title": "BlueprintForge AI"
       };
 
@@ -56,15 +65,16 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(__dirname, 'dist');
+    // server.ts is bundled into dist/server.js; Vite assets are emitted beside it.
+    const distPath = __dirname;
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://0.0.0.0:${PORT}`);
+  app.listen(PORT, HOST, () => {
+    console.log(`Server running on http://${HOST}:${PORT}`);
   });
 }
 

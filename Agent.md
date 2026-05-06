@@ -30,6 +30,15 @@
 - Treat founder/admin actions as protected
 - Treat demo data as isolated from production data
 
+## Deployment Rules
+- Railway is the temporary production host for BlueprintForge AI
+- Provider-specific hosted IDE/runtime deployment is no longer the target
+- Deploy as a normal production Node/Express web app
+- Production services must listen on `0.0.0.0` and `process.env.PORT || 3000`
+- Use OpenRouter as the AI provider
+- Keep `OPENROUTER_API_KEY`, `GITHUB_TOKEN`, and `DATABASE_URL` server-side only
+- Vite may expose only explicitly safe public variables with the `VITE_` prefix
+
 ## Data Persistence Rules
 - Important app data must persist
 - Build requests, builder profiles, claims, PR links, stars, versions and guide content must not be temporary-only
