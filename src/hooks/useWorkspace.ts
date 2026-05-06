@@ -2,12 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Project, AIAgent, LLMSettings, OpenRouterModel } from "../types";
 import { DEFAULT_AGENTS, INITIAL_MODELS } from "../constants";
 import { useAuth } from "./useAuth";
-import { buildFeedService } from "../services/buildFeedService";
-import { 
-  collection, query, where, onSnapshot, orderBy, 
-  doc, setDoc, getDoc, serverTimestamp 
-} from "firebase/firestore";
-import { db, handleFirestoreError, OperationType } from "../services/firebase";
+import { apiRequest, pollingIntervalMs } from "../services/apiClient";
 import { useProjects } from "./useProjects";
 import { useAgents } from "./useAgents";
 import { useLLMSettings } from "./useLLMSettings";
@@ -57,56 +52,46 @@ export function useWorkspace() {
   const { runPipeline } = usePipeline(projects, setProjects, agents, settings);
   const { startImagePipeline, regenerateSingleImage } = useImagePipeline(projects, setProjects);
 
-  // Sync projects and agents
+  // Sync projects, agents and settings from PostgreSQL with polling while realtime parity is deferred.
   useEffect(() => {
     if (!user) {
       setIsLoaded(true);
       return;
     }
 
-    // Projects listener
-    const qProjects = query(collection(db, 'projects'), where('user_id', '==', user.uid), orderBy('updated_at', 'desc'));
-    const unsubProjects = onSnapshot(qProjects, (snap) => {
-      setProjects(snap.docs.map(d => ({ id: d.id, ...d.data() } as Project)));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'projects'));
-
-    // Agents listener
-    const qAgents = query(collection(db, 'agents'), where('user_id', '==', user.uid));
-    const unsubAgents = onSnapshot(qAgents, (snap) => {
-      if (snap.empty) {
-        // Seed default agents if none exist for user
-        DEFAULT_AGENTS.forEach(async (a) => {
-          const { id, ...data } = a;
-          await setDoc(doc(collection(db, 'agents')), { ...data, user_id: user.uid, created_at: serverTimestamp(), updated_at: serverTimestamp() });
-        });
-      } else {
-        setAgents(snap.docs.map(d => ({ id: d.id, ...d.data() } as AIAgent)));
+    let active = true;
+    const userContext = { id: user.uid, name: profile?.name || user.uid, role: profile?.role || ('vibe_coder' as const) };
+    const load = async () => {
+      try {
+        const [loadedProjects, loadedAgents, loadedSettings] = await Promise.all([
+          apiRequest<Project[]>('/api/workspace/projects', { user: userContext }),
+          apiRequest<AIAgent[]>('/api/workspace/agents', { user: userContext }),
+          apiRequest<Partial<LLMSettings>>('/api/settings', { user: userContext })
+        ]);
+        if (!active) return;
+        setProjects(loadedProjects);
+        if (loadedAgents.length === 0) {
+          await Promise.all(DEFAULT_AGENTS.map(({ id, ...agent }) => apiRequest('/api/workspace/agents', { method: 'POST', user: userContext, body: JSON.stringify({ data: { ...agent, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } }) })));
+        } else {
+          setAgents(loadedAgents);
+        }
+        setSettings(prev => ({ ...prev, ...loadedSettings }));
+        setIsLoaded(true);
+      } catch (error) {
+        console.error('PostgreSQL workspace polling failed:', error);
+        setIsLoaded(true);
       }
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'agents'));
-
-    // Settings sync
-    const qSettings = doc(db, 'settings', user.uid);
-    const unsubSettings = onSnapshot(qSettings, (snap) => {
-      if (snap.exists()) {
-        setSettings(prev => ({ ...prev, ...snap.data() }));
-      }
-    });
-
-    setIsLoaded(true);
-    return () => {
-      unsubProjects();
-      unsubAgents();
-      unsubSettings();
     };
-  }, [user]);
+    load();
+    const interval = window.setInterval(load, pollingIntervalMs);
+    return () => { active = false; window.clearInterval(interval); };
+  }, [user, profile]);
 
   const updateLLMSettings = async (updates: Partial<LLMSettings>) => {
     if (!user) return;
-    try {
-      await setDoc(doc(db, 'settings', user.uid), updates, { merge: true });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.WRITE, `settings/${user.uid}`);
-    }
+    const userContext = { id: user.uid, name: profile?.name || user.uid, role: profile?.role || ('vibe_coder' as const) };
+    await apiRequest('/api/settings', { method: 'PATCH', user: userContext, body: JSON.stringify({ data: updates }) });
+    setSettings(prev => ({ ...prev, ...updates }));
   };
 
   return {

@@ -3,8 +3,8 @@
 ## Prerequisites
 - Configure GitHub Token in UI
 - Configure OpenRouter API Key in UI
-- Ensure at least one Firebase Auth Google account acts as `admin` (lacometta33@gmail.com or mock).
-- A secondary Firebase Auth account acts as `vibe_coder`.
+- Ensure at least one Firebase Auth Google account (auth only) acts as `admin` (lacometta33@gmail.com or mock).
+- A secondary Firebase Auth account (auth only) acts as `vibe_coder`.
 - A browser instance without sign-in acts as `visitor`.
 
 ## Test Scenarios
@@ -35,7 +35,7 @@
 ### 4. Edge Cases
 - [ ] **Invalid Routes:** Trigger `not_found` view. Must show 404 Error page.
 - [ ] **Missing API Keys:** Using "Convert to Ticket" without LLM key must show toast error gracefully.
-- [ ] **Offline DB:** Check graceful Firebase error handling via Error boundaries/Toasts.
+- [ ] **Offline DB:** Check graceful PostgreSQL/API error handling via Error boundaries/Toasts.
 
 ### Status Report
 - The app handles nearly all specifications out-of-the-box now.

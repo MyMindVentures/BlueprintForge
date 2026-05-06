@@ -2,8 +2,7 @@ import { useCallback } from "react";
 import { Project, ImagePipeline } from "../types";
 import { runScreenImagePipeline } from "../services/imagePipelineService";
 import { getShortTime, getCurrentTimestamp } from "../utils/time";
-import { doc, updateDoc, serverTimestamp, getDoc } from "firebase/firestore";
-import { db, handleFirestoreError, OperationType } from "../services/firebase";
+import { apiRequest } from "../services/apiClient";
 
 /**
  * Handles the use image pipeline workflow for BlueprintForge users or services.
@@ -13,21 +12,12 @@ export function useImagePipeline(
   projects: Project[],
   setProjects: (p: Project[] | ((prev: Project[]) => Project[])) => void
 ) {
-  const updateProjectFirebase = async (id: string, updates: Partial<Project>) => {
-    try {
-      await updateDoc(doc(db, 'projects', id), {
-        ...updates,
-        updated_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.UPDATE, `projects/${id}`);
-    }
+  const updateProjectPostgres = async (id: string, updates: Partial<Project>) => {
+    await apiRequest('/api/workspace/projects/' + id, { method: 'PATCH', body: JSON.stringify({ data: { ...updates, updatedAt: new Date().toISOString() } }) });
+    setProjects(prev => prev.map(project => project.id === id ? { ...project, ...updates, updatedAt: new Date().toISOString() } : project));
   };
 
-  const getLatestProject = async (id: string) => {
-    const snap = await getDoc(doc(db, 'projects', id));
-    return snap.exists() ? { id: snap.id, ...snap.data() } as Project : null;
-  };
+  const getLatestProject = async (id: string) => projects.find(project => project.id === id) || null;
 
   const startImagePipeline = async (projectId: string) => {
     const project = projects.find(p => p.id === projectId);
@@ -36,7 +26,7 @@ export function useImagePipeline(
     const log = async (message: string) => {
       const latest = await getLatestProject(projectId);
       if (latest?.imagePipeline) {
-        await updateProjectFirebase(projectId, {
+        await updateProjectPostgres(projectId, {
           imagePipeline: {
             ...latest.imagePipeline,
             logs: [...latest.imagePipeline.logs, { timestamp: getShortTime(), step: "IMAGE-GEN", message }]
@@ -46,7 +36,7 @@ export function useImagePipeline(
     };
 
     const updateProgress = async (updates: Partial<Project>) => {
-      await updateProjectFirebase(projectId, updates);
+      await updateProjectPostgres(projectId, updates);
     };
 
     try {
@@ -59,7 +49,7 @@ export function useImagePipeline(
       await log(`CRITICAL ERROR: ${e.message}`);
       const latest = await getLatestProject(projectId);
       if (latest?.imagePipeline) {
-        await updateProjectFirebase(projectId, {
+        await updateProjectPostgres(projectId, {
           imagePipeline: { ...latest.imagePipeline, status: "Failed" as const }
         });
       }

@@ -1,81 +1,35 @@
 import { useCallback } from "react";
 import { Project, AIAgent } from "../types";
-import { 
-  collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp 
-} from "firebase/firestore";
-import { db, handleFirestoreError, OperationType } from "../services/firebase";
+import { apiRequest } from "../services/apiClient";
 
-/**
- * Handles the use projects workflow for BlueprintForge users or services.
- * Used where this module coordinates UI state, persistence, integrations or user actions.
- */
-export function useProjects(
-  setProjects: (p: Project[] | ((prev: Project[]) => Project[])) => void, 
-  agents: AIAgent[],
-  userId: string | undefined
-) {
+const userContext = (id: string) => ({ id, name: id, role: 'vibe_coder' as const });
+
+export function useProjects(setProjects: (p: Project[] | ((prev: Project[]) => Project[])) => void, agents: AIAgent[], userId: string | undefined) {
   const addProject = useCallback(async () => {
     if (!userId) return;
     const defaultAgent = agents.find(a => a.isDefault) || agents[0];
-    const newProjectData: any = {
-      name: "New Project",
-      status: "Draft",
-      rawConcept: "",
-      selectedAgentId: defaultAgent?.id || null,
-      modelOverrideId: null,
-      cardStructure: null,
-      markdownExport: "",
-      user_id: userId,
-      created_at: serverTimestamp(),
-      updated_at: serverTimestamp(),
-    };
-
-    try {
-      const docRef = await addDoc(collection(db, 'projects'), newProjectData);
-      return docRef.id;
-    } catch (e) {
-      handleFirestoreError(e, OperationType.CREATE, 'projects');
-    }
+    const now = new Date().toISOString();
+    const data = { name: "New Project", status: "Draft", rawConcept: "", selectedAgentId: defaultAgent?.id || null, modelOverrideId: null, cardStructure: null, markdownExport: "", createdAt: now, updatedAt: now };
+    const res = await apiRequest<{ id: string }>('/api/workspace/projects', { method: 'POST', user: userContext(userId), body: JSON.stringify({ data }) });
+    return res.id;
   }, [agents, userId]);
 
   const updateProject = useCallback(async (id: string, updates: Partial<Project>) => {
-    try {
-      await updateDoc(doc(db, 'projects', id), {
-        ...updates,
-        updated_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.UPDATE, `projects/${id}`);
-    }
+    await apiRequest('/api/workspace/projects/' + id, { method: 'PATCH', body: JSON.stringify({ data: { ...updates, updatedAt: new Date().toISOString() } }) });
   }, []);
 
   const deleteProject = useCallback(async (id: string) => {
-    try {
-      await deleteDoc(doc(db, 'projects', id));
-    } catch (e) {
-      handleFirestoreError(e, OperationType.DELETE, `projects/${id}`);
-    }
-  }, []);
+    if (!userId) return;
+    await apiRequest('/api/workspace/projects/' + id, { method: 'DELETE', user: userContext(userId) });
+  }, [userId]);
 
   const duplicateProject = useCallback(async (id: string, projects: Project[]) => {
     if (!userId) return;
     const source = projects.find(p => p.id === id);
     if (!source) return;
-
-    try {
-      const newProjectData: any = {
-        ...source,
-        name: `${source.name} (Copy)`,
-        user_id: userId,
-        created_at: serverTimestamp(),
-        updated_at: serverTimestamp(),
-      };
-      delete newProjectData.id;
-      const docRef = await addDoc(collection(db, 'projects'), newProjectData);
-      return docRef.id;
-    } catch (e) {
-      handleFirestoreError(e, OperationType.CREATE, 'projects');
-    }
+    const { id: _id, ...copy } = source;
+    const res = await apiRequest<{ id: string }>('/api/workspace/projects', { method: 'POST', user: userContext(userId), body: JSON.stringify({ data: { ...copy, name: `${source.name} (Copy)`, updatedAt: new Date().toISOString() } }) });
+    return res.id;
   }, [userId]);
 
   return { addProject, updateProject, deleteProject, duplicateProject };

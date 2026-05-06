@@ -135,6 +135,25 @@ DATABASE_URL=postgresql://user:password@host:5432/blueprintforge
 
 `OPENROUTER_API_KEY`, `GITHUB_TOKEN`, and `DATABASE_URL` are server-side values. Do not prefix them with `VITE_`, do not read them from browser code, and never commit real secrets. Vite should only expose intentionally public variables with the `VITE_` prefix.
 
+
+### Database setup
+
+BlueprintForge AI now uses Railway PostgreSQL for production persistence. Set `DATABASE_URL` server-side, then run:
+
+```bash
+npm run db:migrate
+npm run db:seed # optional demo data
+```
+
+Available database commands:
+
+- `npm run db:generate` — no-op for the direct SQL layer.
+- `npm run db:migrate` — applies SQL migrations from `migrations/`.
+- `npm run db:seed` — inserts isolated demo starter data.
+- `npm run db:studio` — no-op with guidance; use Railway's Data tab or `psql`.
+
+Firebase is no longer the primary persistence layer. Firebase remains temporarily for authentication only; app data, version acknowledgements, notifications, stars, build requests, guide records, and audit logs persist in PostgreSQL.
+
 ### 4. Run locally
 
 ```bash

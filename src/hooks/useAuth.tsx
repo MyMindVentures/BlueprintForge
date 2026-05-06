@@ -1,8 +1,8 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { onAuthStateChanged, User, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../services/firebase';
+import { auth } from '../services/firebase';
 import { UserContext } from '../types/buildFeed';
+import { apiRequest } from '../services/apiClient';
 
 interface AuthContextType {
   user: User | null;
@@ -15,10 +15,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-/**
- * Handles the auth provider workflow for BlueprintForge users or services.
- * Used where this module coordinates UI state, persistence, integrations or user actions.
- */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserContext | null>(null);
@@ -28,30 +24,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        // Fetch or create profile
         try {
-          const profileRef = doc(db, 'profiles', firebaseUser.uid);
-          const profileSnap = await getDoc(profileRef);
-          
-          if (profileSnap.exists()) {
-            setProfile(profileSnap.data() as UserContext);
-          } else {
-            // Create default profile
-            const newProfile: UserContext = {
-              id: firebaseUser.uid,
-              name: firebaseUser.displayName || 'Architect',
-              role: firebaseUser.email === 'lacometta33@gmail.com' ? 'admin' : 'vibe_coder'
-            };
-            await setDoc(profileRef, {
-              ...newProfile,
-              email: firebaseUser.email,
-              created_at: serverTimestamp(),
-              updated_at: serverTimestamp()
-            });
-            setProfile(newProfile);
-          }
+          const postgresProfile = await apiRequest<UserContext>('/api/auth/firebase-profile', {
+            method: 'POST',
+            body: JSON.stringify({ uid: firebaseUser.uid, email: firebaseUser.email, name: firebaseUser.displayName })
+          });
+          setProfile(postgresProfile);
         } catch (error) {
-          console.error("Error setting up user profile:", error);
+          console.error('Error setting up PostgreSQL user profile:', error);
           setProfile(null);
         }
       } else {
@@ -59,44 +39,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       setLoading(false);
     });
-
     return unsubscribe;
   }, []);
 
-  const signIn = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  };
-
-  const logout = async () => {
-    await signOut(auth);
-  };
-
+  const signIn = async () => signInWithPopup(auth, new GoogleAuthProvider()).then(() => undefined);
+  const logout = async () => signOut(auth);
   const acknowledgeVersion = async (version: string) => {
     if (!profile) return;
-    try {
-      const newAck = [...(profile.acknowledged_versions || []), version];
-      await updateDoc(doc(db, 'profiles', profile.id), {
-        acknowledged_versions: newAck,
-        updated_at: serverTimestamp()
-      });
-      setProfile({ ...profile, acknowledged_versions: newAck });
-    } catch (error) {
-      console.error("Error acknowledging version:", error);
-    }
+    const updated = await apiRequest<UserContext>('/api/auth/acknowledge-version', { method: 'POST', user: profile, body: JSON.stringify({ version }) });
+    setProfile(updated);
   };
 
-  return (
-    <AuthContext.Provider value={{ user, profile, loading, signIn, logout, acknowledgeVersion }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, profile, loading, signIn, logout, acknowledgeVersion }}>{children}</AuthContext.Provider>;
 }
 
-/**
- * Handles the use auth workflow for BlueprintForge users or services.
- * Used where this module coordinates UI state, persistence, integrations or user actions.
- */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within AuthProvider');

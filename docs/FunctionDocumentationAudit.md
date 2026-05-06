@@ -16,7 +16,7 @@ Scanned app code under `src/`, including:
 | Area | Files / modules | Result |
 | --- | --- | --- |
 | App shell and routing | `src/App.tsx`, `src/components/layout/*` | Added comments for provider setup, routing and self-explaining state layer. |
-| Live Build Feed workflow | `src/hooks/useBuildFeed.ts`, `src/services/buildFeedService.ts`, `src/components/buildFeed/*` | Added explicit comments around Firestore subscriptions, publishing, claiming, profile saving, status updates, focus toggling and star awards. |
+| Live Build Feed workflow | `src/hooks/useBuildFeed.ts`, `src/services/buildFeedService.ts`, `src/components/buildFeed/*` | Added explicit comments around PostgreSQL API polling, publishing, claiming, profile saving, status updates, focus toggling and star awards. |
 | AI/OpenRouter workflow | `src/services/openRouterClient.ts`, `src/services/llm.ts`, `src/services/openRouterModelService.ts`, `src/components/models/*` | Added concise comments to exported functions and screen components; existing integration code keeps API keys in settings flow and does not expose secrets in guide text. |
 | Project/spec pipeline | `src/hooks/usePipeline.ts`, `src/services/agentService.ts`, `src/services/imagePipelineService.ts`, `src/components/projects/*`, `src/components/pipeline/*` | Added comments to meaningful exported functions and components that coordinate persistence, generation, downloads and progress display. |
 | Builder/profile/directory | `src/components/buildFeed/BuilderProfile.tsx`, `src/components/buildFeed/VibeCoderDirectory.tsx` | Added comments to profile and directory functions while preserving form behavior. |
@@ -26,7 +26,7 @@ Scanned app code under `src/`, including:
 ## Comments added
 
 - Added top-level JSDoc comments for exported functions, hooks, services and components that are meaningful user-flow or workflow boundaries.
-- Added detailed method-level comments to the Firestore-backed build feed service because it has persistence side effects.
+- Added detailed method-level comments to the PostgreSQL-backed build feed service because it has persistence side effects.
 - Added hook action comments in `useBuildFeed` for publishing, claiming, saving profiles, posting updates, posting Daily Signals, toggling Current Focus and awarding stars.
 - Added comments to new guidance components so future developers know when to use them and what user uncertainty they resolve.
 
@@ -38,5 +38,5 @@ No intentional gaps remain for meaningful exported functions and major workflow 
 
 - Add a concise comment above any new meaningful function, handler, service method, hook action, loader, mutation or workflow function.
 - Include role assumptions when a function requires founder/admin or builder access.
-- Include persistence side effects when a function writes Firestore, local storage or external integration state.
+- Include persistence side effects when a function writes PostgreSQL, local storage or external integration state.
 - Include integration side effects when a function calls OpenRouter, GitHub or recorder/browser APIs.

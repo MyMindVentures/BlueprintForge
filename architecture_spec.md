@@ -1,7 +1,7 @@
 # BlueprintForge AI — Data Architecture & API Specification
 
 ## 1. Executive Summary
-This document outlines the robust data architecture for BlueprintForge AI. It transitions the application from a semi-persistence (LocalStorage) state to a production-grade Firebase Firestore environment.
+This document outlines the robust data architecture for BlueprintForge AI. It transitions the application from a semi-persistence (LocalStorage) state to a production-grade Railway PostgreSQL environment.
 
 ## 2. User Roles & Permissions Matrix
 
@@ -17,7 +17,7 @@ This document outlines the robust data architecture for BlueprintForge AI. It tr
 | Modify App Settings | ✅ | ❌ | ❌ | ❌ |
 | Manage Profiles | ✅ | ❌ | ❌ | ❌ |
 
-## 3. Database Schema (Firestore Collections)
+## 3. Database Schema (PostgreSQL Tables)
 
 ### `profiles` (Sub-collection of `/users/`)
 Identity and role management.
@@ -60,7 +60,7 @@ CMS layer for the Living Guide.
 - `listBuilders()`: Directory listing.
 
 ### Build Engine
-- `createBuildRequest(rawInput)`: Calls AI to polish, then stores in Firestore.
+- `createBuildRequest(rawInput)`: Calls AI to polish, then stores in PostgreSQL.
 - `claimTicket(requestId)`: Atomically updates ticket and creates a `build_request_updates` log.
 - `awardStar(profileId, requestId)`: Increments star count and logs event.
 
@@ -74,7 +74,7 @@ CMS layer for the Living Guide.
 - **Validation**: All string fields have `.size()` limits to prevent "Denial of Wallet" attacks.
 
 ## 6. Implementation Roadmap
-1. **Bootstrap Phase**: Setup `firebase-blueprint.json` and deploy rules.
-2. **Persistence Phase**: Migrate local hooks (`useBuildFeed`, `useGuide`) to Firestore services.
+1. **Bootstrap Phase**: Provision Railway PostgreSQL and run SQL migrations.
+2. **Persistence Phase**: Migrate hooks (`useBuildFeed`, `useGuide`) to PostgreSQL-backed API services.
 3. **Security Phase**: Implement Role-Based Access Control (RBAC) in frontend guards.
 4. **Audit Phase**: Enable `audit_logs` for sensitive admin actions.
