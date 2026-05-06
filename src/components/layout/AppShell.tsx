@@ -56,21 +56,21 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
 
         {/* Real-time notification popup */}
         {lastNotification && role === 'vibe_coder' && (
-          <div className="absolute bottom-6 right-6 bg-[#111] border border-accent/30 p-4 rounded-2xl shadow-xl animate-in fade-in slide-in-from-bottom-8 flex flex-col gap-3 z-50 w-80">
-            <div className="flex gap-3 items-center">
+          <div className="absolute bottom-6 left-4 right-4 sm:left-auto sm:right-6 bg-[#111] border border-accent/30 p-4 rounded-2xl shadow-xl animate-in fade-in slide-in-from-bottom-8 flex max-w-[calc(100vw-2rem)] sm:max-w-sm flex-col gap-3 z-50">
+            <div className="flex min-w-0 gap-3 items-center">
               <div className="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center">
                 <Radio className="w-4 h-4 animate-pulse" />
               </div>
-              <div>
-                <h4 className="text-xs font-black uppercase tracking-widest text-white">{t("notifications.newBuildRequest")}</h4>
+              <div className="min-w-0">
+                <h4 className="break-words text-xs font-black leading-snug text-white">{t("notifications.newBuildRequest")}</h4>
                 <p className="text-[10px] font-mono text-text-dim">{t("notifications.fromFounder")}</p>
               </div>
             </div>
-            <p className="text-sm font-bold text-white truncate">{lastNotification.polished_title}</p>
+            <p className="break-words text-sm font-bold text-white">{lastNotification.polished_title}</p>
             <p className="text-xs text-white/70 line-clamp-2">{lastNotification.polished_context}</p>
             <button 
               onClick={() => onViewChange("feed_coder")}
-              className="mt-2 w-full py-2 bg-accent/10 text-accent hover:bg-accent/20 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
+              className="mt-2 w-full rounded-xl bg-accent/10 py-2 text-xs font-bold leading-snug text-accent transition-colors hover:bg-accent/20 whitespace-normal break-words"
             >
               {t("buttons.viewRequest")}
             </button>
@@ -119,7 +119,7 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
                     <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse border-2 border-[#111]" />
                   )}
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-widest mt-1.5 opacity-60 hidden sm:block">{tab.label}</span>
+                <span className="mt-1.5 hidden max-w-full break-words text-center text-[9px] font-black leading-tight opacity-60 sm:block">{tab.label}</span>
             </button>
             ))}
         </div>
@@ -138,13 +138,13 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
                     <UserIcon size={18} />
                  )}
                </button>
-               <div className="absolute bottom-16 left-1/2 -translate-x-1/2 md:left-full md:translate-x-2 md:bottom-auto md:top-1/2 md:-translate-y-1/2 hidden group-hover:flex flex-col gap-1 bg-[#111] border border-white/5 p-2 rounded-xl shadow-xl w-40 z-[100]">
-                 <div className="text-[8px] uppercase tracking-widest text-text-dim mb-1 px-2 font-black">{t("navigation.loggedInAs")}</div>
-                 <div className="px-2 py-1 text-[10px] text-white font-bold truncate">{user.displayName || user.email}</div>
-                 <div className="px-2 py-0.5 text-[8px] text-accent uppercase tracking-widest font-black mb-2">{role}</div>
+               <div className="absolute bottom-16 left-1/2 hidden w-[min(16rem,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-1 rounded-xl border border-white/5 bg-[#111] p-2 shadow-xl group-hover:flex md:bottom-auto md:left-full md:top-1/2 md:z-[100] md:-translate-y-1/2 md:translate-x-2">
+                 <div className="mb-1 break-words px-2 text-[8px] font-black leading-snug text-text-dim">{t("navigation.loggedInAs")}</div>
+                 <div className="break-words px-2 py-1 text-[10px] font-bold text-white">{user.displayName || user.email}</div>
+                 <div className="mb-2 break-words px-2 py-0.5 text-[8px] font-black text-accent">{role}</div>
                  <button
                    onClick={logout}
-                   className="text-xs p-2 rounded-lg truncate text-left w-full hover:bg-red-500/10 text-red-400 flex items-center gap-2 transition-colors"
+                   className="flex w-full min-w-0 items-center gap-2 rounded-lg p-2 text-left text-xs text-red-400 transition-colors hover:bg-red-500/10 whitespace-normal break-words"
                  >
                    <LogOut size={12} />
                    {t("navigation.logout")}

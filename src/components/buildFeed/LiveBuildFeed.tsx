@@ -65,17 +65,17 @@ export function LiveBuildFeed() {
 
   return (
     <div className="flex-1 overflow-auto bg-[#0A0A0A] p-4 md:p-8 space-y-12 scrollbar-thin">
-      <div className="max-w-5xl mx-auto space-y-12">
+      <div className="mx-auto max-w-5xl space-y-12">
         
         {/* Header & Daily Signal */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 items-start">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,25rem)]">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center gap-4">
+              <h1 className="mb-2 flex min-w-0 items-center gap-4 break-words text-3xl font-black leading-tight text-white">
                 Live Build Feed
                 <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
               </h1>
-              <p className="text-sm text-text-dim max-w-md leading-relaxed font-medium">
+              <p className="max-w-md break-words text-sm font-medium leading-relaxed text-text-dim">
                 Real-time build requests from the founder. High signal, low noise. Claim a ticket and start building.
               </p>
             </div>
@@ -88,11 +88,11 @@ export function LiveBuildFeed() {
           </div>
 
           <div className="hidden lg:block space-y-4 bg-white/[0.02] border border-white/5 rounded-3xl p-6">
-             <div className="flex items-center gap-2 text-accent">
+             <div className="flex min-w-0 items-center gap-2 text-accent">
                <Zap size={16} fill="currentColor" />
-               <span className="text-[10px] font-black uppercase tracking-[0.2em]">Platform Stats</span>
+               <span className="break-words text-[10px] font-black leading-snug">Platform Stats</span>
              </div>
-             <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                {[
                  { label: 'Builds', val: requests.length },
                  { label: 'Open', val: requests.filter(r => r.status === 'Open').length },
@@ -100,7 +100,7 @@ export function LiveBuildFeed() {
                  { label: 'Coders', val: profiles.length }
                ].map((stat, i) => (
                  <div key={i} className="p-3 bg-black/40 rounded-xl border border-white/5">
-                   <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest">{stat.label}</p>
+                   <p className="break-words text-[10px] font-bold leading-snug text-text-dim">{stat.label}</p>
                    <p className="text-xl font-black text-white mt-1">{stat.val}</p>
                  </div>
                ))}
@@ -136,19 +136,19 @@ export function LiveBuildFeed() {
         {/* Build requests list */}
         <div className="space-y-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-center gap-3">
               <Filter size={16} className="text-accent" />
-              <h3 className="text-sm font-black text-white uppercase tracking-widest">Filter Stream</h3>
+              <h3 className="break-words text-sm font-black leading-snug text-white">Filter Stream</h3>
             </div>
             
-            <div className="flex flex-wrap gap-2">
+            <div className="flex min-w-0 flex-wrap gap-2">
               {['Current Focus', 'All', 'My Claims', 'Open', 'In Progress', 'Ready for Review', 'Accepted', 'Backlog'].map((f) => {
                 if (f === 'My Claims' && role !== 'vibe_coder') return null;
                 return (
                 <button
                   key={f}
                   onClick={() => setFilter(f as any)}
-                  className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border ${
+                  className={`min-w-0 rounded-full border px-4 py-1.5 text-[10px] font-black leading-snug transition-all whitespace-normal break-words ${
                     filter === f 
                       ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(255,107,0,0.3)]' 
                       : 'bg-white/5 text-text-dim border-white/5 hover:border-white/20'
@@ -167,11 +167,11 @@ export function LiveBuildFeed() {
                   <Zap size={24} className="text-text-dim" />
                 </div>
                 <StatusBadge status="Read" label="Empty State" />
-                <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">No matching requests found in the stream.</p>
-                <p className="text-xs text-white/45 max-w-md mx-auto">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
+                <p className="break-words text-xs font-black leading-snug text-text-dim">No matching requests found in the stream.</p>
+                <p className="mx-auto max-w-md break-words text-xs text-white/45">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
                 <button 
                   onClick={() => setFilter('All')}
-                  className="mt-4 text-accent text-[10px] font-black uppercase tracking-widest hover:underline"
+                  className="mt-4 break-words text-[10px] font-black leading-snug text-accent hover:underline"
                 >
                   Clear all filters
                 </button>
@@ -188,17 +188,17 @@ export function LiveBuildFeed() {
                     <div className="p-6 md:p-8 border-b border-white/5 flex flex-col md:flex-row gap-6 md:justify-between md:items-start">
                       <div className="space-y-4">
                         <div className="flex flex-wrap items-center gap-3">
-                          <h2 className="text-xl font-black text-white uppercase tracking-tight group-hover:text-accent transition-colors">
+                          <h2 className="break-words text-xl font-black tracking-tight text-white transition-colors group-hover:text-accent">
                             {req.polished_title}
                           </h2>
                           <StatusBadge status={req.status} />
                           {req.is_current_focus && (
-                            <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded-md border border-accent/20">
+                            <span className="flex min-w-0 items-center gap-1 rounded-md border border-accent/20 bg-accent/10 px-2 py-1 text-[10px] font-black leading-snug text-accent">
                               <Target size={12} /> Focus
                             </span>
                           )}
                           {req.status === 'Accepted' && (
-                            <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-2 py-1 rounded-md border border-amber-400/20">
+                            <span className="flex min-w-0 items-center gap-1.5 rounded-md border border-amber-400/20 bg-amber-400/10 px-2 py-1 text-[10px] font-black leading-snug text-amber-400">
                               <Star size={12} className="fill-amber-400" /> Star Awarded
                             </span>
                           )}
@@ -212,18 +212,18 @@ export function LiveBuildFeed() {
                           {claimedProfile && (
                             <div className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md">
                               <User size={12} className="text-accent" />
-                              <span className="font-bold text-white uppercase tracking-widest">@{claimedProfile.username}</span>
+                              <span className="break-words font-bold text-white">@{claimedProfile.username}</span>
                             </div>
                           )}
                           
-                          <div className="flex gap-2">
+                          <div className="flex min-w-0 flex-wrap gap-2">
                             {req.github_issue_url ? (
-                              <a href={req.github_issue_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-widest text-white/50 hover:text-accent transition-colors">
+                              <a href={req.github_issue_url} target="_blank" rel="noreferrer" className="inline-flex min-w-0 items-center gap-1.5 break-words text-[10px] font-black leading-snug text-white/50 transition-colors hover:text-accent">
                                 <Github size={14} /> Issue #{req.github_issue_number}
                               </a>
                             ) : null}
                             {req.implementation_pr_url && (
-                               <a href={req.implementation_pr_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-widest text-purple-400 hover:text-purple-300">
+                               <a href={req.implementation_pr_url} target="_blank" rel="noreferrer" className="inline-flex min-w-0 items-center gap-1.5 break-words text-[10px] font-black leading-snug text-purple-400 hover:text-purple-300">
                                 <Link2 size={14} /> PR Submitted
                               </a>
                             )}
@@ -232,7 +232,7 @@ export function LiveBuildFeed() {
                       </div>
                       
                       <div className="flex flex-col md:items-end gap-3 shrink-0">
-                         <div className="flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-widest">
+                         <div className="flex min-w-0 flex-wrap gap-2 text-[10px] font-black leading-snug">
                             <span className="bg-indigo-500/10 text-indigo-400 px-3 py-1.5 rounded-xl border border-indigo-500/10">{req.type}</span>
                             <span className="bg-white/5 text-text-dim px-3 py-1.5 rounded-xl border border-white/5 font-mono">{req.difficulty}</span>
                             <span className={`px-3 py-1.5 rounded-xl border font-mono ${req.priority === 'Critical' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-white/5 text-text-dim border-white/5'}`}>{req.priority}</span>
@@ -247,7 +247,7 @@ export function LiveBuildFeed() {
                                   alert(e.message);
                                 }
                               }}
-                              className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${
+                              className={`min-w-0 rounded-xl border px-4 py-1.5 text-[10px] font-black leading-snug transition-all whitespace-normal break-words ${
                                 req.is_current_focus 
                                   ? 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20' 
                                   : 'bg-accent/10 text-accent border-accent/20 hover:bg-accent/20'
@@ -260,16 +260,16 @@ export function LiveBuildFeed() {
                     </div>
 
                     {/* Progress Update Spotlight */}
-                    <div className="px-6 md:px-8 py-4 bg-white/[0.01] border-b border-white/5 flex items-center justify-between gap-4">
-                       <div className="flex items-center gap-3">
+                    <div className="flex min-w-0 flex-wrap items-center justify-between gap-4 border-b border-white/5 bg-white/[0.01] px-6 py-4 md:px-8">
+                       <div className="flex min-w-0 items-center gap-3">
                          <div className="w-2 h-2 rounded-full bg-accent/40" />
-                         <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Latest Momentum</p>
+                         <p className="break-words text-[10px] font-black leading-snug text-text-dim">Latest Momentum</p>
                        </div>
                        <div className="flex-1 flex items-center gap-3 overflow-hidden">
                           {lastProgressUpdate ? (
-                             <p className="text-xs text-white/50 truncate italic font-medium">"{lastProgressUpdate.update_text}"</p>
+                             <p className="break-words text-xs font-medium italic text-white/50">"{lastProgressUpdate.update_text}"</p>
                           ) : (
-                             <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest italic leading-none">No update yet — waiting for builder signal.</p>
+                             <p className="break-words text-[10px] font-bold italic leading-snug text-text-dim">No update yet — waiting for builder signal.</p>
                           )}
                        </div>
                     </div>
@@ -278,11 +278,11 @@ export function LiveBuildFeed() {
                     <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-8">
                       <div className="space-y-6">
                         <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Context & Problem</h4>
+                          <h4 className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Context & Problem</h4>
                           <p className="text-sm text-white/70 leading-relaxed">{req.polished_context}</p>
                         </div>
                         <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Technical Implementation</h4>
+                          <h4 className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Technical Implementation</h4>
                           <p className="text-sm text-white/90 leading-relaxed font-semibold">{req.polished_change}</p>
                         </div>
                         
@@ -292,12 +292,12 @@ export function LiveBuildFeed() {
                               onClick={() => claimRequest(req.id)}
                               disabled={!canClaim}
                               title={!canClaim ? claimDisabledReason : 'Claim this Open request and start the builder workflow.'}
-                              className="w-full md:w-auto px-12 py-3 bg-accent text-white rounded-[20px] text-xs font-black uppercase tracking-[0.2em] hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:grayscale disabled:opacity-50"
+                              className="w-full min-w-0 rounded-[20px] bg-accent px-6 py-3 text-center text-xs font-black leading-snug text-white shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 disabled:grayscale disabled:opacity-50 whitespace-normal break-words md:w-auto md:px-10"
                             >
                               {role === 'anonymous' ? "Sign in to claim this request" : canClaim ? "Claim this request" : "Complete profile to claim"}
                             </button>
                             {!canClaim && (
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-300/80">Why disabled: {claimDisabledReason}</p>
+                              <p className="break-words text-[10px] font-bold leading-snug text-amber-300/80">Why disabled: {claimDisabledReason}</p>
                             )}
                           </div>
                         )}
@@ -305,10 +305,10 @@ export function LiveBuildFeed() {
                       
                       <div className="space-y-6">
                          <div className="bg-black/40 p-6 rounded-3xl border border-white/5 space-y-4">
-                           <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Acceptance Criteria</h4>
+                           <h4 className="break-words text-[10px] font-black leading-snug text-text-dim">Acceptance Criteria</h4>
                            <ul className="space-y-3">
                              {req.acceptance_criteria?.map((crt, i) => (
-                               <li key={i} className="text-xs text-white/60 flex gap-3 items-start group/li">
+                               <li key={i} className="flex min-w-0 items-start gap-3 break-words text-xs text-white/60 group/li">
                                  <div className="mt-1 p-0.5 rounded-full bg-white/5 group-hover/li:bg-accent/20 group-hover/li:text-accent transition-colors">
                                    <Hash size={10} />
                                  </div>
@@ -325,20 +325,20 @@ export function LiveBuildFeed() {
                       <div className="bg-black/40 border-t border-white/5 p-6 md:p-8 space-y-6">
                         {reqUpdates.length > 0 && (
                           <div className="space-y-4">
-                            <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Build Stream</h4>
+                            <h4 className="break-words text-[10px] font-black leading-snug text-text-dim">Build Stream</h4>
                             {reqUpdates.map(u => {
                               const uProfile = u.profile_id ? profiles.find(p => p.id === u.profile_id) : null;
                               return (
-                                <div key={u.id} className="flex gap-4 group/update">
+                                <div key={u.id} className="flex min-w-0 gap-4 group/update">
                                   <div className="w-8 h-8 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover/update:border-accent/40 transition-colors">
                                     <User size={14} className="text-text-dim group-hover/update:text-accent" />
                                   </div>
                                   <div className="flex-1 space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-xs font-black text-white uppercase tracking-widest">{uProfile?.username || u.user_id}</span>
+                                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                      <span className="break-words text-xs font-black text-white">{uProfile?.username || u.user_id}</span>
                                       <span className="text-[10px] text-text-dim font-mono">{formatRelativeTime(u.created_at)}</span>
                                     </div>
-                                    <p className="text-sm text-white/70">{u.update_text}</p>
+                                    <p className="break-words text-sm text-white/70">{u.update_text}</p>
                                   </div>
                                 </div>
                               );
@@ -348,13 +348,13 @@ export function LiveBuildFeed() {
 
                         {/* Builder Add Update */}
                         {((currentUser?.id === req.claimed_by) || isFounderAdminRole(role)) && req.status !== 'Accepted' && req.status !== 'Done' && (
-                          <div className="flex gap-3">
+                          <div className="flex min-w-0 flex-wrap gap-3">
                             <input
                               type="text"
                               value={updateTexts[req.id] || ''}
                               onChange={e => setUpdateTexts({ ...updateTexts, [req.id]: e.target.value })}
                               placeholder="Add a progress update/note..."
-                              className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accent/40"
+                              className="min-w-0 flex-1 rounded-xl border border-white/10 bg-[#111] px-4 py-2 text-sm text-white focus:border-accent/40 focus:outline-none"
                               onKeyDown={e => {
                                 if (e.key === 'Enter' && updateTexts[req.id]?.trim()) {
                                   postUpdate(req.id, updateTexts[req.id]);
@@ -371,20 +371,20 @@ export function LiveBuildFeed() {
                             {req.status === 'Claimed' && (
                               <button
                                 onClick={() => updateRequestStatus(req.id, 'In Progress')}
-                                className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-400 hover:bg-blue-400/10 px-4 py-2 rounded-xl border border-blue-400/20"
+                                className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-blue-400/20 px-4 py-2 text-center text-xs font-black leading-snug text-blue-400 hover:bg-blue-400/10 whitespace-normal break-words"
                               >
                                 <PlayCircle size={14} /> Start Progress
                               </button>
                             )}
                             
                             {(req.status === 'In Progress' || req.status === 'Needs Changes') && (
-                              <div className="flex items-center gap-4 w-full">
+                              <div className="flex w-full min-w-0 flex-wrap items-center gap-4">
                                 <input 
                                   type="text"
                                   value={prUrls[req.id] || req.implementation_pr_url || ''}
                                   onChange={e => setPrUrls({...prUrls, [req.id]: e.target.value})}
                                   placeholder="GitHub PR URL"
-                                  className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white"
+                                  className="min-w-0 flex-1 basis-64 rounded-xl border border-white/10 bg-black px-4 py-2 text-xs text-white"
                                 />
                                 <button
                                   onClick={() => {
@@ -392,7 +392,7 @@ export function LiveBuildFeed() {
                                     if (!url) return;
                                     updateRequest(req.id, { implementation_pr_url: url, status: 'Ready for Review' });
                                   }}
-                                  className="px-6 py-2 bg-purple-500/20 text-purple-400 rounded-xl text-[10px] font-black uppercase tracking-widest border border-purple-500/20"
+                                  className="min-w-0 rounded-xl border border-purple-500/20 bg-purple-500/20 px-6 py-2 text-center text-[10px] font-black leading-snug text-purple-400 whitespace-normal break-words"
                                 >
                                   Submit Review
                                 </button>
@@ -403,20 +403,20 @@ export function LiveBuildFeed() {
 
                         {/* Admin Review */}
                         {isFounderAdminRole(role) && req.status === 'Ready for Review' && (
-                          <div className="flex gap-3 pt-2">
+                          <div className="flex min-w-0 flex-wrap gap-3 pt-2">
                              <button
                                onClick={() => {
                                  if (!currentUser?.id) return;
                                  updateRequest(req.id, { status: 'Accepted', accepted_by: currentUser.id, accepted_at: new Date().toISOString() });
                                  if (req.claimed_by_profile_id) awardStar(req.claimed_by_profile_id, req.id);
                                }}
-                               className="flex items-center gap-2 bg-amber-500 text-black px-6 py-2 rounded-xl text-[10px] font-black uppercase"
+                               className="flex min-w-0 items-center justify-center gap-2 rounded-xl bg-amber-500 px-6 py-2 text-center text-[10px] font-black leading-snug text-black whitespace-normal break-words"
                              >
                                <Star size={14} fill="currentColor" /> Accept & Star
                              </button>
                              <button
                                onClick={() => updateRequest(req.id, { status: 'Needs Changes' })}
-                               className="px-6 py-2 border border-white/10 text-white rounded-xl text-[10px] font-black uppercase"
+                               className="min-w-0 rounded-xl border border-white/10 px-6 py-2 text-center text-[10px] font-black leading-snug text-white whitespace-normal break-words"
                              >
                                Needs Changes
                              </button>
