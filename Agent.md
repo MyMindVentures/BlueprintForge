@@ -60,6 +60,7 @@
 - No new user-facing hardcoded text allowed in components/pages.
 - New UI labels, placeholders, tooltips, notifications, errors, statuses, guide content, modal text, and empty/loading/success states must use i18n keys.
 - Do not hardcode user-facing text if an i18n system exists
+- Run `npm run i18n:check` when changing frontend `.tsx` UI copy; move visible JSX text and user-facing `label`, `title`, `placeholder`, `aria-label`, `description`, `emptyMessage`, `error`, and `success` prop values into i18n resources unless they are documented internal exceptions.
 
 ## Demo Rules
 - Demo recorder and demo user must only use safe demo data
