@@ -57,6 +57,8 @@
 
 ## Multilingual Rules
 - The app must support multilingual UI
+- No new user-facing hardcoded text allowed in components/pages.
+- New UI labels, placeholders, tooltips, notifications, errors, statuses, guide content, modal text, and empty/loading/success states must use i18n keys.
 - Do not hardcode user-facing text if an i18n system exists
 
 ## Demo Rules
