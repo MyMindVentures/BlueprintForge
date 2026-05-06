@@ -15,6 +15,10 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+/**
+ * Handles the auth provider workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserContext | null>(null);
@@ -89,6 +93,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Handles the use auth workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within AuthProvider');

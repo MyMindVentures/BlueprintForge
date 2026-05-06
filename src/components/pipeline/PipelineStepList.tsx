@@ -8,6 +8,10 @@ interface PipelineStepListProps {
   currentStepId: string | null;
 }
 
+/**
+ * Handles the pipeline step list workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function PipelineStepList({ steps, currentStepId }: PipelineStepListProps) {
   return (
     <div className="space-y-4">

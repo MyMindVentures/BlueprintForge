@@ -14,6 +14,10 @@ interface TabPanelProps {
   className?: string;
 }
 
+/**
+ * Handles the tab panel workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function TabPanel({ tabs, activeTab, onChange, className = "" }: TabPanelProps) {
   return (
     <div className={`flex items-center gap-1 bg-black/40 border border-white/5 p-1 rounded-2xl backdrop-blur-3xl shrink-0 ${className}`}>

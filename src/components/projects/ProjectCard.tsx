@@ -16,6 +16,10 @@ interface ProjectCardProps {
   onExport: (id: string) => void;
 }
 
+/**
+ * Handles the project card workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ProjectCard({ 
   project, onOpen, onDelete, onDuplicate, onRename, onExport 
 }: ProjectCardProps) {

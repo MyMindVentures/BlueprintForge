@@ -11,6 +11,10 @@ interface ScreenImageGalleryProps {
   onRegenerateSingle: (screenCode: string) => Promise<void>;
 }
 
+/**
+ * Handles the screen image gallery workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ScreenImageGallery({ project, onRegenerateAll, onRegenerateSingle }: ScreenImageGalleryProps) {
   const images = project.screenImages || [];
   const pipeline = project.imagePipeline;

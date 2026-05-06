@@ -20,6 +20,10 @@ interface ActionButtonProps {
   title?: string;
 }
 
+/**
+ * Handles the action button workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ActionButton({
   label,
   loadingLabel = "Running...",

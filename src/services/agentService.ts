@@ -9,6 +9,10 @@ export interface ConversionParams {
   modelId: string;
 }
 
+/**
+ * Handles the run agent step workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function runAgentStep(params: ConversionParams): Promise<AppSpec> {
   const { rawConcept, agent, openRouterApiKey, modelId } = params;
 
@@ -35,6 +39,10 @@ export async function runAgentStep(params: ConversionParams): Promise<AppSpec> {
   return parseAgentResponse(content, agent, needsJson);
 }
 
+/**
+ * Handles the parse agent response workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function parseAgentResponse(content: string, agent: AIAgent, needsJson: boolean): AppSpec {
   try {
     if (agent.outputType === "Markdown only") {

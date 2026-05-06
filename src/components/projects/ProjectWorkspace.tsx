@@ -19,6 +19,10 @@ interface ProjectWorkspaceProps {
   runImagePipeline: (id: string) => Promise<void>;
 }
 
+/**
+ * Handles the project workspace workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBack, runPipeline, runImagePipeline }: ProjectWorkspaceProps) {
   const toast = useToast();
   const [inputValue, setInputValue] = useState(project.rawConcept);

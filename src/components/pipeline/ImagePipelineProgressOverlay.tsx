@@ -10,6 +10,10 @@ interface ImagePipelineOverlayProps {
   onClose: () => void;
 }
 
+/**
+ * Handles the image pipeline progress overlay workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ImagePipelineProgressOverlay({ pipeline, onClose }: ImagePipelineOverlayProps) {
   const [showLogs, setShowLogs] = useState(false);
   const isFinished = pipeline.status === "Success" || pipeline.status === "Failed";

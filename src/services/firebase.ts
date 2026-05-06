@@ -33,6 +33,10 @@ export interface FirestoreErrorInfo {
   }
 }
 
+/**
+ * Handles the handle firestore error workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),

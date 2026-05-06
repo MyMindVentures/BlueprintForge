@@ -4,6 +4,10 @@ import { db, handleFirestoreError, OperationType } from '../services/firebase';
 import { useAuth } from './useAuth';
 import { AppNotification } from '../types/buildFeed';
 
+/**
+ * Handles the use notifications workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useNotifications() {
   const { profile: currentUser } = useAuth();
   const [notifications, setNotifications] = useState<AppNotification[]>([]);

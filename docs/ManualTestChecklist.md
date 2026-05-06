@@ -41,3 +41,13 @@
 - The app handles nearly all specifications out-of-the-box now.
 - `SCR-17` and `SCR-18` (General Settings, Audit Logs) are intentionally deferred but `Bootstrap Workflow` acts as the primary driver.
 - Role constraints have been successfully checked and validated.
+
+## 5. Self-Explaining Guidance Verification
+- [ ] **Universal HelpBlock:** Visit Landing, Bootstrap, Guide, Live Feed, Builder Profile, Directory, Vision, OpenRouter Settings and Diagnostics. Each route must show what the screen is for, current state, next action and why protected actions can be disabled.
+- [ ] **Empty State Guidance:** Filter the Live Build Feed to a state with no matching requests. The empty state must explain that the filter has no visible work and offer to clear filters.
+- [ ] **Disabled Claim Reason:** Visit the Live Build Feed as an anonymous visitor or builder without a complete profile. The claim button must be disabled and explain why.
+- [ ] **Guide Role Sections:** Open the BlueprintForge Guide and verify Founder, Builder, Visitor, Investor/Observer, Demo, GitHub Contribution, OpenRouter AI, Version/Changelog and Notifications guides are present.
+- [ ] **Status Glossary:** Open the BlueprintForge Guide and verify build, builder, GitHub, OpenRouter, notification, demo and version states are defined.
+- [ ] **Version Popup State:** Trigger a newer guide version for a builder and verify the popup explains acknowledgement state before dismissal.
+- [ ] **Demo Safety:** Start the Auto Demo Recorder from the Guide and verify demo copy explains safe demo data and production protection.
+- [ ] **Admin Persistence:** Visit admin/project/settings areas and verify guidance explains persisted state, protected writes and retry steps after errors.

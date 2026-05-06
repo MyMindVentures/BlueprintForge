@@ -6,6 +6,10 @@ import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '../ui/Toast';
 import { VisionStatus } from '../../types/vision';
 
+/**
+ * Handles the founder vision page workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function FounderVisionPage() {
   const { visions, publishVision } = useVision();
   const { currentUser } = useBuildFeed();

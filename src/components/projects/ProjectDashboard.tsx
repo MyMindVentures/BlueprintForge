@@ -16,6 +16,10 @@ interface ProjectDashboardProps {
   onExport: (id: string) => void;
 }
 
+/**
+ * Handles the project dashboard workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ProjectDashboard({ 
   projects, onNew, onOpen, onDelete, onDuplicate, onRename, onExport 
 }: ProjectDashboardProps) {

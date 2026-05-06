@@ -7,6 +7,10 @@ import { db, handleFirestoreError, OperationType } from '../services/firebase';
 import { AppVersion, GuideSection, UserFlow, DemoRecording, DemoSession } from '../types/guide';
 import { useAuth } from './useAuth';
 
+/**
+ * Handles the use guide workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useGuide() {
   const { profile: currentUser } = useAuth();
   const [versions, setVersions] = useState<AppVersion[]>([]);

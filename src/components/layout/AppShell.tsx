@@ -17,6 +17,10 @@ interface AppShellProps {
   onOpenHelp?: () => void;
 }
 
+/**
+ * Handles the app shell workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function AppShell({ children, currentView, setView: onViewChange, onAddProject, onOpenHelp }: AppShellProps) {
   const { lastNotification } = useBuildFeed();
   const { profile, user, logout } = useAuth();

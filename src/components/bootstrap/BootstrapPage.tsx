@@ -14,6 +14,10 @@ import { useToast } from '../ui/Toast';
 import { StatusBadge } from '../ui/StatusBadge';
 import { BuildRequest, BuildPriority, BuildDifficulty, BuildType } from '../../types/buildFeed';
 
+/**
+ * Handles the bootstrap page workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function BootstrapPage() {
   const { 
     requests, publishRequest, updateRequest, currentUser, 

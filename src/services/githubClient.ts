@@ -1,5 +1,9 @@
 import { BuildRequest, GithubSettings } from '../types/buildFeed';
 
+/**
+ * Handles the create github issue workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function createGithubIssue(request: BuildRequest, settings: GithubSettings) {
   if (!settings.github_token || !settings.repo_owner || !settings.repo_name) {
     throw new Error('Missing GitHub configuration');

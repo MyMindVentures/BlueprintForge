@@ -4,6 +4,10 @@ import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../services/firebase';
 import { useAuth } from './useAuth';
 
+/**
+ * Handles the use github settings workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useGithubSettings() {
   const { profile: currentUser } = useAuth();
   const [settings, setSettingsState] = useState<GithubSettings>({

@@ -222,6 +222,10 @@ export const INITIAL_MODELS = [
   { id: "mistralai/mistral-large", name: "Mistral Large", provider: "Mistral", contextLength: 128000, enabled: true },
 ];
 
+/**
+ * Handles the agent system prompt template workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export const AGENT_SYSTEM_PROMPT_TEMPLATE = (agent: {
   systemPrompt: string;
   outputRules: string;
@@ -271,6 +275,10 @@ You must return a JSON object following this schema:
 }` : ""}
 `;
 
+/**
+ * Handles the user prompt template workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export const USER_PROMPT_TEMPLATE = (content: string) => `
 INPUT CONTENT:
 """

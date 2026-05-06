@@ -11,6 +11,10 @@ interface CurrentFocusProps {
   onRemoveFocus?: (id: string) => void;
 }
 
+/**
+ * Handles the current focus workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function CurrentFocus({ focusedRequests, onClaim, isAdmin, onRemoveFocus }: CurrentFocusProps) {
   if (focusedRequests.length === 0) return null;
 

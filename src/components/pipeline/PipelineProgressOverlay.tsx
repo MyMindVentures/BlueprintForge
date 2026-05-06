@@ -15,6 +15,10 @@ interface PipelineOverlayProps {
   onGenerateImages?: () => void;
 }
 
+/**
+ * Handles the pipeline progress overlay workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function PipelineProgressOverlay({ job, onClose, onRetry, onGenerateImages }: PipelineOverlayProps) {
   const [showLogs, setShowLogs] = useState(false);
   const overallProgress = (job.steps.filter(s => s.status === "Success").length / job.steps.length) * 100;

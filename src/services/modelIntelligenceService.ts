@@ -1,6 +1,10 @@
 import { OpenRouterModel } from "../types";
 import { callOpenRouterChatCompletion } from "./openRouterClient";
 
+/**
+ * Handles the generate model intelligence workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function generateModelIntelligence(
   apiKey: string,
   analysisModelId: string,

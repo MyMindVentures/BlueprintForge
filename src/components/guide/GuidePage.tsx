@@ -8,7 +8,13 @@ import {
 import { useGuide } from '../../hooks/useGuide';
 import { formatDistanceToNow } from 'date-fns';
 import { AutoDemoRecorder } from './AutoDemoRecorder';
+import { guideSections, screenGuidance, statusGlossary } from '../../content/guides/blueprintGuides';
+import { StatusBadge } from '../ui/StatusBadge';
 
+/**
+ * Presents the central self-explaining BlueprintForge guide, changelog and demo recorder.
+ * Used by visitors, builders, founders and observers to understand screens, roles, statuses and next actions.
+ */
 export function GuidePage() {
   const { latestVersion, flows, recordings, currentSession, startDemoSession } = useGuide();
   const [isDemoRunning, setIsDemoRunning] = useState(false);
@@ -163,6 +169,108 @@ export function GuidePage() {
                 </div>
               ))}
            </div>
+        </section>
+
+        {/* ROLE GUIDES */}
+        <section className="space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Role Guides</h2>
+            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">What should I do next?</h3>
+            <p className="text-text-dim max-w-2xl mx-auto">Choose the guide that matches your role. Each guide explains the current state, available next action and what success looks like.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {guideSections.map((section) => (
+              <article key={section.id} id={section.id} className="rounded-[32px] border border-white/5 bg-white/[0.02] p-6 space-y-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-accent">{section.audience} guide</p>
+                    <h4 className="mt-1 text-lg font-black uppercase tracking-tight text-white">{section.title}</h4>
+                  </div>
+                  <StatusBadge status="Published" label={section.statusLabel} />
+                </div>
+                <p className="text-sm leading-relaxed text-text-dim">{section.summary}</p>
+                <ol className="space-y-2">
+                  {section.steps.map((step, index) => (
+                    <li key={step} className="flex gap-3 text-xs leading-relaxed text-white/75">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/10 text-[10px] font-black text-accent">{index + 1}</span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+                <div className="rounded-2xl border border-accent/10 bg-accent/[0.04] p-4">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-accent">Next action</p>
+                  <p className="mt-1 text-xs text-white/80">{section.nextAction}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* SCREENS AND STATES */}
+        <section className="space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Screens, Capabilities and States</h2>
+            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">Every screen explains itself</h3>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {Object.values(screenGuidance).map((screen) => (
+              <div key={screen.title} className="rounded-[32px] border border-white/5 bg-[#0b0b0b] p-6 space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <h4 className="text-base font-black uppercase tracking-widest text-white">{screen.title}</h4>
+                  <StatusBadge status="Latest Version" />
+                </div>
+                <p className="text-sm text-text-dim">{screen.purpose}</p>
+                <div className="grid gap-3 text-xs text-white/70">
+                  <p><span className="font-black uppercase tracking-widest text-white/35">State:</span> {screen.state}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">Next:</span> {screen.nextAction}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">Disabled:</span> {screen.disabledReason}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">Empty:</span> {screen.empty}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">Loading:</span> {screen.loading}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">Error:</span> {screen.error}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">Success:</span> {screen.success}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* STATUS GLOSSARY */}
+        <section className="space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div>
+              <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Status Glossary</h2>
+              <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">What each badge means</h3>
+            </div>
+            <StatusBadge status="Published Version" label="Glossary Complete" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {statusGlossary.map(([label, meaning]) => (
+              <div key={label} className="flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                <StatusBadge status={label} label={label} />
+                <p className="text-xs leading-relaxed text-text-dim">{meaning}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="rounded-[48px] border border-white/5 bg-white/[0.02] p-8 md:p-12 space-y-8">
+          <div>
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">FAQ</h2>
+            <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">No guessing required</h3>
+          </div>
+          {[
+            ['Why is an action disabled?', 'The UI should show the reason near the button or in the screen guidance. Common causes are missing sign-in, incomplete profile, missing API key, protected founder/admin role or a ticket that is no longer Open.'],
+            ['What if GitHub or OpenRouter is not connected?', 'The app labels the flow Not Configured, Connection Untested or Not connected yet instead of pretending the backend is complete. Configure settings and run diagnostics before relying on the integration.'],
+            ['How do stars work?', 'Stars are awarded by founder/admin review after accepted work. They represent shipped, verified contribution rather than claimed work.'],
+            ['What should demo users avoid?', 'Demo users should use only labeled demo data. Production Protected means real data and secrets are intentionally not touched.'],
+            ['Where do I see version popup state?', 'The changelog and version popup use Latest Version, Not Yet Acknowledged and Acknowledged badges so builders know whether they have read the latest release.']
+          ].map(([question, answer]) => (
+            <div key={question} className="border-t border-white/5 pt-5">
+              <h4 className="font-black uppercase tracking-widest text-white">{question}</h4>
+              <p className="mt-2 text-sm leading-relaxed text-text-dim">{answer}</p>
+            </div>
+          ))}
         </section>
 
         {/* USER FLOWS */}

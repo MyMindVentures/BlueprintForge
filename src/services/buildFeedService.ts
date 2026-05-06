@@ -5,7 +5,12 @@ import {
 import { db, OperationType, handleFirestoreError } from './firebase';
 import { BuildRequest, BuildRequestUpdate, VibeCoderProfile, BuilderStarEvent, DailySignal } from '../types/buildFeed';
 
+/**
+ * Provides the Firestore-backed Live Build Feed API for requests, profiles, signals and stars.
+ * Used by founder/admin and builder flows and every method persists or streams shared platform state.
+ */
 export const buildFeedService = {
+  /** Streams build requests so feeds show live status, claim and review changes. */
   subscribeToRequests: (callback: (requests: BuildRequest[]) => void) => {
     const q = query(collection(db, 'build_requests'), orderBy('created_at', 'desc'));
     return onSnapshot(q, (snapshot) => {
@@ -14,6 +19,7 @@ export const buildFeedService = {
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'build_requests'));
   },
 
+  /** Streams founder Daily Signals shown to builders and observers. */
   subscribeToDailySignals: (callback: (signals: DailySignal[]) => void) => {
     const q = query(collection(db, 'daily_signals'), orderBy('created_at', 'desc'), limit(50));
     return onSnapshot(q, (snapshot) => {
@@ -22,6 +28,7 @@ export const buildFeedService = {
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'daily_signals'));
   },
 
+  /** Streams builder profiles for directory, eligibility and reputation displays. */
   subscribeToProfiles: (callback: (profiles: VibeCoderProfile[]) => void) => {
     const q = collection(db, 'vibe_coder_profiles');
     return onSnapshot(q, (snapshot) => {
@@ -30,6 +37,7 @@ export const buildFeedService = {
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'vibe_coder_profiles'));
   },
 
+  /** Publishes a reviewed founder draft as an Open build request persisted in Firestore. */
   publishRequest: async (request: Partial<BuildRequest>, userId: string) => {
     try {
       const docRef = await addDoc(collection(db, 'build_requests'), {
@@ -46,6 +54,7 @@ export const buildFeedService = {
     }
   },
 
+  /** Atomically claims an Open request for one builder and records the claim in the update stream. */
   claimTicket: async (requestId: string, userId: string, profileId: string) => {
     try {
       await runTransaction(db, async (transaction) => {
@@ -77,6 +86,7 @@ export const buildFeedService = {
     }
   },
 
+  /** Awards reputation after founder/admin acceptance and persists a star event atomically. */
   awardStar: async (profileId: string, requestId: string, adminId: string) => {
     try {
       await runTransaction(db, async (transaction) => {

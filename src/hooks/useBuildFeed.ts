@@ -19,6 +19,10 @@ import {
 } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../services/firebase';
 
+/**
+ * Handles the use build feed workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useBuildFeed() {
   const { profile: currentUser } = useAuth();
   
@@ -49,11 +53,13 @@ export function useBuildFeed() {
     };
   }, []);
 
+  /** Publishes founder/admin-reviewed draft data to the shared build feed. */
   const publishRequest = async (request: any) => {
     if (!currentUser || currentUser.role !== 'admin') return;
     return await buildFeedService.publishRequest(request, currentUser.id);
   };
 
+  /** Updates persisted build request fields such as status, focus, PR URL or implementation notes. */
   const updateRequest = async (id: string, updates: Partial<BuildRequest>) => {
     try {
       await updateDoc(doc(db, 'build_requests', id), {
@@ -65,11 +71,13 @@ export function useBuildFeed() {
     }
   };
 
+  /** Lets an eligible signed-in builder claim an Open request using their saved profile. */
   const claimRequest = async (id: string) => {
     if (!currentUser || !currentUserProfile) return;
     await buildFeedService.claimTicket(id, currentUser.id, currentUserProfile.id);
   };
 
+  /** Adds a builder/founder progress update to the ticket conversation stream. */
   const postUpdate = async (build_request_id: string, update_text: string) => {
     if (!currentUser) return;
     try {
@@ -85,6 +93,7 @@ export function useBuildFeed() {
     }
   };
 
+  /** Creates or updates the current builder profile and persistence-backed claim eligibility. */
   const saveProfile = async (profileData: Partial<VibeCoderProfile>) => {
     if (!currentUser) return;
     try {
@@ -109,11 +118,13 @@ export function useBuildFeed() {
     }
   };
 
+  /** Delegates founder/admin star awards after accepted implementation work. */
   const awardStar = async (profileId: string, buildRequestId: string) => {
     if (!currentUser || currentUser.role !== 'admin') return;
     await buildFeedService.awardStar(profileId, buildRequestId, currentUser.id);
   };
 
+  /** Publishes the founder Daily Signal for builders and public observers. */
   const postDailySignal = async (message: string) => {
     if (!currentUser || currentUser.role !== 'admin') return;
     try {
@@ -127,10 +138,12 @@ export function useBuildFeed() {
     }
   };
 
+  /** Changes a build request lifecycle state, such as In Progress or Ready for Review. */
   const updateRequestStatus = async (id: string, status: BuildRequest["status"]) => {
     await updateRequest(id, { status });
   };
 
+  /** Marks a builder profile as verified after founder/admin trust review. */
   const verifyProfile = async (profileId: string) => {
     if (!currentUser || currentUser.role !== 'admin') return;
     try {
@@ -143,6 +156,7 @@ export function useBuildFeed() {
     }
   };
 
+  /** Adds or removes a request from Current Founder Focus with a maximum of three active items. */
   const toggleFocus = async (id: string, reason?: string) => {
     if (!currentUser || currentUser.role !== 'admin') return;
     

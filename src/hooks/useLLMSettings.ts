@@ -23,6 +23,10 @@ export interface SyncStatus {
   } | null;
 }
 
+/**
+ * Handles the use llmsettings workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useLLMSettings(
   settings: LLMSettings, 
   setSettings: (s: LLMSettings | ((prev: LLMSettings) => LLMSettings)) => void,

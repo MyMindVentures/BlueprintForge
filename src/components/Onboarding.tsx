@@ -46,6 +46,10 @@ const TOUR_STEPS: TourStep[] = [
   }
 ];
 
+/**
+ * Handles the onboarding workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function Onboarding() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [showTour, setShowTour] = useState(false);
@@ -232,6 +236,10 @@ function TourPopup({ step, onNext, onPrev, onSkip, isFirst, isLast, current, tot
   );
 }
 
+/**
+ * Handles the help icon workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function HelpIcon({ title, content }: { title: string, content: string }) {
   const [show, setShow] = useState(false);
 
