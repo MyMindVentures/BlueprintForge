@@ -1,7 +1,18 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { apiRequest } from '../services/apiClient';
 import { UserContext } from '../types/buildFeed';
-import { DEFAULT_LANGUAGE, LANGUAGE_STORAGE_KEY, LanguageCode, TranslationOptions, isSupportedLanguage, languageToLocale, resources } from './config';
+import {
+  DEFAULT_LANGUAGE,
+  DEFAULT_NAMESPACE,
+  I18nNamespace,
+  LANGUAGE_STORAGE_KEY,
+  LanguageCode,
+  TranslationOptions,
+  isSupportedLanguage,
+  isSupportedNamespace,
+  languageToLocale,
+  resources
+} from './config';
 import { useAuth } from '../hooks/useAuth';
 
 type I18nContextValue = {
@@ -14,8 +25,16 @@ type I18nContextValue = {
   formatRelativeTime: (value: string | number | Date) => string;
 };
 
+type ParsedTranslationKey = {
+  namespace: I18nNamespace;
+  path: string;
+};
+
 const I18nContext = createContext<I18nContextValue | null>(null);
-const getByPath = (source: any, key: string) => key.split('.').reduce((current, part) => current?.[part], source);
+const getByPath = (source: unknown, key: string) => key.split('.').reduce<unknown>((current, part) => {
+  if (!current || typeof current !== 'object') return undefined;
+  return (current as Record<string, unknown>)[part];
+}, source);
 const interpolate = (value: string, options?: TranslationOptions) => value.replace(/{{\s*(\w+)\s*}}/g, (_, token) => String(options?.[token] ?? ''));
 const readStoredLanguage = () => {
   if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
@@ -23,6 +42,55 @@ const readStoredLanguage = () => {
   if (isSupportedLanguage(stored)) return stored;
   const browserLanguage = window.navigator.language?.split('-')[0];
   return isSupportedLanguage(browserLanguage) ? browserLanguage : DEFAULT_LANGUAGE;
+};
+
+const parseTranslationKey = (key: string, namespace?: I18nNamespace): ParsedTranslationKey => {
+  const separatorIndex = key.indexOf(':');
+  if (separatorIndex > 0) {
+    const namespaceCandidate = key.slice(0, separatorIndex);
+    if (isSupportedNamespace(namespaceCandidate)) {
+      return {
+        namespace: namespaceCandidate,
+        path: key.slice(separatorIndex + 1)
+      };
+    }
+  }
+
+  return {
+    namespace: namespace || DEFAULT_NAMESPACE,
+    path: key
+  };
+};
+
+const getPluralSuffix = (language: LanguageCode, count?: number) => {
+  if (typeof count !== 'number') return null;
+  try {
+    return new Intl.PluralRules(language).select(count);
+  } catch {
+    return count === 1 ? 'one' : 'other';
+  }
+};
+
+const resolveTranslation = (language: LanguageCode, key: string, options?: TranslationOptions) => {
+  const { namespace, path } = parseTranslationKey(key, options?.ns);
+  const pluralSuffix = getPluralSuffix(language, options?.count);
+  const paths = pluralSuffix ? [`${path}_${pluralSuffix}`, `${path}_other`, path] : [path];
+
+  for (const candidatePath of paths) {
+    const translated = getByPath(resources[language]?.[namespace], candidatePath);
+    if (typeof translated === 'string') return translated;
+  }
+
+  if (language !== DEFAULT_LANGUAGE) {
+    const fallbackSuffix = getPluralSuffix(DEFAULT_LANGUAGE, options?.count);
+    const fallbackPaths = fallbackSuffix ? [`${path}_${fallbackSuffix}`, `${path}_other`, path] : [path];
+    for (const candidatePath of fallbackPaths) {
+      const translated = getByPath(resources[DEFAULT_LANGUAGE]?.[namespace], candidatePath);
+      if (typeof translated === 'string') return translated;
+    }
+  }
+
+  return null;
 };
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
@@ -34,7 +102,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
       setLanguageState(profile.preferred_language);
       window.localStorage.setItem(LANGUAGE_STORAGE_KEY, profile.preferred_language);
     }
-  }, [profile?.preferred_language]);
+  }, [language, profile?.preferred_language]);
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -42,9 +110,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, [language]);
 
   const t = useCallback((key: string, options?: TranslationOptions) => {
-    const translated = getByPath(resources[language], key) ?? getByPath(resources[DEFAULT_LANGUAGE], key);
-    if (typeof translated === 'string') return interpolate(translated, options);
-    return key;
+    const translated = resolveTranslation(language, key, options);
+    return translated ? interpolate(translated, options) : key;
   }, [language]);
 
   const setLanguage = useCallback(async (nextLanguage: LanguageCode) => {
