@@ -1,3 +1,4 @@
+import { tx } from '../i18n/I18nProvider';
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Sparkles, ArrowRight, X, ChevronRight, ChevronLeft, HelpCircle } from "lucide-react";
@@ -11,38 +12,38 @@ interface TourStep {
 const TOUR_STEPS: TourStep[] = [
   {
     targetId: "btn-new-project",
-    title: "Start Fresh",
-    content: "Create a new project to organize your app concepts and conversions."
+    title:tx("uiStrings.components.onboarding.001"),
+    content:tx("uiStrings.components.onboarding.002")
   },
   {
     targetId: "raw-concept-input",
-    title: "Define Your Idea",
-    content: "Paste your app concept, feature description, or product idea here."
+    title:tx("uiStrings.components.onboarding.003"),
+    content:tx("uiStrings.components.onboarding.004")
   },
   {
     targetId: "agent-selector",
-    title: "Choose Your Specialist",
-    content: "Select an AI Agent tailored for your specific app type."
+    title:tx("uiStrings.components.onboarding.005"),
+    content:tx("uiStrings.components.onboarding.006")
   },
   {
     targetId: "btn-convert",
-    title: "Magic Happens Here",
-    content: "Click convert to transform your raw text into structured nested cards."
+    title:tx("uiStrings.components.onboarding.007"),
+    content:tx("uiStrings.components.onboarding.008")
   },
   {
     targetId: "structured-cards-panel",
-    title: "Browse Structure",
-    content: "Explore the nested architecture of your app with interactive 3D cards."
+    title:tx("uiStrings.components.onboarding.009"),
+    content:tx("uiStrings.components.onboarding.010")
   },
   {
     targetId: "markdown-preview-panel",
-    title: "Export Ready",
-    content: "Review and export your project as professional markdown documentation."
+    title:tx("uiStrings.components.onboarding.011"),
+    content:tx("uiStrings.components.onboarding.012")
   },
   {
     targetId: "btn-llm-settings",
-    title: "Configure Intelligence",
-    content: "Set up your OpenRouter API key and manage model intelligence fleet."
+    title:tx("uiStrings.components.onboarding.013"),
+    content:tx("uiStrings.components.onboarding.014")
   }
 ];
 
@@ -104,10 +105,8 @@ export function Onboarding() {
               <div className="w-16 h-16 bg-accent/20 text-accent rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Sparkles size={32} />
               </div>
-              <h2 className="text-3xl font-black text-white mb-4 tracking-tight">Welcome to BlueprintForge AI</h2>
-              <p className="text-text-dim mb-8 leading-relaxed">
-                Transform your raw app concepts into professional, structured architecture and documentation in seconds using OpenRouter AI fleet.
-              </p>
+              <h2 className="text-3xl font-black text-white mb-4 tracking-tight">{tx("uiLegacy.components.onboarding.001")}</h2>
+              <p className="text-text-dim mb-8 leading-relaxed">{tx("uiLegacy.components.onboarding.002")}</p>
               
               <div className="space-y-3 mb-8 text-left">
                 {[
@@ -128,15 +127,12 @@ export function Onboarding() {
                 <button 
                   onClick={() => handleDismissWelcome(true)}
                   className="glass-btn-primary w-full"
-                >
-                  Show me around <ArrowRight size={18} />
+                >{tx("uiLegacy.components.onboarding.003")}<ArrowRight size={18} />
                 </button>
                 <button 
                   onClick={() => handleDismissWelcome(false)}
                   className="glass-btn-secondary w-full"
-                >
-                  I'll figure it out
-                </button>
+                >{tx("uiLegacy.components.onboarding.004")}</button>
               </div>
             </motion.div>
           </div>
@@ -210,9 +206,7 @@ function TourPopup({ step, onNext, onPrev, onSkip, isFirst, isLast, current, tot
             <button 
               onClick={onSkip}
               className="text-[10px] font-bold uppercase tracking-widest text-text-dim hover:text-white transition-colors"
-            >
-              Skip
-            </button>
+            >{tx("uiLegacy.components.onboarding.005")}</button>
             <div className="flex gap-2">
               {!isFirst && (
                 <button 
@@ -226,7 +220,7 @@ function TourPopup({ step, onNext, onPrev, onSkip, isFirst, isLast, current, tot
                 onClick={onNext}
                 className="glass-btn-primary !px-4 !py-1.5 !text-[11px]"
               >
-                {isLast ? "Finish" : "Next"} <ChevronRight size={14} />
+                {isLast ?tx("uiStrings.components.onboarding.015") :tx("uiStrings.components.onboarding.016")} <ChevronRight size={14} />
               </button>
             </div>
           </div>

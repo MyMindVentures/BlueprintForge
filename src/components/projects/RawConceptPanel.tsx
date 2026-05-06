@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Brain, Settings2, Bot, Cpu, Sparkles, Loader2 } from "lucide-react";
@@ -27,13 +28,11 @@ export function RawConceptPanel({
 
   return (
     <section 
-      className={`lg:w-[400px] xl:w-[450px] border-r border-white/10 flex flex-col bg-black/20 shrink-0 ${activeTab !== 'input' ? 'hidden lg:flex' : 'flex'}`}
+      className={`lg:w-[400px] xl:w-[450px] border-r border-white/10 flex flex-col bg-black/20 shrink-0 ${activeTab !== 'input' ?tx("uiStrings.components.projects.rawconceptpanel.001") : 'flex'}`}
     >
       <div className="h-12 flex items-center justify-between px-6 border-b border-white/5 bg-white/[0.02]">
         <div className="flex items-center gap-2 text-[10px] uppercase font-black tracking-widest text-text-dim">
-          <Brain size={14} className="text-accent" />
-          Vision Parameters
-          <HelpIcon title="Concept Input" content="Detail the features, user roles, and core value prop of your application." />
+          <Brain size={14} className="text-accent" />{tx("uiLegacy.components.projects.rawconceptpanel.001")}<HelpIcon title={tx("uiLegacy.components.projects.rawconceptpanel.002")} content="Detail the features, user roles, and core value prop of your application." />
         </div>
       </div>
       
@@ -42,8 +41,8 @@ export function RawConceptPanel({
             onClick={() => setIsAdvanced(!isAdvanced)}
             className="flex items-center gap-2 text-[9px] font-black text-white/40 uppercase tracking-widest hover:text-accent transition-colors"
           >
-            <Settings2 size={12} className={isAdvanced ? 'rotate-90 text-accent transition-transform' : 'transition-transform'} />
-            {isAdvanced ? "Consolidate Parameters" : "Advanced Architecture"}
+            <Settings2 size={12} className={isAdvanced ?tx("uiStrings.components.projects.rawconceptpanel.002") : 'transition-transform'} />
+            {isAdvanced ?tx("uiStrings.components.projects.rawconceptpanel.003") :tx("uiStrings.components.projects.rawconceptpanel.004")}
           </button>
 
          {isAdvanced && (
@@ -53,7 +52,7 @@ export function RawConceptPanel({
              className="space-y-4 overflow-hidden border-l border-white/5 pl-4 ml-1.5"
            >
              <div className="space-y-2">
-                <label className="text-[9px] font-black text-white/40 uppercase tracking-widest">Master Agent</label>
+                <label className="text-[9px] font-black text-white/40 uppercase tracking-widest">{tx("uiLegacy.components.projects.rawconceptpanel.003")}</label>
                 <select 
                   value={project.selectedAgentId || ""}
                   onChange={(e) => onUpdate({ selectedAgentId: e.target.value })}
@@ -66,13 +65,13 @@ export function RawConceptPanel({
              </div>
 
              <div className="space-y-2">
-                <label className="text-[9px] font-black text-white/40 uppercase tracking-widest">Intelligence Model</label>
+                <label className="text-[9px] font-black text-white/40 uppercase tracking-widest">{tx("uiLegacy.components.projects.rawconceptpanel.004")}</label>
                 <select 
                   value={project.modelOverrideId || ""}
                   onChange={(e) => onUpdate({ modelOverrideId: e.target.value || null })}
                   className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-xs font-bold text-white focus:outline-none focus:border-accent/40"
                 >
-                  <option value="" className="text-accent italic">Auto Logic</option>
+                  <option value="" className="text-accent italic">{tx("uiLegacy.components.projects.rawconceptpanel.005")}</option>
                   {llmSettings.models.filter(m => m.enabled).map(m => (
                     <option key={m.id} value={m.id} className="bg-bg text-white">{m.name}</option>
                   ))}
@@ -81,8 +80,8 @@ export function RawConceptPanel({
 
              <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 mt-4">
                 <div className="space-y-0.5">
-                  <div className="text-[9px] font-black text-white uppercase tracking-widest leading-none">Auto Visuals</div>
-                  <div className="text-[8px] font-bold text-white/30 uppercase tracking-tight">Run Image Pipeline after specs</div>
+                  <div className="text-[9px] font-black text-white uppercase tracking-widest leading-none">{tx("uiLegacy.components.projects.rawconceptpanel.006")}</div>
+                  <div className="text-[8px] font-bold text-white/30 uppercase tracking-tight">{tx("uiLegacy.components.projects.rawconceptpanel.007")}</div>
                 </div>
                 <button 
                   onClick={() => onUpdate({ autoGenerateImages: !project.autoGenerateImages })}
@@ -100,15 +99,15 @@ export function RawConceptPanel({
 
          <div className="flex-1 flex flex-col min-h-[300px] space-y-3">
             <div className="flex items-center justify-between px-1">
-              <label className="text-[9px] font-black text-white/40 uppercase tracking-widest">Raw Concept Blueprint</label>
+              <label className="text-[9px] font-black text-white/40 uppercase tracking-widest">{tx("uiLegacy.components.projects.rawconceptpanel.008")}</label>
               {inputValue && (
-                <button onClick={() => setInputValue("")} className="text-[9px] font-black text-red-500/50 hover:text-red-500 uppercase tracking-widest">Wipe</button>
+                <button onClick={() => setInputValue("")} className="text-[9px] font-black text-red-500/50 hover:text-red-500 uppercase tracking-widest">{tx("uiLegacy.components.projects.rawconceptpanel.009")}</button>
               )}
             </div>
             <textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="E.g. Full-stack marketplace for antique clocks with auction features and secure checkout..."
+              placeholder={tx("uiLegacy.components.projects.rawconceptpanel.010")}
               className="flex-1 w-full p-6 text-sm bg-black/40 border border-white/5 rounded-[32px] focus:outline-none focus:border-accent/40 shadow-inner resize-none leading-relaxed transition-all scrollbar-none"
             />
          </div>
@@ -126,12 +125,12 @@ export function RawConceptPanel({
                 {isPipelineRunning ? (
                   <>
                     <Loader2 size={24} className="animate-spin text-accent" />
-                    <span className="text-[12px] font-black uppercase tracking-[0.2em] text-white">Sequence Engaged</span>
+                    <span className="text-[12px] font-black uppercase tracking-[0.2em] text-white">{tx("uiLegacy.components.projects.rawconceptpanel.011")}</span>
                   </>
                 ) : (
                   <>
                     <Sparkles size={20} className="text-accent group-hover:rotate-12 transition-transform" />
-                    <span className="text-[12px] font-black uppercase tracking-[0.2em] text-white">Execute Pipeline</span>
+                    <span className="text-[12px] font-black uppercase tracking-[0.2em] text-white">{tx("uiLegacy.components.projects.rawconceptpanel.012")}</span>
                   </>
                 )}
               </div>

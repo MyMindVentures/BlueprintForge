@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Radio, Send, Clock, Quote } from 'lucide-react';
@@ -36,8 +37,8 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
               <Radio size={20} className="text-indigo-400 animate-pulse" />
             </div>
             <div>
-              <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Daily Signal</h2>
-              <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-0.5">Founders Broadcast</p>
+              <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.dailysignal.001")}</h2>
+              <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-0.5">{tx("uiLegacy.components.buildfeed.dailysignal.002")}</p>
             </div>
           </div>
 
@@ -46,7 +47,7 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
               onClick={() => setIsPosting(!isPosting)}
               className="text-[10px] font-black text-accent uppercase tracking-widest hover:text-white transition-colors"
             >
-              {isPosting ? 'Cancel' : 'Post Signal'}
+              {isPosting ?tx("uiStrings.components.buildfeed.dailysignal.001") :tx("uiStrings.components.buildfeed.dailysignal.002")}
             </button>
           )}
         </div>
@@ -63,7 +64,7 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="What should builders focus on today?"
+                placeholder={tx("uiLegacy.components.buildfeed.dailysignal.003")}
                 className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-accent/40 transition-colors min-h-[100px] resize-none"
                 autoFocus
               />
@@ -73,9 +74,7 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
                   disabled={!message.trim()}
                   className="flex items-center gap-2 px-6 py-2 rounded-xl bg-accent text-white text-xs font-bold uppercase tracking-widest hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  <Send size={14} />
-                  Publish
-                </button>
+                  <Send size={14} />{tx("uiLegacy.components.buildfeed.dailysignal.004")}</button>
               </div>
             </motion.form>
           ) : (
@@ -98,13 +97,13 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
                          <Clock size={12} />
                          <span>{new Date(latestSignal.created_at).toLocaleDateString()}</span>
                        </div>
-                       <span>— The Architect</span>
+                       <span>{tx("uiLegacy.components.buildfeed.dailysignal.005")}</span>
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="py-2 text-center">
-                  <p className="text-sm text-text-dim italic">Waiting for today's signal...</p>
+                  <p className="text-sm text-text-dim italic">{tx("uiLegacy.components.buildfeed.dailysignal.006")}</p>
                 </div>
               )}
             </motion.div>

@@ -18,7 +18,7 @@ import { ErrorPage } from "./components/layout/ErrorPage";
 import { useWorkspace } from "./hooks/useWorkspace";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
 import { ToastProvider } from "./components/ui/Toast";
-import { I18nProvider, useI18n } from "./i18n/I18nProvider";
+import { I18nProvider, useI18n , tx } from "./i18n/I18nProvider";
 import { HelpBlock } from "./components/help/HelpBlock";
 import { LoadingState } from "./components/state/LoadingState";
 import { screenGuidance } from "./content/guides/blueprintGuides";
@@ -91,8 +91,8 @@ function AppContent() {
     feed_coder: screenGuidance.liveFeed,
     coder_profile: screenGuidance.profile,
     coder_directory: screenGuidance.profile,
-    vision: { ...screenGuidance.guide, title: t('navigation.founderVision'), purpose: 'Connect strategic product direction to visible build progress.', nextAction: 'Read the current vision, then open Current Founder Focus to see execution.' },
-    not_found: { ...screenGuidance.guide, title: t('errors.accessDenied'), purpose: 'Explain that the requested screen is unavailable and offer safe navigation.', nextAction: 'Return to Landing, Guide or Live Build Feed.' }
+    vision: { ...screenGuidance.guide, title: t('navigation.founderVision'), purpose:tx("uiStrings.app.001"), nextAction:tx("uiStrings.app.002") },
+    not_found: { ...screenGuidance.guide, title: t('errors.accessDenied'), purpose:tx("uiStrings.app.003"), nextAction:tx("uiStrings.app.004") }
   } as const;
 
   const currentGuidance = guidanceByView[view];
@@ -274,7 +274,7 @@ function AdminAccessDenied({
           <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.requestedScreen")}</span><span className="font-mono text-white">{view}</span></div>
           <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.resolvedRole")}</span><span className="font-mono text-yellow-200">{resolvedRole}</span></div>
           <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.missingPermission")}</span><span className="font-mono text-red-200">{missingPermission}</span></div>
-          {authError && <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-yellow-100">Auth/profile error: {authError}</div>}
+          {authError && <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-yellow-100">{tx("uiLegacy.app.001")}{authError.includes(".") ? t(authError) : authError}</div>}
         </div>
         <p className="mt-5 text-xs leading-5 text-white/55">{t("errors.founderAccessHint")}</p>
         <div className="mt-6 flex flex-wrap gap-3">

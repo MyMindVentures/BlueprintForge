@@ -5,7 +5,7 @@ import { Project } from "../../types";
 import { useToast } from "../ui/Toast";
 import { GlassCard } from "../ui/GlassCard";
 import { StatusBadge } from "../ui/StatusBadge";
-import { useI18n } from '../../i18n/I18nProvider';
+import { useI18n , tx } from '../../i18n/I18nProvider';
 
 interface ProjectCardProps {
   project: Project;
@@ -40,9 +40,9 @@ export function ProjectCard({
     if (editName.trim() && editName !== project.name) {
       try {
         onRename(project.id, editName.trim());
-        toast.success("Project renamed");
+        toast.success(tx("uiStrings.components.projects.projectcard.001"));
       } catch (e) {
-        toast.error("Rename failed");
+        toast.error(tx("uiStrings.components.projects.projectcard.002"));
       }
     } else {
       setEditName(project.name);
@@ -89,7 +89,7 @@ export function ProjectCard({
           />
           <IconButton 
             icon={<FileText size={14} />} 
-            title="Export Markdown" 
+            title={tx("uiLegacy.components.projects.projectcard.001")} 
             onClick={(e) => {
               e.stopPropagation();
               onExport(project.id);
@@ -150,8 +150,7 @@ export function ProjectCard({
         </div>
         <button
           className="flex items-center gap-2 text-white/40 hover:text-white text-[10px] uppercase font-black tracking-widest transition-colors group/btn"
-        >
-          Inspect <ExternalLink size={12} className="group-hover/btn:translate-x-1 transition-transform" />
+        >{tx("uiLegacy.components.projects.projectcard.002")}<ExternalLink size={12} className="group-hover/btn:translate-x-1 transition-transform" />
         </button>
       </div>
     </GlassCard>
@@ -166,8 +165,8 @@ function IconButton({ icon, title, onClick, variant = "normal" }: { icon: React.
       onClick={onClick}
       className={`p-2 glass rounded-xl transition-all ${
         variant === "danger" 
-          ? "hover:bg-red-500/20 text-text-dim hover:text-red-400 border-white/5 hover:border-red-500/20" 
-          : "hover:bg-white/10 text-white/40 hover:text-white border-white/5"
+          ?tx("uiStrings.components.projects.projectcard.003") 
+          :tx("uiStrings.components.projects.projectcard.004")
       }`}
     >
       {icon}

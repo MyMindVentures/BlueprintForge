@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState, useMemo } from "react";
 import { Plus, Layout } from "lucide-react";
 import { Project } from "../../types";
@@ -27,10 +28,10 @@ export function ProjectDashboard({
   const [filter, setFilter] = useState("all");
 
   const filterOptions = [
-    { id: "all", label: "All Projects" },
-    { id: "Draft", label: "Drafts" },
-    { id: "Converted", label: "Converted" },
-    { id: "Updated", label: "Updated" }
+    { id: "all", label:tx("uiStrings.components.projects.projectdashboard.001") },
+    { id: "Draft", label:tx("uiStrings.components.projects.projectdashboard.002") },
+    { id: "Converted", label:tx("uiStrings.components.projects.projectdashboard.003") },
+    { id: "Updated", label:tx("uiStrings.components.projects.projectdashboard.004") }
   ];
 
   const filteredProjects = useMemo(() => {
@@ -50,24 +51,17 @@ export function ProjectDashboard({
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 md:gap-8">
           <div className="space-y-4">
              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest">
-                <Layout size={12} />
-                Technical Laboratory
-             </div>
-             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
-               Project <span className="text-accent underline decoration-white/10 underline-offset-8">Workspace</span>
+                <Layout size={12} />{tx("uiLegacy.components.projects.projectdashboard.001")}</div>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">{tx("uiLegacy.components.projects.projectdashboard.002")}<span className="text-accent underline decoration-white/10 underline-offset-8">{tx("uiLegacy.components.projects.projectdashboard.003")}</span>
              </h1>
-             <p className="text-text-dim text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed">
-               Architect your vision. Refine your specifications. Prototype with precision.
-             </p>
+             <p className="text-text-dim text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed">{tx("uiLegacy.components.projects.projectdashboard.004")}</p>
           </div>
           
           <button
             onClick={onNew}
             className="glass-btn-primary w-full lg:w-auto !h-14 sm:!h-16 !px-10 !text-sm !font-black !rounded-[24px] shadow-[0_20px_40px_rgba(255,107,0,0.2)]"
           >
-            <Plus size={20} />
-            Initialize Project
-          </button>
+            <Plus size={20} />{tx("uiLegacy.components.projects.projectdashboard.005")}</button>
         </div>
 
         {/* Browser / Tools Section */}
@@ -75,7 +69,7 @@ export function ProjectDashboard({
            <SearchInput 
              value={search} 
              onChange={setSearch} 
-             placeholder="Search by project name or concept..."
+             placeholder={tx("uiLegacy.components.projects.projectdashboard.006")}
              className="flex-1 w-full"
            />
            <FilterBar 
@@ -91,16 +85,14 @@ export function ProjectDashboard({
           <div className="pt-20">
             <EmptyState 
               icon={Layout} 
-              title="Your workshop is empty" 
-              description="Start by describing your app concept. We'll generate a comprehensive technical specification using our multi-agent pipeline."
+              title={tx("uiLegacy.components.projects.projectdashboard.007")} 
+              description={tx("uiLegacy.components.projects.projectdashboard.008")}
               action={
                 <button
                   onClick={onNew}
                   className="glass-btn-primary !px-10 !py-4"
                 >
-                  <Plus size={20} />
-                  Start First Project
-                </button>
+                  <Plus size={20} />{tx("uiLegacy.components.projects.projectdashboard.009")}</button>
               }
             />
           </div>
@@ -108,12 +100,10 @@ export function ProjectDashboard({
           <div className="pt-20">
              <EmptyState 
                 icon={Plus} 
-                title="No results found" 
+                title={tx("uiLegacy.components.projects.projectdashboard.010")} 
                 description={`We couldn't find any projects matching "${search}" in logic group "${filter}".`}
                 action={
-                  <button onClick={() => { setSearch(""); setFilter("all"); }} className="text-accent font-black uppercase text-[11px] tracking-widest hover:underline">
-                    Reset all filters
-                  </button>
+                  <button onClick={() => { setSearch(""); setFilter("all"); }} className="text-accent font-black uppercase text-[11px] tracking-widest hover:underline">{tx("uiLegacy.components.projects.projectdashboard.011")}</button>
                 }
              />
           </div>

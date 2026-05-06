@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { AlertCircle, X } from "lucide-react";
@@ -72,7 +73,7 @@ export function ConfirmDialog({
                     label={confirmLabel}
                     onClick={onConfirm}
                     variant={variant === 'danger' ? 'primary' : 'primary'}
-                    className={`flex-1 !px-8 !py-4 !h-auto !rounded-2xl !text-[11px] !font-black !uppercase !tracking-widest order-1 sm:order-2 ${variant === 'danger' ? '!bg-red-500 shadow-[0_15px_30px_rgba(239,68,68,0.3)]' : ''}`}
+                    className={`flex-1 !px-8 !py-4 !h-auto !rounded-2xl !text-[11px] !font-black !uppercase !tracking-widest order-1 sm:order-2 ${variant === 'danger' ?tx("uiStrings.components.ui.confirmdialog.001") : ''}`}
                   />
                </div>
             </div>

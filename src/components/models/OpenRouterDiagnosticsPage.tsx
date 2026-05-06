@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState } from "react";
 import { 
   ArrowLeft, Terminal, AlertCircle, CheckCircle2, 
@@ -108,8 +109,8 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
         <div className="flex items-center gap-4">
           <button onClick={onBack} className="p-2 hover:bg-white/5 rounded-xl text-text-dim hover:text-white transition-all"><ArrowLeft size={20} /></button>
           <div className="flex flex-col">
-            <h1 className="text-sm font-black text-white uppercase tracking-widest">Protocol Diagnostics</h1>
-            <span className="text-[9px] font-black text-accent uppercase tracking-tighter">Diagnostic Suite / OpenRouter API</span>
+            <h1 className="text-sm font-black text-white uppercase tracking-widest">{tx("uiLegacy.components.models.openrouterdiagnosticspage.001")}</h1>
+            <span className="text-[9px] font-black text-accent uppercase tracking-tighter">{tx("uiLegacy.components.models.openrouterdiagnosticspage.002")}</span>
           </div>
         </div>
         
@@ -118,36 +119,34 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
           disabled={testStatus === "testing"}
           className="glass-btn-primary !h-10 !px-6 !text-[10px] !font-black !uppercase !tracking-widest"
         >
-          {testStatus === "testing" ? <RefreshCcw size={16} className="animate-spin" /> : <Send size={16} />}
-          Initiate Full Suite
-        </button>
+          {testStatus === "testing" ? <RefreshCcw size={16} className="animate-spin" /> : <Send size={16} />}{tx("uiLegacy.components.models.openrouterdiagnosticspage.003")}</button>
       </header>
 
       <div className="flex-1 p-12 overflow-auto scrollbar-thin">
         <div className="max-w-4xl mx-auto space-y-8">
            <div className="flex flex-wrap gap-3">
-              <button onClick={testHeaders} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-all border border-white/5">Test Headers</button>
-              <button onClick={testPayload} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-all border border-white/5">Test Payload</button>
-              <button onClick={testJsonParse} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-all border border-white/5">Test JSON</button>
-              <button onClick={showLastDebug} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-amber-500/80 hover:text-amber-500 transition-all border border-amber-500/10">Show Last Feedback</button>
+              <button onClick={testHeaders} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-all border border-white/5">{tx("uiLegacy.components.models.openrouterdiagnosticspage.004")}</button>
+              <button onClick={testPayload} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-all border border-white/5">{tx("uiLegacy.components.models.openrouterdiagnosticspage.005")}</button>
+              <button onClick={testJsonParse} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-all border border-white/5">{tx("uiLegacy.components.models.openrouterdiagnosticspage.006")}</button>
+              <button onClick={showLastDebug} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-amber-500/80 hover:text-amber-500 transition-all border border-amber-500/10">{tx("uiLegacy.components.models.openrouterdiagnosticspage.007")}</button>
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <DiagnosticCard 
                 icon={<Database size={20} />} 
-                label="API Foundation" 
-                status={llmSettings.openRouterApiKey ? "Ready" : "Missing"} 
+                label={tx("uiLegacy.components.models.openrouterdiagnosticspage.008")} 
+                status={llmSettings.openRouterApiKey ?tx("uiStrings.components.models.openrouterdiagnosticspage.001") :tx("uiStrings.components.models.openrouterdiagnosticspage.002")} 
                 color={llmSettings.openRouterApiKey ? "text-emerald-400" : "text-red-400"} 
               />
               <DiagnosticCard 
                 icon={<ShieldCheck size={20} />} 
-                label="Authorization" 
+                label={tx("uiLegacy.components.models.openrouterdiagnosticspage.009")} 
                 status={llmSettings.connectionStatus} 
                 color={llmSettings.connectionStatus === 'Connected' ? "text-emerald-400" : "text-amber-400"} 
               />
               <DiagnosticCard 
                 icon={<Zap size={20} />} 
-                label="Latency Index" 
+                label={tx("uiLegacy.components.models.openrouterdiagnosticspage.010")} 
                 status="Nominal" 
                 color="text-blue-400" 
               />
@@ -156,16 +155,14 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
            <GlassPanel className="bg-white/[0.01] border-white/5 overflow-hidden">
               <div className="h-12 border-b border-white/5 px-6 flex items-center justify-between bg-white/[0.02]">
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-dim">
-                  <Terminal size={14} className="text-accent" />
-                  Terminal Feedback
-                </div>
+                  <Terminal size={14} className="text-accent" />{tx("uiLegacy.components.models.openrouterdiagnosticspage.011")}</div>
                 {testStatus !== 'idle' && (
                   <StatusBadge label={testStatus} status={testStatus === 'success' ? 'success' : testStatus === 'error' ? 'error' : 'info'} />
                 )}
               </div>
               <div className="p-8 font-mono text-[11px] h-[400px] overflow-auto scrollbar-thin space-y-2 bg-black/40">
                 {logs.length === 0 ? (
-                  <div className="text-white/20 italic">Awaiting diagnostic initiation...</div>
+                  <div className="text-white/20 italic">{tx("uiLegacy.components.models.openrouterdiagnosticspage.012")}</div>
                 ) : (
                   logs.map((log, i) => (
                     <div key={i} className={`flex gap-4 ${log.type === 'error' ? 'text-red-400' : log.type === 'success' ? 'text-emerald-400' : 'text-zinc-400'}`}>
@@ -181,8 +178,7 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
            {testStatus === 'error' && (
              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 rounded-2xl bg-red-500/10 border border-red-500/20">
                 <div className="flex items-center gap-3 text-red-400 mb-3 text-xs font-black uppercase tracking-widest">
-                  <AlertCircle size={16} /> Remediation Required
-                </div>
+                  <AlertCircle size={16} />{tx("uiLegacy.components.models.openrouterdiagnosticspage.013")}</div>
                 <p className="text-sm text-red-400/80 leading-relaxed font-mono px-1">
                   {errorDetails || "Unknown protocol failure encountered during sequence."}
                 </p>

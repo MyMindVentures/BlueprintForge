@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -150,8 +151,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                  <Terminal size={20} />
               </div>
               <div>
-                 <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">Auto Demo Engine</h2>
-                 <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-1">Platform Walkthrough v{latestVersion.version}</p>
+                 <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">{tx("uiLegacy.components.guide.autodemorecorder.001")}</h2>
+                 <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-1">{tx("uiLegacy.components.guide.autodemorecorder.002")}{latestVersion.version}</p>
               </div>
            </div>
            <button 
@@ -166,15 +167,12 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
           {phase === 'setup' && (
             <div className="space-y-12 text-center py-12">
                {!hasFounderAccess && (
-                 <div className="mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-100">
-                   Demo Recorder is a ROLE-01 protected admin tool. Resolved role: <span className="font-mono">{normalizeRole(profile?.role)}</span>.
+                 <div className="mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-100">{tx("uiLegacy.components.guide.autodemorecorder.003")}<span className="font-mono">{normalizeRole(profile?.role)}</span>.
                  </div>
                )}
                <div className="space-y-4">
-                 <h3 className="text-4xl font-black text-white uppercase tracking-tight">Ready to Record?</h3>
-                 <p className="text-text-dim max-w-lg mx-auto leading-relaxed">
-                   The system will launch an automated robot walkthrough of the platform. You can record the session into a high-quality video file.
-                 </p>
+                 <h3 className="text-4xl font-black text-white uppercase tracking-tight">{tx("uiLegacy.components.guide.autodemorecorder.004")}</h3>
+                 <p className="text-text-dim max-w-lg mx-auto leading-relaxed">{tx("uiLegacy.components.guide.autodemorecorder.005")}</p>
                </div>
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
@@ -184,8 +182,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   >
                      <Video size={32} className="text-accent mx-auto group-hover:scale-110 transition-transform" />
                      <div>
-                        <h4 className="text-sm font-black text-white uppercase tracking-widest">Full Recording</h4>
-                        <p className="text-[10px] text-text-dim mt-1">Capture screen & robot steps</p>
+                        <h4 className="text-sm font-black text-white uppercase tracking-widest">{tx("uiLegacy.components.guide.autodemorecorder.006")}</h4>
+                        <p className="text-[10px] text-text-dim mt-1">{tx("uiLegacy.components.guide.autodemorecorder.007")}</p>
                      </div>
                   </button>
                   <button 
@@ -194,8 +192,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   >
                      <Monitor size={32} className="text-white mx-auto group-hover:scale-110 transition-transform" />
                      <div>
-                        <h4 className="text-sm font-black text-white uppercase tracking-widest">Preview Mode</h4>
-                        <p className="text-[10px] text-text-dim mt-1">Robot walkthrough only</p>
+                        <h4 className="text-sm font-black text-white uppercase tracking-widest">{tx("uiLegacy.components.guide.autodemorecorder.008")}</h4>
+                        <p className="text-[10px] text-text-dim mt-1">{tx("uiLegacy.components.guide.autodemorecorder.009")}</p>
                      </div>
                   </button>
                </div>
@@ -208,7 +206,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   <div className="flex items-center gap-6">
                      <div className="flex items-center gap-2">
                         <div className={`w-3 h-3 rounded-full ${isRecording ? 'bg-red-500 animate-pulse' : 'bg-green-500 animate-pulse'}`} />
-                        <span className="text-[10px] font-black text-white uppercase tracking-widest">{isRecording ? 'Recording' : 'Running'}</span>
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest">{isRecording ?tx("uiStrings.components.guide.autodemorecorder.001") :tx("uiStrings.components.guide.autodemorecorder.002")}</span>
                      </div>
                      <div className="h-6 w-px bg-white/10" />
                      <div className="text-[10px] font-mono text-text-dim">
@@ -228,7 +226,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-center">
                   <div className="space-y-8">
                      <div className="space-y-2">
-                        <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">Active Robot Signal</h4>
+                        <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">{tx("uiLegacy.components.guide.autodemorecorder.010")}</h4>
                         <h3 className="text-3xl font-black text-white uppercase tracking-tighter">"{currentStep.action}"</h3>
                      </div>
                      <div className="bg-white/5 border-l-4 border-accent p-6 rounded-r-3xl">
@@ -241,14 +239,12 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                         <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
                            <Target size={16} />
                         </div>
-                        <h5 className="text-[10px] font-black text-white uppercase tracking-widest">Robot Caption</h5>
+                        <h5 className="text-[10px] font-black text-white uppercase tracking-widest">{tx("uiLegacy.components.guide.autodemorecorder.011")}</h5>
                      </div>
-                     <p className="text-sm text-text-dim leading-relaxed font-medium">
-                        Navigating to <span className="text-white font-bold">{currentStep.page}</span> to demonstrate the <span className="text-accent font-black">{currentStep.label}</span> phase of the bootstrap loop.
-                     </p>
+                     <p className="text-sm text-text-dim leading-relaxed font-medium">{tx("uiLegacy.components.guide.autodemorecorder.012")}<span className="text-white font-bold">{currentStep.page}</span>{tx("uiLegacy.components.guide.autodemorecorder.013")}<span className="text-accent font-black">{currentStep.label}</span>{tx("uiLegacy.components.guide.autodemorecorder.014")}</p>
                      <div className="flex items-center gap-2 pt-4">
                         <Loader2 className="w-4 h-4 text-accent animate-spin" />
-                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">AI Processing...</span>
+                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{tx("uiLegacy.components.guide.autodemorecorder.015")}</span>
                      </div>
                   </div>
                </div>
@@ -258,9 +254,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                     onClick={stopDemo}
                     className="flex items-center gap-3 px-8 py-3 bg-red-500/10 text-red-500 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-red-500/20 transition-all border border-red-500/20"
                   >
-                     <Square size={16} fill="currentColor" />
-                     Force Stop Demo
-                  </button>
+                     <Square size={16} fill="currentColor" />{tx("uiLegacy.components.guide.autodemorecorder.016")}</button>
                </div>
             </div>
           )}
@@ -271,18 +265,14 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   <Rocket size={40} />
                </div>
                <div className="space-y-4">
-                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">Demo Completed</h3>
-                  <p className="text-text-dim max-w-lg mx-auto">
-                    The robot has finished the walkthrough. If you were recording, your video file is being prepared for download.
-                  </p>
+                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">{tx("uiLegacy.components.guide.autodemorecorder.017")}</h3>
+                  <p className="text-text-dim max-w-lg mx-auto">{tx("uiLegacy.components.guide.autodemorecorder.018")}</p>
                </div>
                <div className="flex justify-center gap-6">
                   <button 
                     onClick={onExit}
                     className="glass-btn-primary !px-12 !py-4"
-                  >
-                     Return to Guide
-                  </button>
+                  >{tx("uiLegacy.components.guide.autodemorecorder.019")}</button>
                </div>
             </div>
           )}

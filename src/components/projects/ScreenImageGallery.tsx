@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Download, RefreshCw, Copy, ExternalLink, Image as ImageIcon, AlertCircle, Loader2 } from "lucide-react";
@@ -41,13 +42,11 @@ export function ScreenImageGallery({ project, onRegenerateAll, onRegenerateSingl
           <ImageIcon size={40} />
         </div>
         <div className="space-y-2 max-w-sm">
-          <h3 className="text-xl font-black text-white uppercase tracking-tight">Visual Interface Blueprint</h3>
-          <p className="text-text-dim text-sm leading-relaxed">
-            Generate high-fidelity screen UI mockups based on your technical specifications.
-          </p>
+          <h3 className="text-xl font-black text-white uppercase tracking-tight">{tx("uiLegacy.components.projects.screenimagegallery.001")}</h3>
+          <p className="text-text-dim text-sm leading-relaxed">{tx("uiLegacy.components.projects.screenimagegallery.002")}</p>
         </div>
         <ActionButton 
-          label="Generate Screen UI Images" 
+          label={tx("uiLegacy.components.projects.screenimagegallery.003")} 
           onClick={onRegenerateAll}
           variant="primary"
           className="w-full sm:w-auto !px-10 !py-4 !h-auto !rounded-2xl !text-[11px]"
@@ -60,13 +59,12 @@ export function ScreenImageGallery({ project, onRegenerateAll, onRegenerateSingl
     <div className="space-y-8 md:space-y-10 p-4 sm:p-6 md:p-10">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tighter">Screen Visuals</h2>
+          <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tighter">{tx("uiLegacy.components.projects.screenimagegallery.004")}</h2>
           <p className="text-xs text-text-dim font-medium uppercase tracking-widest opacity-60">
-            {images.length} UI Concepts Generated
-          </p>
+            {images.length}{tx("uiLegacy.components.projects.screenimagegallery.005")}</p>
         </div>
         <ActionButton 
-          label="Regenerate All Images" 
+          label={tx("uiLegacy.components.projects.screenimagegallery.006")} 
           onClick={onRegenerateAll}
           variant="primary"
           className="w-full sm:w-auto !px-6 !py-2.5 sm:!h-auto !h-12 !rounded-xl !text-[9px]"
@@ -91,14 +89,14 @@ export function ScreenImageGallery({ project, onRegenerateAll, onRegenerateSingl
                     <button 
                       onClick={() => window.open(image.imageUrl, '_blank')}
                       className="p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all transform hover:scale-110"
-                      title="View Full Size"
+                      title={tx("uiLegacy.components.projects.screenimagegallery.007")}
                     >
                       <ExternalLink size={18} />
                     </button>
                     <button 
                       onClick={() => handleDownload(image.imageUrl, image.screenTitle)}
                       className="p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all transform hover:scale-110"
-                      title="Download Mockup"
+                      title={tx("uiLegacy.components.projects.screenimagegallery.008")}
                     >
                       <Download size={18} />
                     </button>
@@ -113,14 +111,12 @@ export function ScreenImageGallery({ project, onRegenerateAll, onRegenerateSingl
                   <button 
                     onClick={() => onRegenerateSingle(image.screenCode)}
                     className="text-[9px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors"
-                  >
-                    Retry Generation
-                  </button>
+                  >{tx("uiLegacy.components.projects.screenimagegallery.009")}</button>
                 </div>
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
                   <Loader2 size={32} className="text-accent animate-spin" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent animate-pulse">Processing Pixel Data</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent animate-pulse">{tx("uiLegacy.components.projects.screenimagegallery.010")}</span>
                 </div>
               )}
             </div>
@@ -141,16 +137,12 @@ export function ScreenImageGallery({ project, onRegenerateAll, onRegenerateSingl
                   onClick={() => handleCopyPrompt(image.prompt)}
                   className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-text-dim hover:text-white transition-colors"
                 >
-                  <Copy size={12} />
-                  Copy Prompt
-                </button>
+                  <Copy size={12} />{tx("uiLegacy.components.projects.screenimagegallery.011")}</button>
                 <button 
                   onClick={() => onRegenerateSingle(image.screenCode)}
                   className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-text-dim hover:text-accent transition-colors"
                 >
-                  <RefreshCw size={12} />
-                  Regenerate
-                </button>
+                  <RefreshCw size={12} />{tx("uiLegacy.components.projects.screenimagegallery.012")}</button>
               </div>
             </div>
           </GlassCard>

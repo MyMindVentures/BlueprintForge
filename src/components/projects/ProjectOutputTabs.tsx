@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from "react";
 import { Copy, Download } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
@@ -29,8 +30,8 @@ export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runI
       <div className="hidden lg:flex flex-1 items-center justify-center bg-black/40">
         <EmptyState 
            icon={RotateCcw} 
-           title="Awaiting Specification" 
-           description="Enter your raw concept parameters and engage the pipeline to generate application blueprints and visual structures." 
+           title={tx("uiLegacy.components.projects.projectoutputtabs.001")} 
+           description={tx("uiLegacy.components.projects.projectoutputtabs.002")} 
         />
       </div>
     );
@@ -43,8 +44,8 @@ export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runI
            {!project.cardStructure || project.cardStructure.length === 0 ? (
              <EmptyState 
                icon={RotateCcw} 
-               title="Structure Not Mapped" 
-               description="Convert your concept using the Architect Agent to visualize the module hierarchy." 
+               title={tx("uiLegacy.components.projects.projectoutputtabs.003")} 
+               description={tx("uiLegacy.components.projects.projectoutputtabs.004")} 
              />
            ) : (
              <div className="max-w-4xl mx-auto pb-20">
@@ -92,10 +93,9 @@ export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runI
               <button 
                 onClick={() => onCopy(content)}
                 className="text-[9px] font-black uppercase tracking-widest text-text-dim hover:text-accent flex items-center gap-1.5 transition-colors"
-                title="Copy contents"
+                title={tx("uiLegacy.components.projects.projectoutputtabs.005")}
               >
-                <Copy size={12} /> Copy
-              </button>
+                <Copy size={12} />{tx("uiLegacy.components.projects.projectoutputtabs.006")}</button>
               
               {activeTab === 'polished' && onUsePolishedConcept && (
                 <>
@@ -103,10 +103,9 @@ export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runI
                   <button 
                     onClick={onUsePolishedConcept}
                     className="text-[9px] font-black uppercase tracking-widest text-emerald-500 hover:text-emerald-400 flex items-center gap-1.5 transition-colors"
-                    title="Use this polished text as the main input for the next cycle"
+                    title={tx("uiLegacy.components.projects.projectoutputtabs.007")}
                   >
-                    <RotateCcw size={12} /> Use as Raw Input
-                  </button>
+                    <RotateCcw size={12} />{tx("uiLegacy.components.projects.projectoutputtabs.008")}</button>
                 </>
               )}
 
@@ -116,10 +115,9 @@ export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runI
                   <button 
                     onClick={onDownload}
                     className="text-[9px] font-black uppercase tracking-widest text-text-dim hover:text-accent flex items-center gap-1.5 transition-colors"
-                    title="Download as file"
+                    title={tx("uiLegacy.components.projects.projectoutputtabs.009")}
                   >
-                    <Download size={12} /> Export
-                  </button>
+                    <Download size={12} />{tx("uiLegacy.components.projects.projectoutputtabs.010")}</button>
                 </>
               )}
            </div>
@@ -130,8 +128,8 @@ export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runI
            {!content ? (
              <EmptyState 
                icon={RotateCcw} 
-               title={activeTab === 'polished' ? "No Polished Concept" : "Module Silent"} 
-               description={activeTab === 'polished' ? "Generate specs first to create a polished concept version." : "The pipeline step for this analytic output has not yet produced data."} 
+               title={activeTab === 'polished' ?tx("uiStrings.components.projects.projectoutputtabs.001") :tx("uiStrings.components.projects.projectoutputtabs.002")} 
+               description={activeTab === 'polished' ?tx("uiStrings.components.projects.projectoutputtabs.003") :tx("uiStrings.components.projects.projectoutputtabs.004")} 
              />
            ) : (
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="markdown-body">

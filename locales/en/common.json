@@ -62,7 +62,43 @@
     "critical": "Critical",
     "easy": "Easy",
     "hard": "Hard",
-    "thinking": "Thinking"
+    "thinking": "Thinking",
+    "draft": "Draft",
+    "published": "Published",
+    "archived": "Archived",
+    "inReview": "In Review",
+    "changesRequested": "Changes Requested",
+    "incomplete": "Incomplete",
+    "complete": "Complete",
+    "verified": "Verified",
+    "notVerified": "Not Verified",
+    "eligibleToClaim": "Eligible to Claim",
+    "notEligibleToClaim": "Not Eligible to Claim",
+    "repoNotConnected": "Repo Not Connected",
+    "repoConnected": "Repo Connected",
+    "issuePending": "Issue Pending",
+    "issueCreated": "Issue Created",
+    "issueFailed": "Issue Failed",
+    "prWaiting": "PR Waiting",
+    "prSubmitted": "PR Submitted",
+    "prReviewed": "PR Reviewed",
+    "notConfigured": "Not Configured",
+    "configured": "Configured",
+    "connectionUntested": "Connection Untested",
+    "connected": "Connected",
+    "connectionFailed": "Connection Failed",
+    "modelSynced": "Model Synced",
+    "unread": "Unread",
+    "read": "Read",
+    "actionRequired": "Action Required",
+    "demoMode": "Demo Mode",
+    "demoDataActive": "Demo Data Active",
+    "productionProtected": "Production Protected",
+    "draftVersion": "Draft Version",
+    "publishedVersion": "Published Version",
+    "latestVersion": "Latest Version",
+    "acknowledged": "Acknowledged",
+    "notYetAcknowledged": "Not Yet Acknowledged"
   },
   "app": {
     "loadingAuthTitle": "Authentication initializing",
@@ -82,7 +118,8 @@
     "founderAccessHint": "If you are the founder, verify that your Firebase email or UID is listed in FOUNDER_ADMIN_EMAILS or FOUNDER_ADMIN_UIDS on Railway, then sign out and sign back in so PostgreSQL can hydrate your ROLE-01 profile.",
     "missingOpenRouterKey": "Missing OpenRouter API Key.",
     "screenRecordingBlocked": "Screen recording is blocked. Try opening the app in a new tab or use 'Preview Mode'.",
-    "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved."
+    "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved.",
+    "profileSetupFailed": "Profile setup failed. Please try again."
   },
   "success": {
     "ticketPolished": "Ticket polished and ready for review.",
@@ -199,5 +236,781 @@
     "hours": "hours",
     "minute": "minute",
     "minutes": "minutes"
+  },
+  "uiLegacy": {
+    "app": {
+      "001": "Auth/profile error:"
+    },
+    "components": {
+      "onboarding": {
+        "001": "Welcome to BlueprintForge AI",
+        "002": "Transform your raw app concepts into professional, structured architecture and documentation in seconds using OpenRouter AI fleet.",
+        "003": "Show me around",
+        "004": "I'll figure it out",
+        "005": "Skip"
+      },
+      "agents": {
+        "agentcard": {
+          "001": "Architecture",
+          "002": "Engine",
+          "003": "Configure"
+        },
+        "agenteditor": {
+          "001": "Protocol Configuration",
+          "002": "Terminate Protocol",
+          "003": "Terminate Protocol",
+          "004": "Deploy Changes",
+          "005": "Operational Status",
+          "006": "Draft",
+          "007": "Active",
+          "008": "Operational Status",
+          "009": "Draft",
+          "010": "Active",
+          "011": "Protocol Identifier",
+          "012": "Collective Identity",
+          "013": "Strategic Mandate",
+          "014": "Base Instructions",
+          "015": "Fundamental protocol logic for intelligence grounding.",
+          "016": "Data Schematics",
+          "017": "Engineering Standards",
+          "018": "Structural Vetoes",
+          "019": "Export Aesthetics",
+          "020": "Recommended Engine",
+          "021": "Global Protocol Default",
+          "022": "Thermal Entropy",
+          "023": "Deterministic (0.0)",
+          "024": "Creative (1.0)",
+          "025": "Neural Effort"
+        },
+        "agentlist": {
+          "001": "Strategic Intelligence",
+          "002": "AI Architect",
+          "003": "Guild",
+          "004": "Deploy specialized intelligence modules optimized for distinct software engineering domains.",
+          "005": "Agent Protocol",
+          "006": "Recruit Specialist",
+          "007": "Search by agent name, code, or specialty...",
+          "008": "No specialists recruited",
+          "009": "Your guild is empty. Start by recruiting a master architect or importing standard protocols.",
+          "010": "Initialize Agent",
+          "011": "Protocol not found",
+          "012": "Reset search"
+        }
+      },
+      "bootstrap": {
+        "bootstrappage": {
+          "001": "Venture Studio Movement",
+          "002": "BlueprintForge AI:",
+          "003": "Where Vision",
+          "004": "Becomes Buildable Reality",
+          "005": "I’m The Architect. I bring raw vision, app concepts and direction. Builders bring execution. Together we turn ideas into real products.",
+          "006": "Join as Builder",
+          "007": "View Live Build Feed",
+          "008": "Open GitHub Repo",
+          "009": "Section 01 / The Founder",
+          "010": "The Mind",
+          "011": "Behind the",
+          "012": "Architect",
+          "013": "“I’m a visionary app thinker with ADHD. My brain constantly generates product ideas, platform concepts, improvements and future-facing systems.”",
+          "014": "“For months I fought inside AI build tools because I could see what needed to exist, but I could not always build it alone.”",
+          "015": "“BlueprintForge AI is my answer: a system where my thoughts no longer disappear, but become structured tickets that builders can pick up, implement and improve.”",
+          "016": "— Kevin De Vlieger",
+          "017": "The Bootstrap Loop",
+          "018": "How we turn abstract vision into production-ready features in 7 steps.",
+          "019": "Turn my thought into a build ticket",
+          "020": "\"Watch the AI turn raw founder energy into actionable truth.\"",
+          "021": "Write what you want BlueprintForge AI to improve, build, fix or explore…",
+          "022": "Convert to Ticket",
+          "023": "Draft Specification Preview",
+          "024": "Title",
+          "025": "Problem / Context",
+          "026": "Expected Behavior",
+          "027": "Acceptance Criteria",
+          "028": "Priority",
+          "029": "Difficulty",
+          "030": "Cancel",
+          "031": "Publish Ticket",
+          "032": "When you publish:",
+          "033": "The Engine",
+          "034": "Builders: This is where you come in",
+          "035": "“You don’t need to guess what to build. Open a ticket, accept it, fork the repo, create your branch and start shipping.”",
+          "036": "Create Builder Profile",
+          "037": "Claim a Ticket",
+          "038": "The Bootstrap Goals",
+          "039": "How Contributions Work",
+          "040": "\"We follow a strict decentralized high-speed protocol to ensure quality and visibility.\"",
+          "041": "The Fellowship",
+          "042": "The Architect Needs Builders",
+          "043": "“The pain is simple: vision without execution stays trapped. BlueprintForge AI exists to connect The Architect and The Builders.”",
+          "044": "Together this becomes more than an app.",
+          "045": "It becomes a bootstrap movement.",
+          "046": "Active Tickets Blast",
+          "047": "View all tickets",
+          "048": "Claimed",
+          "049": "Claim",
+          "050": "Don’t just watch the vision.",
+          "051": "Build it.",
+          "052": "Join as Builder",
+          "053": "View Current Focus",
+          "054": "Open GitHub Repo"
+        }
+      },
+      "buildfeed": {
+        "builderprofile": {
+          "001": "Access Denied",
+          "002": "You must be acting as a Vibe Coder to create and edit a Builder Profile.",
+          "003": "My Builder Profile",
+          "004": "Complete your profile to claim and execute active build requests.",
+          "005": "Heads up:",
+          "006": "You cannot claim build requests or receive real-time notifications until your profile is complete. Name, username, email, country, skills, and stack are required.",
+          "007": "Full Name *",
+          "008": "Username *",
+          "009": "Email *",
+          "010": "Country *",
+          "011": "Time Zone",
+          "012": "e.g. UTC+1",
+          "013": "Availability",
+          "014": "Select...",
+          "015": "Full-time",
+          "016": "Part-time",
+          "017": "Weekends only",
+          "018": "Unavailable",
+          "019": "Skills & Links",
+          "020": "Core Skills *",
+          "021": "React, Node, UI/UX, GenAI...",
+          "022": "Preferred Stack *",
+          "023": "Vite, Tailwind, Supabase...",
+          "024": "GitHub URL",
+          "025": "Portfolio URL",
+          "026": "Short Bio",
+          "027": "I am looking for paid work opportunities",
+          "028": "Save Profile"
+        },
+        "currentfocus": {
+          "001": "Current Founder Focus",
+          "002": "\"This is what we are building right now.\"",
+          "003": "Active",
+          "004": "Why it matters",
+          "005": "Expected Outcome",
+          "006": "In Build",
+          "007": "Claim",
+          "008": "View GitHub Issue",
+          "009": "Remove from Focus"
+        },
+        "dailysignal": {
+          "001": "Daily Signal",
+          "002": "Founders Broadcast",
+          "003": "What should builders focus on today?",
+          "004": "Publish",
+          "005": "— The Architect",
+          "006": "Waiting for today's signal..."
+        },
+        "livebuildfeed": {
+          "001": "Live Build Feed",
+          "002": "Real-time build requests from the founder. High signal, low noise. Claim a ticket and start building.",
+          "003": "Platform Stats",
+          "004": "Filter Stream",
+          "005": "Empty State",
+          "006": "No matching requests found in the stream.",
+          "007": "This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.",
+          "008": "Clear all filters",
+          "009": "Focus",
+          "010": "Star Awarded",
+          "011": "Issue #",
+          "012": "PR Submitted",
+          "013": "Latest Momentum",
+          "014": "No update yet — waiting for builder signal.",
+          "015": "Context & Problem",
+          "016": "Technical Implementation",
+          "017": "Why disabled:",
+          "018": "Acceptance Criteria",
+          "019": "Build Stream",
+          "020": "Add a progress update/note...",
+          "021": "Start Progress",
+          "022": "GitHub PR URL",
+          "023": "Submit Review",
+          "024": "Accept & Star",
+          "025": "Needs Changes"
+        },
+        "livebuildfeedadmin": {
+          "001": "Founder Command Center",
+          "002": "Architect the next phase of the project. Polish raw thoughts, broadcast signals, and manage focus.",
+          "003": "Active Focus",
+          "004": "Publish New Request",
+          "005": "Raw Founder Input",
+          "006": "Say what you want to build, change, or improve...",
+          "007": "Reset",
+          "008": "Spec Title",
+          "009": "Context",
+          "010": "Requested Change",
+          "011": "Priority",
+          "012": "Publish to Stream",
+          "013": "Active Build Stream",
+          "014": "Daily Signal",
+          "015": "Broadcast to all builders",
+          "016": "Good morning vibe coders. Today we focus on...",
+          "017": "Broadcast Daily Signal",
+          "018": "Signal History"
+        },
+        "starthere": {
+          "001": "Vibe Coder Onboarding",
+          "002": "New here? Start here.",
+          "003": "“Don’t overthink it. Pick one focus request, open the GitHub issue, claim it, and ship one useful improvement.”",
+          "004": "BUILD REAL PRODUCTS",
+          "005": "SHIP FAST. SHIP VALUABLE.",
+          "006": "Create Builder Profile",
+          "007": "View Current Focus",
+          "008": "Open GitHub Repo"
+        },
+        "vibecoderdirectory": {
+          "001": "Access Denied",
+          "002": "Only the Founder/Admin can access the Vibe Coder Directory.",
+          "003": "Vibe Coder Directory",
+          "004": "Your growing network of registered builders and digital nomads.",
+          "005": "Search by name, skill, country...",
+          "006": "No vibe coders found.",
+          "007": "Claimed",
+          "008": "Completed",
+          "009": "Paid Work",
+          "010": "Verify Builder"
+        }
+      },
+      "guide": {
+        "autodemorecorder": {
+          "001": "Auto Demo Engine",
+          "002": "Platform Walkthrough v",
+          "003": "Demo Recorder is a ROLE-01 protected admin tool. Resolved role:",
+          "004": "Ready to Record?",
+          "005": "The system will launch an automated robot walkthrough of the platform. You can record the session into a high-quality video file.",
+          "006": "Full Recording",
+          "007": "Capture screen & robot steps",
+          "008": "Preview Mode",
+          "009": "Robot walkthrough only",
+          "010": "Active Robot Signal",
+          "011": "Robot Caption",
+          "012": "Navigating to",
+          "013": "to demonstrate the",
+          "014": "phase of the bootstrap loop.",
+          "015": "AI Processing...",
+          "016": "Force Stop Demo",
+          "017": "Demo Completed",
+          "018": "The robot has finished the walkthrough. If you were recording, your video file is being prepared for download.",
+          "019": "Return to Guide"
+        },
+        "guidepage": {
+          "001": "Living Platform Guide",
+          "002": "BlueprintForge AI Guide",
+          "003": "The living guide to the platform, updated with every new version. Discover how vision becomes reality.",
+          "004": "Watch Auto Demo",
+          "005": "Version v",
+          "006": "GitHub Repo",
+          "007": "Latest Version v",
+          "008": "Released:",
+          "009": "New Features",
+          "010": "Fixed Issues",
+          "011": "Known Limitations",
+          "012": "Release Notes",
+          "013": "Full GitHub Changelog",
+          "014": "The Anatomy",
+          "015": "What is",
+          "016": "BlueprintForge?",
+          "017": "BlueprintForge AI is a bootstrap platform where a founder’s raw thoughts, visions and app concepts become structured build tickets.",
+          "018": "\"We prioritize signal over noise, turning abstract intuition into technical reality.\"",
+          "019": "Learn More",
+          "020": "Role Guides",
+          "021": "What should I do next?",
+          "022": "Choose the guide that matches your role. Each guide explains the current state, available next action and what success looks like.",
+          "023": "Next action",
+          "024": "Screens, Capabilities and States",
+          "025": "Every screen explains itself",
+          "026": "State:",
+          "027": "Next:",
+          "028": "Disabled:",
+          "029": "Empty:",
+          "030": "Loading:",
+          "031": "Error:",
+          "032": "Success:",
+          "033": "Status Glossary",
+          "034": "What each badge means",
+          "035": "Glossary Complete",
+          "036": "No guessing required",
+          "037": "Process Library",
+          "038": "Standard User Flows",
+          "039": "Result:",
+          "040": "Demo Recordings",
+          "041": "Archvied",
+          "042": "Don’t just watch the vision.",
+          "043": "Build it.",
+          "044": "Join as Builder",
+          "045": "View Current Focus"
+        }
+      },
+      "help": {
+        "helpblock": {
+          "001": "What this screen does",
+          "002": "Current state",
+          "003": "Next action",
+          "004": "Why disabled"
+        }
+      },
+      "layout": {
+        "errorpage": {
+          "001": "404 Exception",
+          "002": "Back to Hub"
+        },
+        "landingpage": {
+          "001": "Mission Statement",
+          "002": "Dit begon niet als een",
+          "003": "Maar als een besef.",
+          "004": "Dat sommige mensen anders denken. Sneller zien. Dieper voelen.",
+          "005": "En ideeën hebben die moeilijk uit te leggen zijn — maar wel kloppen.",
+          "006": "Ik ben één van die mensen.",
+          "007": "Jarenlang probeerde ik in systemen te passen die niet voor mij gemaakt waren.",
+          "008": "\"Mijn kracht is niet aanpassen.",
+          "009": "Mijn kracht is creëren.",
+          "010": "Ideeën zien waar anderen ze missen",
+          "011": "Bestaande dingen beter maken",
+          "012": "Daarom bouwen we dit.",
+          "013": "Een Venture Studio waar neurodiverse denkers",
+          "014": "niet worden aangepast —",
+          "015": "maar versterkt.",
+          "016": "— Kevin De Vlieger",
+          "017": "How it works",
+          "018": "We bridge the gap between abstract founder vision and concrete technical execution. No filler, just high-signal architecture.",
+          "019": "Ready to architect?",
+          "020": "Open Laboratory"
+        },
+        "newversionpopup": {
+          "001": "New Version Deployed",
+          "002": "Version",
+          "003": "Date",
+          "004": "View Changelog",
+          "005": "Got it"
+        }
+      },
+      "models": {
+        "llmsettingspage": {
+          "001": "Global Brain Interface",
+          "002": "Fleet",
+          "003": "Intelligence",
+          "004": "Connect, analyze and optimize multi-model delivery protocols using the OpenRouter gateway.",
+          "005": "Diagnostics",
+          "006": "Console",
+          "007": "Processing Intelligence",
+          "008": "Succeeded:",
+          "009": "Failed:",
+          "010": "Security Protocol",
+          "011": "OpenRouter Gateway Link",
+          "012": "Test Link",
+          "013": "Lock Protocol",
+          "014": "Checked",
+          "015": "Master Intelligence Engine",
+          "016": "Selected Primary",
+          "017": "Initiate Global Analysis",
+          "018": "Open Source Sync",
+          "019": "GitHub Configuration",
+          "020": "Automatically create GitHub issues when publishing to feed",
+          "021": "Repo URL",
+          "022": "Owner",
+          "023": "Name",
+          "024": "Operational Manifest",
+          "025": "Last Synced:",
+          "026": "Fleet Size",
+          "027": "Failures",
+          "028": "Sync Manifest",
+          "029": "Protocol Sync Failure",
+          "030": "HTTP Status",
+          "031": "Endpoint",
+          "032": "Timestamp",
+          "033": "Search active fleet...",
+          "034": "Intel Status"
+        },
+        "openrouterdiagnosticspage": {
+          "001": "Protocol Diagnostics",
+          "002": "Diagnostic Suite / OpenRouter API",
+          "003": "Initiate Full Suite",
+          "004": "Test Headers",
+          "005": "Test Payload",
+          "006": "Test JSON",
+          "007": "Show Last Feedback",
+          "008": "API Foundation",
+          "009": "Authorization",
+          "010": "Latency Index",
+          "011": "Terminal Feedback",
+          "012": "Awaiting diagnostic initiation...",
+          "013": "Remediation Required"
+        }
+      },
+      "pipeline": {
+        "imagepipelineprogressoverlay": {
+          "001": "Generating Screen Mockups",
+          "002": "Overall Progress",
+          "003": "Status",
+          "004": "Completed",
+          "005": "Failed",
+          "006": "Production Logs",
+          "007": "View UI Assets"
+        },
+        "pipelinelogviewer": {
+          "001": "Listening for protocol feedback..."
+        },
+        "pipelineprogressoverlay": {
+          "001": "Sequence Progress",
+          "002": "Details",
+          "003": "Retry",
+          "004": "Generate Screen UI Images"
+        },
+        "pipelinesteplist": {
+          "001": "Active"
+        }
+      },
+      "projects": {
+        "projectcard": {
+          "001": "Export Markdown",
+          "002": "Inspect"
+        },
+        "projectdashboard": {
+          "001": "Technical Laboratory",
+          "002": "Project",
+          "003": "Workspace",
+          "004": "Architect your vision. Refine your specifications. Prototype with precision.",
+          "005": "Initialize Project",
+          "006": "Search by project name or concept...",
+          "007": "Your workshop is empty",
+          "008": "Start by describing your app concept. We'll generate a comprehensive technical specification using our multi-agent pipeline.",
+          "009": "Start First Project",
+          "010": "No results found",
+          "011": "Reset all filters"
+        },
+        "projectheader": {
+          "001": "PROJECT /",
+          "002": "Manual Save Protocol",
+          "003": "Manual Save Protocol"
+        },
+        "projectoutputtabs": {
+          "001": "Awaiting Specification",
+          "002": "Enter your raw concept parameters and engage the pipeline to generate application blueprints and visual structures.",
+          "003": "Structure Not Mapped",
+          "004": "Convert your concept using the Architect Agent to visualize the module hierarchy.",
+          "005": "Copy contents",
+          "006": "Copy",
+          "007": "Use this polished text as the main input for the next cycle",
+          "008": "Use as Raw Input",
+          "009": "Download as file",
+          "010": "Export"
+        },
+        "rawconceptpanel": {
+          "001": "Vision Parameters",
+          "002": "Concept Input",
+          "003": "Master Agent",
+          "004": "Intelligence Model",
+          "005": "Auto Logic",
+          "006": "Auto Visuals",
+          "007": "Run Image Pipeline after specs",
+          "008": "Raw Concept Blueprint",
+          "009": "Wipe",
+          "010": "E.g. Full-stack marketplace for antique clocks with auction features and secure checkout...",
+          "011": "Sequence Engaged",
+          "012": "Execute Pipeline"
+        },
+        "screenimagegallery": {
+          "001": "Visual Interface Blueprint",
+          "002": "Generate high-fidelity screen UI mockups based on your technical specifications.",
+          "003": "Generate Screen UI Images",
+          "004": "Screen Visuals",
+          "005": "UI Concepts Generated",
+          "006": "Regenerate All Images",
+          "007": "View Full Size",
+          "008": "Download Mockup",
+          "009": "Retry Generation",
+          "010": "Processing Pixel Data",
+          "011": "Copy Prompt",
+          "012": "Regenerate"
+        }
+      },
+      "state": {
+        "errorstate": {
+          "001": "Next:"
+        },
+        "successstate": {
+          "001": "Next:"
+        }
+      },
+      "vision": {
+        "foundervisionpage": {
+          "001": "Founder Vision",
+          "002": "High-signal strategic direction. How this platform will evolve, what we are trying to build, and why it matters.",
+          "003": "Draft New Vision",
+          "004": "Title (e.g. The Next Era of Builder Networks)",
+          "005": "Core Vision Statement (Short & powerful)",
+          "006": "Goal / Direction (What action does this drive?)",
+          "007": "Broader Context & Why (Optional)",
+          "008": "Status:",
+          "009": "Thinking",
+          "010": "Testing",
+          "011": "Building",
+          "012": "Achieved",
+          "013": "Publish Vision",
+          "014": "No visions published yet.",
+          "015": "Direction / Goal",
+          "016": "Context & Thinking"
+        }
+      }
+    }
+  },
+  "uiStrings": {
+    "app": {
+      "001": "Connect strategic product direction to visible build progress.",
+      "002": "Read the current vision, then open Current Founder Focus to see execution.",
+      "003": "Explain that the requested screen is unavailable and offer safe navigation.",
+      "004": "Return to Landing, Guide or Live Build Feed."
+    },
+    "components": {
+      "onboarding": {
+        "001": "Start Fresh",
+        "002": "Create a new project to organize your app concepts and conversions.",
+        "003": "Define Your Idea",
+        "004": "Paste your app concept, feature description, or product idea here.",
+        "005": "Choose Your Specialist",
+        "006": "Select an AI Agent tailored for your specific app type.",
+        "007": "Magic Happens Here",
+        "008": "Click convert to transform your raw text into structured nested cards.",
+        "009": "Browse Structure",
+        "010": "Explore the nested architecture of your app with interactive 3D cards.",
+        "011": "Export Ready",
+        "012": "Review and export your project as professional markdown documentation.",
+        "013": "Configure Intelligence",
+        "014": "Set up your OpenRouter API key and manage model intelligence fleet.",
+        "015": "Finish",
+        "016": "Next"
+      },
+      "agents": {
+        "agentcard": {
+          "001": "ring-2 ring-accent/30 shadow-[0_24px_48px_-12px_rgba(255,107,0,0.15)] bg-white/[0.05]",
+          "002": "Decommission agent?",
+          "003": "hover:bg-red-500/20 text-text-dim hover:text-red-400 border-white/10",
+          "004": "hover:bg-white/10 text-white/40 hover:text-white border-white/10"
+        },
+        "agenteditor": {
+          "001": "Identity",
+          "002": "Logic",
+          "003": "Parameters",
+          "004": "Agent deleted.",
+          "005": "Agent deleted.",
+          "006": "Changes deployed.",
+          "007": "Primary Protocol",
+          "008": "Set as Primary",
+          "009": "Primary Protocol",
+          "010": "Set as Primary"
+        }
+      },
+      "bootstrap": {
+        "bootstrappage": {
+          "001": "Bootstrap Platform",
+          "002": "A system designed to rapidly prototype and evolve through collective decentralized intelligence.",
+          "003": "Vision to Spec",
+          "004": "Converts raw founder intuition into structured technical requirements without losing intent.",
+          "005": "Open Ecosystem",
+          "006": "Every ticket is a mirrored GitHub issue, allowing builders to work in a native coding environment.",
+          "007": "Reputation Layer",
+          "008": "Builders earn stars and status by shipping verified improvements to the core platform.",
+          "009": "Rapid Branching",
+          "010": "Fork, branch, build, and PR. The standard git workflow applied to high-speed innovation.",
+          "011": "Collective Growth",
+          "012": "Accepted code doesn't just sit in a repo—it immediately improves the workspace you build in.",
+          "013": "Signal Broadcasted",
+          "014": "Ticket appears in the Live Build Feed instantly.",
+          "015": "GitHub Mirror",
+          "016": "Issue created in repo if configured.",
+          "017": "Builder Alert",
+          "018": "Coders can now claim, fork, and build.",
+          "019": "Create Profile",
+          "020": "Set up your Vibe Coder identity.",
+          "021": "Pick a Ticket",
+          "022": "Choose from the Live Build Feed.",
+          "023": "Open Issue",
+          "024": "See tech specs on GitHub.",
+          "025": "Claim & Fork",
+          "026": "Take ownership and fork the repo.",
+          "027": "Branch & Code",
+          "028": "Work on your dedicated branch.",
+          "029": "Implement",
+          "030": "Build the requested feature.",
+          "031": "Submit PR",
+          "032": "Send your pull request for review.",
+          "033": "Earn Stars",
+          "034": "Get reputation when merged."
+        }
+      },
+      "buildfeed": {
+        "dailysignal": {
+          "001": "Cancel",
+          "002": "Post Signal"
+        },
+        "livebuildfeed": {
+          "001": "Sign in and create a builder profile before claiming work.",
+          "002": "Create your builder profile before claiming a request.",
+          "003": "Complete required profile fields to become eligible to claim.",
+          "004": "This request can be claimed when it is Open and unclaimed.",
+          "005": "Builds",
+          "006": "Open",
+          "007": "Completed",
+          "008": "Coders",
+          "009": "Remove Focus",
+          "010": "Mark as Current Focus",
+          "011": "Claim this Open request and start the builder workflow.",
+          "012": "Sign in to claim this request",
+          "013": "Claim this request",
+          "014": "Complete profile to claim"
+        },
+        "livebuildfeedadmin": {
+          "001": "Re-Polish Draft",
+          "002": "Polish into Spec",
+          "003": "Unfocus",
+          "004": "Focus"
+        },
+        "starthere": {
+          "001": "Create Profile",
+          "002": "Set up your Vibe Coder identity and skills.",
+          "003": "Pick Focus",
+          "004": "Choose a request from the Current Focus list.",
+          "005": "Open Issue",
+          "006": "Go to the GitHub issue to see technical details.",
+          "007": "Claim & Ship",
+          "008": "Claim the ticket and start building right away."
+        },
+        "vibecoderdirectory": {
+          "001": "Yes",
+          "002": "No"
+        }
+      },
+      "cards": {
+        "nestedcardtree": {
+          "001": "-rotate-90"
+        }
+      },
+      "guide": {
+        "autodemorecorder": {
+          "001": "Recording",
+          "002": "Running"
+        }
+      },
+      "layout": {
+        "landingpage": {
+          "001": "Vision Capture",
+          "002": "Founders define high-level strategic direction.",
+          "003": "AI Distillation",
+          "004": "Our agent fleet converts concepts into structured specs.",
+          "005": "Builder Sync",
+          "006": "Elite vibe coders claim and execute build requests.",
+          "007": "Ship & Scale",
+          "008": "Rapid iterations turn blueprints into production code."
+        },
+        "newversionpopup": {
+          "001": "Just now"
+        }
+      },
+      "models": {
+        "llmsettingspage": {
+          "001": "Security settings updated.",
+          "002": "Manifest synchronized.",
+          "003": "Verification complete.",
+          "004": "opacity-30 blur-[0.5px] scale-95",
+          "005": "ring-1 ring-accent/30",
+          "006": "Unavailable",
+          "007": "Active Primary",
+          "008": "Unsupported",
+          "009": "Set Primary"
+        },
+        "openrouterdiagnosticspage": {
+          "001": "Ready",
+          "002": "Missing"
+        }
+      },
+      "pipeline": {
+        "imagepipelineprogressoverlay": {
+          "001": "Rendering UI"
+        },
+        "pipelineprogressoverlay": {
+          "001": "Sequence active...",
+          "002": "Protocol terminated.",
+          "003": "Launch Workspace",
+          "004": "Close"
+        }
+      },
+      "projects": {
+        "projectcard": {
+          "001": "Project renamed",
+          "002": "Rename failed",
+          "003": "hover:bg-red-500/20 text-text-dim hover:text-red-400 border-white/5 hover:border-red-500/20",
+          "004": "hover:bg-white/10 text-white/40 hover:text-white border-white/5"
+        },
+        "projectdashboard": {
+          "001": "All Projects",
+          "002": "Drafts",
+          "003": "Converted",
+          "004": "Updated"
+        },
+        "projectoutputtabs": {
+          "001": "No Polished Concept",
+          "002": "Module Silent",
+          "003": "Generate specs first to create a polished concept version.",
+          "004": "The pipeline step for this analytic output has not yet produced data."
+        },
+        "projectworkspace": {
+          "001": "App concept required.",
+          "002": "Config missing: OpenRouter Key.",
+          "003": "Pipeline engaged.",
+          "004": "Copied to clipboard.",
+          "005": "Copy failed.",
+          "006": "Documentation exported.",
+          "007": "Parameters",
+          "008": "Structure",
+          "009": "Spec",
+          "010": "Polished",
+          "011": "Audit",
+          "012": "Strategy",
+          "013": "Experience",
+          "014": "Engine",
+          "015": "Visuals",
+          "016": "Snapshot saved.",
+          "017": "This will replace the current Raw Concept input. Continue?",
+          "018": "Polished concept copied to Raw Input. You can now edit or add extras before generating specs again."
+        },
+        "rawconceptpanel": {
+          "001": "hidden lg:flex",
+          "002": "rotate-90 text-accent transition-transform",
+          "003": "Consolidate Parameters",
+          "004": "Advanced Architecture"
+        }
+      },
+      "ui": {
+        "actionbutton": {
+          "001": "opacity-50 cursor-not-allowed",
+          "002": "cursor-pointer active:scale-95"
+        },
+        "confirmdialog": {
+          "001": "!bg-red-500 shadow-[0_15px_30px_rgba(239,68,68,0.3)]"
+        },
+        "glasscard": {
+          "001": "hover:bg-white/[0.06] hover:border-white/20"
+        }
+      }
+    },
+    "hooks": {
+      "useauth": {
+        "001": "PostgreSQL profile setup failed."
+      }
+    }
+  },
+  "states": {
+    "errorTitle": "Something went wrong",
+    "errorNextAction": "Check the message, fix the cause if possible, then try again.",
+    "successTitle": "Success",
+    "loadingTitle": "Loading state",
+    "loadingDescription": "The app is loading the latest data. Actions unlock when the required state is ready.",
+    "notAvailable": "N/A",
+    "recording": "Recording",
+    "running": "Running"
   }
 }

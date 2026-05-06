@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setProfile(normalizedProfile);
         } catch (error) {
           console.error('Error setting up PostgreSQL user profile:', error);
-          setAuthError(error instanceof Error ? error.message : 'PostgreSQL profile setup failed.');
+          setAuthError(error instanceof Error ? error.message : 'errors.profileSetupFailed');
           setProfile(null);
         }
       } else {

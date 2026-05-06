@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import { useState, ReactNode } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
@@ -73,7 +74,7 @@ export function ActionButton({
       className={`
         relative group flex min-w-0 items-center justify-center gap-2 rounded-xl px-4 py-2 text-xs font-bold leading-snug transition-all duration-200 whitespace-normal
         ${variants[variant]}
-        ${(disabled || status === "loading") ? "opacity-50 cursor-not-allowed" : "cursor-pointer active:scale-95"}
+        ${(disabled || status === "loading") ?tx("uiStrings.components.ui.actionbutton.001") :tx("uiStrings.components.ui.actionbutton.002")}
         ${className}
       `}
     >

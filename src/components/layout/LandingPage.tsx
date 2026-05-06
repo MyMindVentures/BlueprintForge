@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { Cpu, Zap, Target, Users, ArrowRight } from "lucide-react";
-import { useI18n } from "../../i18n/I18nProvider";
+import { useI18n , tx } from "../../i18n/I18nProvider";
 
 /**
  * Handles the landing page workflow for BlueprintForge users or services.
@@ -46,54 +46,46 @@ export function LandingPage({ onEnter }: { onEnter?: () => void }) {
                className="space-y-16 text-center"
              >
                 <div className="space-y-4">
-                  <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">
-                    Mission Statement
-                  </h2>
+                  <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{tx("uiLegacy.components.layout.landingpage.001")}</h2>
                   <div className="w-px h-16 bg-gradient-to-b from-accent to-transparent mx-auto" />
                 </div>
 
                 <div className="space-y-12">
-                  <p className="text-4xl md:text-5xl font-black tracking-tight leading-[1.1] text-white text-balance">
-                    Dit begon niet als een <span className="text-accent italic">business</span>.<br />
-                    <span className="text-white/30">Maar als een besef.</span>
+                  <p className="text-4xl md:text-5xl font-black tracking-tight leading-[1.1] text-white text-balance">{tx("uiLegacy.components.layout.landingpage.002")}<span className="text-accent italic">business</span>.<br />
+                    <span className="text-white/30">{tx("uiLegacy.components.layout.landingpage.003")}</span>
                   </p>
 
                   <div className="space-y-8 text-xl md:text-2xl text-text-dim leading-relaxed font-medium max-w-xl mx-auto">
-                    <p>Dat sommige mensen anders denken. Sneller zien. Dieper voelen.</p>
-                    <p>En ideeën hebben die moeilijk uit te leggen zijn — maar wel kloppen.</p>
+                    <p>{tx("uiLegacy.components.layout.landingpage.004")}</p>
+                    <p>{tx("uiLegacy.components.layout.landingpage.005")}</p>
                   </div>
 
-                  <p className="text-5xl md:text-6xl font-black tracking-tighter text-white py-8">
-                    Ik ben één van die mensen.
-                  </p>
+                  <p className="text-5xl md:text-6xl font-black tracking-tighter text-white py-8">{tx("uiLegacy.components.layout.landingpage.006")}</p>
 
                   <div className="space-y-8 text-xl md:text-2xl text-text-dim leading-relaxed font-medium max-w-xl mx-auto text-balance">
-                    <p>Jarenlang probeerde ik in systemen te passen die niet voor mij gemaakt waren.</p>
-                    <p className="border-l-2 border-accent/30 pl-8 text-left py-4 italic text-white/90">
-                      "Mijn kracht is niet aanpassen.<br />
-                      <span className="text-accent font-black uppercase tracking-widest not-italic">Mijn kracht is creëren.</span>"
+                    <p>{tx("uiLegacy.components.layout.landingpage.007")}</p>
+                    <p className="border-l-2 border-accent/30 pl-8 text-left py-4 italic text-white/90">{tx("uiLegacy.components.layout.landingpage.008")}<br />
+                      <span className="text-accent font-black uppercase tracking-widest not-italic">{tx("uiLegacy.components.layout.landingpage.009")}</span>"
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 gap-6 text-sm font-black uppercase tracking-widest text-white/40 py-12">
                     <div className="flex items-center justify-center gap-6">
                       <div className="w-12 h-px bg-white/10" />
-                      <p>Ideeën zien waar anderen ze missen</p>
+                      <p>{tx("uiLegacy.components.layout.landingpage.010")}</p>
                       <div className="w-12 h-px bg-white/10" />
                     </div>
                     <div className="flex items-center justify-center gap-6">
                       <div className="w-12 h-px bg-white/10" />
-                      <p>Bestaande dingen beter maken</p>
+                      <p>{tx("uiLegacy.components.layout.landingpage.011")}</p>
                       <div className="w-12 h-px bg-white/10" />
                     </div>
                   </div>
 
                   <div className="pt-16 space-y-12">
-                    <p className="text-4xl font-black text-white uppercase tracking-tight">Daarom bouwen we dit.</p>
-                    <p className="text-xl text-text-dim leading-relaxed max-w-lg mx-auto">
-                      Een Venture Studio waar neurodiverse denkers<br />
-                      niet worden aangepast — <br />
-                      <span className="text-accent font-black uppercase tracking-widest">maar versterkt.</span>
+                    <p className="text-4xl font-black text-white uppercase tracking-tight">{tx("uiLegacy.components.layout.landingpage.012")}</p>
+                    <p className="text-xl text-text-dim leading-relaxed max-w-lg mx-auto">{tx("uiLegacy.components.layout.landingpage.013")}<br />{tx("uiLegacy.components.layout.landingpage.014")}<br />
+                      <span className="text-accent font-black uppercase tracking-widest">{tx("uiLegacy.components.layout.landingpage.015")}</span>
                     </p>
                   </div>
 
@@ -101,7 +93,7 @@ export function LandingPage({ onEnter }: { onEnter?: () => void }) {
                     <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
                       <Users size={20} className="text-white/20" />
                     </div>
-                    <p className="font-mono text-xs tracking-[0.4em] uppercase text-white/20">— Kevin De Vlieger</p>
+                    <p className="font-mono text-xs tracking-[0.4em] uppercase text-white/20">{tx("uiLegacy.components.layout.landingpage.016")}</p>
                   </div>
                 </div>
              </motion.div>
@@ -112,18 +104,16 @@ export function LandingPage({ onEnter }: { onEnter?: () => void }) {
         <section id="how-it-works" className="py-24 border-t border-white/5">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
             <div className="space-y-6">
-              <h2 className="text-4xl font-black uppercase tracking-tight">How it works</h2>
-              <p className="text-text-dim text-lg leading-relaxed max-w-md">
-                We bridge the gap between abstract founder vision and concrete technical execution. No filler, just high-signal architecture.
-              </p>
+              <h2 className="text-4xl font-black uppercase tracking-tight">{tx("uiLegacy.components.layout.landingpage.017")}</h2>
+              <p className="text-text-dim text-lg leading-relaxed max-w-md">{tx("uiLegacy.components.layout.landingpage.018")}</p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {[
-                { icon: Target, title: "Vision Capture", desc: "Founders define high-level strategic direction." },
-                { icon: Zap, title: "AI Distillation", desc: "Our agent fleet converts concepts into structured specs." },
-                { icon: Users, title: "Builder Sync", desc: "Elite vibe coders claim and execute build requests." },
-                { icon: Zap, title: "Ship & Scale", desc: "Rapid iterations turn blueprints into production code." }
+                { icon: Target, title:tx("uiStrings.components.layout.landingpage.001"), desc:tx("uiStrings.components.layout.landingpage.002") },
+                { icon: Zap, title:tx("uiStrings.components.layout.landingpage.003"), desc:tx("uiStrings.components.layout.landingpage.004") },
+                { icon: Users, title:tx("uiStrings.components.layout.landingpage.005"), desc:tx("uiStrings.components.layout.landingpage.006") },
+                { icon: Zap, title:tx("uiStrings.components.layout.landingpage.007"), desc:tx("uiStrings.components.layout.landingpage.008") }
               ].map((step, i) => (
                 <div key={i} className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl space-y-4 hover:bg-white/[0.04] hover:border-white/10 transition-colors">
                   <div className="w-10 h-10 bg-accent/20 text-accent rounded-xl flex items-center justify-center">
@@ -139,9 +129,8 @@ export function LandingPage({ onEnter }: { onEnter?: () => void }) {
 
         {/* CTA FOOTER */}
         <section className="text-center py-20 bg-accent/5 rounded-[48px] border border-accent/20">
-          <h2 className="text-3xl font-black uppercase tracking-tight mb-6 text-balance">Ready to architect?</h2>
-          <button className="glass-btn-primary !px-12 !py-4 shadow-2xl">
-            Open Laboratory <ArrowRight size={18} className="ml-2" />
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-6 text-balance">{tx("uiLegacy.components.layout.landingpage.019")}</h2>
+          <button className="glass-btn-primary !px-12 !py-4 shadow-2xl">{tx("uiLegacy.components.layout.landingpage.020")}<ArrowRight size={18} className="ml-2" />
           </button>
         </section>
 
