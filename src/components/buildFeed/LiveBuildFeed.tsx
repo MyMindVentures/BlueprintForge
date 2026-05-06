@@ -7,6 +7,7 @@ import { DailySignal } from './DailySignal';
 import { StartHere } from './StartHere';
 import { BuildStatus } from '../../types/buildFeed';
 import { StatusBadge } from '../ui/StatusBadge';
+import { isFounderAdminRole, normalizeRole } from '../../authRoles';
 
 /**
  * Handles the live build feed workflow for BlueprintForge users or services.
@@ -25,8 +26,8 @@ export function LiveBuildFeed() {
   const [prUrls, setPrUrls] = useState<Record<string, string>>({});
   const [showOnboarding, setShowOnboarding] = useState(true);
 
-  const isAdmin = currentUser?.role === 'admin';
-  const role = currentUser?.role || 'anonymous';
+  const isAdmin = isFounderAdminRole(currentUser?.role);
+  const role = normalizeRole(currentUser?.role || 'anonymous');
 
   const focusedRequests = useMemo(() => 
     requests.filter(r => r.is_current_focus).sort((a, b) => (a.focus_order || 0) - (b.focus_order || 0)),
@@ -107,7 +108,7 @@ export function LiveBuildFeed() {
         </div>
 
         {/* Builder Onboarding */}
-        {showOnboarding && role !== 'admin' && (
+        {showOnboarding && !isFounderAdminRole(role) && (
           <div className="relative">
             <StartHere 
               onAction={(action) => {
@@ -284,7 +285,7 @@ export function LiveBuildFeed() {
                           <p className="text-sm text-white/90 leading-relaxed font-semibold">{req.polished_change}</p>
                         </div>
                         
-                        {req.status === 'Open' && role !== 'admin' && (
+                        {req.status === 'Open' && !isFounderAdminRole(role) && (
                           <div className="pt-4 space-y-3">
                             <button
                               onClick={() => claimRequest(req.id)}
@@ -345,7 +346,7 @@ export function LiveBuildFeed() {
                         )}
 
                         {/* Builder Add Update */}
-                        {((currentUser?.id === req.claimed_by) || role === 'admin') && req.status !== 'Accepted' && req.status !== 'Done' && (
+                        {((currentUser?.id === req.claimed_by) || isFounderAdminRole(role)) && req.status !== 'Accepted' && req.status !== 'Done' && (
                           <div className="flex gap-3">
                             <input
                               type="text"
@@ -400,7 +401,7 @@ export function LiveBuildFeed() {
                         )}
 
                         {/* Admin Review */}
-                        {role === 'admin' && req.status === 'Ready for Review' && (
+                        {isFounderAdminRole(role) && req.status === 'Ready for Review' && (
                           <div className="flex gap-3 pt-2">
                              <button
                                onClick={() => {

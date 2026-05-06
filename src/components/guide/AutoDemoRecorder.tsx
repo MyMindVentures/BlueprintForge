@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { useGuide } from '../../hooks/useGuide';
 import { useToast } from '../ui/Toast';
+import { useAuth } from '../../hooks/useAuth';
+import { isFounderAdminRole, normalizeRole } from '../../authRoles';
 
 interface AutoDemoRecorderProps {
   onExit: () => void;
@@ -18,6 +20,7 @@ interface AutoDemoRecorderProps {
  */
 export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
   const { flows, latestVersion, startDemoSession, completeDemoSession } = useGuide();
+  const { profile } = useAuth();
   const { success, info, error } = useToast();
   
   const [step, setStep] = useState(0);
@@ -31,7 +34,13 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<any>(null);
 
+  const hasFounderAccess = isFounderAdminRole(profile?.role);
+
   const startDemo = async (record: boolean) => {
+    if (!hasFounderAccess) {
+      error(`Demo recorder requires ROLE-01. Resolved role: ${normalizeRole(profile?.role)}.`);
+      return;
+    }
     if (record) {
       try {
         const stream = await (navigator.mediaDevices as any).getDisplayMedia({
@@ -156,6 +165,11 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
         <div className="p-12 space-y-12">
           {phase === 'setup' && (
             <div className="space-y-12 text-center py-12">
+               {!hasFounderAccess && (
+                 <div className="mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-100">
+                   Demo Recorder is a ROLE-01 protected admin tool. Resolved role: <span className="font-mono">{normalizeRole(profile?.role)}</span>.
+                 </div>
+               )}
                <div className="space-y-4">
                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">Ready to Record?</h3>
                  <p className="text-text-dim max-w-lg mx-auto leading-relaxed">
@@ -166,7 +180,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
                   <button 
                     onClick={() => startDemo(true)}
-                    className="p-8 bg-accent/10 border border-accent/20 rounded-3xl space-y-4 hover:bg-accent/20 transition-all group"
+                    disabled={!hasFounderAccess} className="p-8 bg-accent/10 border border-accent/20 rounded-3xl space-y-4 hover:bg-accent/20 transition-all group disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                      <Video size={32} className="text-accent mx-auto group-hover:scale-110 transition-transform" />
                      <div>
@@ -176,7 +190,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   </button>
                   <button 
                     onClick={() => startDemo(false)}
-                    className="p-8 bg-white/5 border border-white/10 rounded-3xl space-y-4 hover:bg-white/10 transition-all group"
+                    disabled={!hasFounderAccess} className="p-8 bg-white/5 border border-white/10 rounded-3xl space-y-4 hover:bg-white/10 transition-all group disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                      <Monitor size={32} className="text-white mx-auto group-hover:scale-110 transition-transform" />
                      <div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppVersion, UserFlow, DemoRecording, DemoSession } from '../types/guide';
 import { useAuth } from './useAuth';
 import { apiRequest, pollingIntervalMs } from '../services/apiClient';
+import { isFounderAdminRole } from '../authRoles';
 
 export function useGuide() {
   const { profile: currentUser } = useAuth();
@@ -24,12 +25,12 @@ export function useGuide() {
   }, []);
 
   const publishVersion = async (version: Omit<AppVersion, 'id' | 'created_at'>) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
+    if (!currentUser || !isFounderAdminRole(currentUser.role)) return;
     await apiRequest('/api/guide/versions', { method: 'POST', user: currentUser, body: JSON.stringify({ version }) });
   };
 
   const startDemoSession = async (selectedFlows: string[], record: boolean) => {
-    if (!currentUser) return;
+    if (!currentUser || !isFounderAdminRole(currentUser.role)) return;
     const session = await apiRequest<DemoSession>('/api/guide/demo-sessions', {
       method: 'POST', user: currentUser,
       body: JSON.stringify({ session: { version: versions[0]?.version || '0.0.0', status: record ? 'recording' : 'running', selected_flows: selectedFlows, is_recording: record } })
@@ -39,7 +40,7 @@ export function useGuide() {
   };
 
   const completeDemoSession = async (recording?: Omit<DemoRecording, 'id' | 'created_at'>) => {
-    if (!currentSession || !currentUser) return;
+    if (!currentSession || !currentUser || !isFounderAdminRole(currentUser.role)) return;
     await apiRequest('/api/guide/demo-sessions/' + currentSession.id + '/complete', { method: 'POST', user: currentUser, body: JSON.stringify({ recording }) });
     setCurrentSession(null);
   };

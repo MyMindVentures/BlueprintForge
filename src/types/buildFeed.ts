@@ -114,7 +114,7 @@ export interface GithubSettings {
 export interface UserContext {
   id: string;
   name: string;
-  role: "admin" | "vibe_coder" | "anonymous";
+  role: "ROLE-01" | "admin" | "vibe_coder" | "anonymous";
   acknowledged_versions?: string[];
 }
 
@@ -130,7 +130,7 @@ export interface AppNotification {
 }
 
 export const DEMO_USERS: UserContext[] = [
-  { id: "admin-1", name: "Founder", role: "admin" },
+  { id: "admin-1", name: "Founder", role: "ROLE-01" },
   { id: "coder-1", name: "Vibe Coder Alex", role: "vibe_coder" },
   { id: "coder-2", name: "Vibe Coder Sam", role: "vibe_coder" },
   { id: "anon-1", name: "Public Visitor", role: "anonymous" }
