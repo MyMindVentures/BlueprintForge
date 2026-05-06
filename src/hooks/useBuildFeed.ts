@@ -3,6 +3,7 @@ import { BuildRequest, BuildRequestUpdate, VibeCoderProfile, DailySignal } from 
 import { buildFeedService } from '../services/buildFeedService';
 import { useAuth } from './useAuth';
 import { isFounderAdminRole } from '../authRoles';
+import { createSafeError } from '../i18n/errorMessages';
 
 export function useBuildFeed() {
   const { profile: currentUser } = useAuth();
@@ -35,7 +36,7 @@ export function useBuildFeed() {
     if (!request) return;
     const currentlyFocused = requests.filter(r => r.is_current_focus).length;
     const isEnabling = !request.is_current_focus;
-    if (isEnabling && currentlyFocused >= 3) throw new Error('Maximum 3 focus requests allowed.');
+    if (isEnabling && currentlyFocused >= 3) throw createSafeError('BUILD_FEED_FOCUS_LIMIT');
     return updateRequest(id, { is_current_focus: isEnabling, focus_reason: isEnabling ? (reason || null) : null, focus_order: isEnabling ? currentlyFocused + 1 : null });
   };
 

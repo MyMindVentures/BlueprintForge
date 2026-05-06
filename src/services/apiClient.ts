@@ -1,3 +1,4 @@
+import { toSafeError } from '../i18n/errorMessages';
 import { UserContext } from '../types/buildFeed';
 
 export async function apiRequest<T>(path: string, options: RequestInit & { user?: UserContext | null } = {}): Promise<T> {
@@ -10,7 +11,7 @@ export async function apiRequest<T>(path: string, options: RequestInit & { user?
   const response = await fetch(path, { ...options, headers });
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `API request failed: ${response.status}`);
+    throw toSafeError(body.error || `API request failed: ${response.status}`, "errors.requestFailed", { status: response.status });
   }
   return response.json();
 }

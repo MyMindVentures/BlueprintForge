@@ -8,6 +8,7 @@ import { BuildStatus } from '../../types/buildFeed';
 import { StatusBadge } from '../ui/StatusBadge';
 import { isFounderAdminRole, normalizeRole } from '../../authRoles';
 import { useI18n } from '../../i18n/I18nProvider';
+import { getErrorMessage } from '../../i18n/errorMessages';
 
 /**
  * Handles the live build feed workflow for BlueprintForge users or services.
@@ -244,7 +245,7 @@ export function LiveBuildFeed() {
                                 try {
                                   await toggleFocus(req.id);
                                 } catch (e: any) {
-                                  alert(e.message);
+                                  alert(getErrorMessage(e, t));
                                 }
                               }}
                               className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${

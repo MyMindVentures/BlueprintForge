@@ -1,3 +1,4 @@
+import { createSafeError } from '../i18n/errorMessages';
 import { BuildRequest, GithubSettings } from '../types/buildFeed';
 
 /**
@@ -6,7 +7,7 @@ import { BuildRequest, GithubSettings } from '../types/buildFeed';
  */
 export async function createGithubIssue(request: BuildRequest, settings: GithubSettings) {
   if (!settings.github_token || !settings.repo_owner || !settings.repo_name) {
-    throw new Error('Missing GitHub configuration');
+    throw createSafeError('GITHUB_CONFIG_MISSING');
   }
 
   const url = `https://api.github.com/repos/${settings.repo_owner}/${settings.repo_name}/issues`;
@@ -53,7 +54,13 @@ ${request.acceptance_criteria.map(c => `- [ ] ${c}`).join('\n')}
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(`GitHub API Error: ${response.status} ${response.statusText} - ${errorData.message || ''}`);
+    
+    if (response.status === 401) throw createSafeError('GITHUB_UNAUTHORIZED', { status: response.status, backendMessage: errorData.message });
+    if (response.status === 403) throw createSafeError('GITHUB_FORBIDDEN', { status: response.status, backendMessage: errorData.message });
+    if (response.status === 404) throw createSafeError('GITHUB_NOT_FOUND', { status: response.status, backendMessage: errorData.message });
+    if (response.status === 422) throw createSafeError('GITHUB_VALIDATION_FAILED', { status: response.status, backendMessage: errorData.message });
+    if (response.status === 429) throw createSafeError('GITHUB_RATE_LIMITED', { status: response.status, backendMessage: errorData.message });
+    throw createSafeError('GITHUB_ISSUE_CREATE_FAILED', { status: response.status, backendMessage: errorData.message });
   }
 
   const data = await response.json();

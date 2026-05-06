@@ -1,3 +1,4 @@
+import { createSafeError } from '../i18n/errorMessages';
 import { OpenRouterModel } from "../types";
 
 /**
@@ -102,16 +103,16 @@ export async function syncOpenRouterModels(apiKey: string): Promise<{ models: Op
       message = err.error?.message || err.message || message;
     } catch { /* ignore */ }
 
-    if (response.status === 401) throw new Error("Invalid API Key (401)");
-    if (response.status === 402) throw new Error("No Credits (402)");
-    if (response.status === 429) throw new Error("Rate Limited (429)");
-    if (response.status >= 500) throw new Error("OpenRouter service error (500)");
-    throw new Error(message);
+    if (response.status === 401) throw createSafeError("OPENROUTER_API_KEY_INVALID", { status: response.status, backendMessage: message });
+    if (response.status === 402) throw createSafeError("OPENROUTER_NO_CREDITS", { status: response.status, backendMessage: message });
+    if (response.status === 429) throw createSafeError("OPENROUTER_RATE_LIMITED", { status: response.status, backendMessage: message });
+    if (response.status >= 500) throw createSafeError("OPENROUTER_SERVICE_ERROR", { status: response.status, backendMessage: message });
+    throw createSafeError("REQUEST_FAILED", { status: response.status, backendMessage: message });
   }
 
   const data = await response.json();
   if (!data || !Array.isArray(data.data)) {
-    throw new Error("OpenRouter returned an unexpected model response.");
+    throw createSafeError("OPENROUTER_MANIFEST_INVALID");
   }
 
   let failedCount = 0;

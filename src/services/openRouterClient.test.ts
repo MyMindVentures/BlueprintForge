@@ -76,7 +76,7 @@ describe('openRouterClient', () => {
         apiKey: 'sk-test-key',
         model: 'error-402',
         messages: []
-      })).rejects.toThrow('No Credits (402)');
+      })).rejects.toThrow('errors.openRouterNoCredits');
     });
 
     it('should handle 429 rate limit', async () => {
@@ -84,7 +84,7 @@ describe('openRouterClient', () => {
         apiKey: 'sk-test-key',
         model: 'error-429',
         messages: []
-      })).rejects.toThrow('Rate Limited (429)');
+      })).rejects.toThrow('errors.openRouterRateLimited');
     });
   });
 });

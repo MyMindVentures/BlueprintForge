@@ -12,6 +12,7 @@ import { ActionButton } from "../ui/ActionButton";
 import { SearchInput } from "../ui/SearchInput";
 import { useGithubSettings } from "../../hooks/useGithubSettings";
 import { useI18n } from '../../i18n/I18nProvider';
+import { getErrorMessage } from '../../i18n/errorMessages';
 
 interface LLMSettingsProps {
   settings: LLMSettings;
@@ -47,7 +48,7 @@ interface LLMSettingsProps {
 export function LLMSettingsPage({ 
   settings, onUpdate, onSync, onTestConnection, onGenerateIntelligence, onRegenerateAll, syncStatus, onOpenDiagnostics 
 }: LLMSettingsProps) {
-  const { formatRelativeTime, formatDate } = useI18n();
+  const { formatRelativeTime, formatDate, t } = useI18n();
   const toast = useToast();
   const { settings: githubSettings, setSettings: setGithubSettings } = useGithubSettings();
   const [apiKey, setApiKey] = useState(settings.openRouterApiKey || "");
@@ -82,7 +83,7 @@ export function LLMSettingsPage({
       await onSync();
       toast.success("Manifest synchronized.");
     } catch (e: any) {
-      toast.error(e.message || "Sync failure.");
+      toast.error(getErrorMessage(e, t, "errors.syncFailed"));
     }
   };
 
@@ -179,7 +180,15 @@ export function LLMSettingsPage({
                        <ActionButton 
                          label="Test Link" 
                          loadingLabel="Pinging..."
-                         onClick={async () => { await onTestConnection(apiKey); toast.info("Verification complete."); }}
+                         onClick={async () => {
+                           try {
+                             await onTestConnection(apiKey);
+                             toast.info("Verification complete.");
+                           } catch (e) {
+                             toast.error(getErrorMessage(e, t));
+                             throw e;
+                           }
+                         }}
                          icon={<Zap size={14} />}
                          variant="outline"
                          className="!h-12 !px-6"
@@ -367,7 +376,7 @@ export function LLMSettingsPage({
                     </div>
                     <div className="space-y-3 flex-1">
                        <h4 className="text-xs font-black text-red-400 uppercase tracking-widest">Protocol Sync Failure</h4>
-                       <p className="text-sm text-text-dim leading-relaxed">{syncStatus.error}</p>
+                       <p className="text-sm text-text-dim leading-relaxed">{t(syncStatus.error)}</p>
                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2 border-t border-red-500/10">
                           <div>
                             <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">HTTP Status</p>

@@ -1,3 +1,5 @@
+import { createSafeError } from "../i18n/errorMessages";
+
 const APP_NAME = "BlueprintForge AI";
 
 /**
@@ -12,11 +14,11 @@ function cleanHeaderValue(value: string): string {
  */
 function getAuthHeader(apiKey: string): string {
   if (!apiKey) {
-    throw new Error("OpenRouter API Key is missing. Please check your settings.");
+    throw createSafeError("OPENROUTER_API_KEY_MISSING");
   }
   const keyStr = String(apiKey).trim().replace(/[^\x21-\x7E]/g, "");
   if (keyStr.length < 5) {
-    throw new Error("OpenRouter API Key appears invalid or too short.");
+    throw createSafeError("OPENROUTER_API_KEY_INVALID");
   }
   return keyStr.startsWith("Bearer ") ? keyStr : `Bearer ${keyStr}`;
 }
@@ -26,7 +28,7 @@ function getAuthHeader(apiKey: string): string {
  */
 export function buildOpenRouterHeaders(apiKey: string): Record<string, string> {
   return {
-    "Authorization": `Bearer ${apiKey}`,
+    "Authorization": getAuthHeader(apiKey),
     "Content-Type": "application/json",
     "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "https://blueprintforge.ai",
     "X-OpenRouter-Title": APP_NAME
@@ -73,11 +75,11 @@ async function handleResponse(response: Response, endpoint: string = "unknown", 
     
     logDebugError({ endpoint, status: response.status, selectedModel: modelId, payloadSize, errorMessage: message });
 
-    if (response.status === 401) throw new Error("Invalid API Key (401)");
-    if (response.status === 402) throw new Error("No Credits (402)");
-    if (response.status === 429) throw new Error("Rate Limited (429)");
-    if (response.status >= 500) throw new Error("OpenRouter service error (500)");
-    throw new Error(message);
+    if (response.status === 401) throw createSafeError("OPENROUTER_API_KEY_INVALID", { status: response.status, backendMessage: message });
+    if (response.status === 402) throw createSafeError("OPENROUTER_NO_CREDITS", { status: response.status, backendMessage: message });
+    if (response.status === 429) throw createSafeError("OPENROUTER_RATE_LIMITED", { status: response.status, backendMessage: message });
+    if (response.status >= 500) throw createSafeError("OPENROUTER_SERVICE_ERROR", { status: response.status, backendMessage: message });
+    throw createSafeError("REQUEST_FAILED", { status: response.status, backendMessage: message });
   }
   return response.json();
 }
@@ -88,7 +90,7 @@ async function handleResponse(response: Response, endpoint: string = "unknown", 
  */
 export async function testOpenRouterConnection(apiKey: string): Promise<boolean> {
   const url = "/api/ai/models";
-  const response = await fetch(url, { method: "GET", headers: { "Authorization": `Bearer ${apiKey}` } });
+  const response = await fetch(url, { method: "GET", headers: { "Authorization": getAuthHeader(apiKey) } });
   await handleResponse(response, url);
   return true;
 }
@@ -122,7 +124,7 @@ export async function callOpenRouterChatCompletion(params: ChatCompletionParams)
     response_format: responseFormat
   });
 
-  const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` }, body });
+  const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": getAuthHeader(apiKey) }, body });
   
   if (!response.ok) {
     const text = await response.text();
@@ -145,14 +147,14 @@ export async function callOpenRouterChatCompletion(params: ChatCompletionParams)
 
     logDebugError({ endpoint: url, status: response.status, selectedModel: model, payloadSize: body.length, errorMessage: message });
 
-    if (response.status === 401) throw new Error("Invalid API Key (401)");
-    if (response.status === 402) throw new Error("No Credits (402)");
-    if (response.status === 429) throw new Error("Rate Limited (429)");
-    if (response.status >= 500) throw new Error("OpenRouter service error (500)");
-    throw new Error(message);
+    if (response.status === 401) throw createSafeError("OPENROUTER_API_KEY_INVALID", { status: response.status, backendMessage: message });
+    if (response.status === 402) throw createSafeError("OPENROUTER_NO_CREDITS", { status: response.status, backendMessage: message });
+    if (response.status === 429) throw createSafeError("OPENROUTER_RATE_LIMITED", { status: response.status, backendMessage: message });
+    if (response.status >= 500) throw createSafeError("OPENROUTER_SERVICE_ERROR", { status: response.status, backendMessage: message });
+    throw createSafeError("REQUEST_FAILED", { status: response.status, backendMessage: message });
   }
 
   const data = await response.json();
-  if (!data.choices || data.choices.length === 0) throw new Error("Empty response from OpenRouter.");
+  if (!data.choices || data.choices.length === 0) throw createSafeError("OPENROUTER_EMPTY_RESPONSE");
   return data.choices[0].message.content;
 }

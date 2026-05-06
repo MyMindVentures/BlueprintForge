@@ -6,6 +6,7 @@ import { generateModelIntelligence } from "../services/modelIntelligenceService"
 import { apiRequest } from '../services/apiClient';
 import { useAuth } from './useAuth';
 import { normalizeRole } from '../authRoles';
+import { createSafeError, getErrorStatus, getErrorTranslationKey, toSafeError } from '../i18n/errorMessages';
 
 export interface SyncStatus {
   phase: "idle" | "syncing" | "intelligence" | "success" | "error" | "warning";
@@ -54,7 +55,7 @@ export function useLLMSettings(
 
   const syncModels = async () => {
     const current = settingsRef.current;
-    if (!current.openRouterApiKey) throw new Error("API Key missing.");
+    if (!current.openRouterApiKey) throw createSafeError("OPENROUTER_API_KEY_MISSING");
 
     setSyncStatus({
       phase: "syncing",
@@ -70,7 +71,7 @@ export function useLLMSettings(
       const { models: fetchedModels, failedCount } = await syncOpenRouterModels(current.openRouterApiKey);
 
       if (!validateSyncedModels(fetchedModels)) {
-        throw new Error("OpenRouter manifest validation failed: Invalid or empty model set.");
+        throw createSafeError("OPENROUTER_MANIFEST_INVALID");
       }
 
       const mergedModels = mergeSyncedModels(current.models, fetchedModels);
@@ -90,15 +91,15 @@ export function useLLMSettings(
       setSyncStatus(prev => ({
         ...prev,
         phase: "error",
-        error: e.message,
+        error: getErrorTranslationKey(e),
         errorDetail: {
-          status: e.message.includes("401") ? 401 : e.message.includes("402") ? 402 : e.message.includes("429") ? 429 : 500,
-          message: e.message,
+          status: getErrorStatus(e),
+          message: getErrorTranslationKey(e),
           endpoint: "https://openrouter.ai/api/v1/models",
           timestamp: new Date().toISOString()
         }
       }));
-      throw e;
+      throw toSafeError(e, "errors.syncFailed");
     }
   };
 
@@ -150,7 +151,7 @@ export function useLLMSettings(
         const latestModels = settingsRef.current.models.map(m => m.id === model.id ? {
           ...m,
           intelligenceStatus: "Failed" as const,
-          intelligenceError: e.message
+          intelligenceError: getErrorTranslationKey(e)
         } : m);
         await updateSettingsPostgres({ models: latestModels });
       }
@@ -168,7 +169,7 @@ export function useLLMSettings(
       return { success: true };
     } catch (e: any) {
       await updateSettingsPostgres({ connectionStatus: "Error", lastTestedAt: new Date().toISOString() });
-      throw e;
+      throw toSafeError(e);
     }
   };
 

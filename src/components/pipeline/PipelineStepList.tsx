@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { PipelineStep } from "../../types";
+import { useI18n } from "../../i18n/I18nProvider";
 
 interface PipelineStepListProps {
   steps: PipelineStep[];
@@ -13,6 +14,7 @@ interface PipelineStepListProps {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function PipelineStepList({ steps, currentStepId }: PipelineStepListProps) {
+  const { t } = useI18n();
   return (
     <div className="space-y-4">
       {steps.map((step, i) => (
@@ -32,6 +34,7 @@ export function PipelineStepList({ steps, currentStepId }: PipelineStepListProps
             <div>
               <h4 className="text-xs font-black uppercase tracking-tight text-white">{step.name}</h4>
               <p className="text-[10px] text-text-dim/60 font-medium italic">{step.message}</p>
+              {step.error && <p className="mt-1 text-[10px] text-red-300 font-medium">{step.error.startsWith("errors.") ? t(step.error) : t("errors.pipelineFailed")}</p>}
             </div>
           </div>
           {step.status === "Running" && (

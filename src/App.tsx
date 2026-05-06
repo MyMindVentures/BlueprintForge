@@ -23,6 +23,7 @@ import { HelpBlock } from "./components/help/HelpBlock";
 import { LoadingState } from "./components/state/LoadingState";
 import { screenGuidance } from "./content/guides/blueprintGuides";
 import { describeMissingAdminAccess, isFounderAdminRole, logAdminAccessDebug, normalizeRole } from "./authRoles";
+import { getErrorMessage } from "./i18n/errorMessages";
 
 export type AppView = "landing" | "bootstrap" | "guide" | "projects" | "agents" | "llm" | "diagnostics" | "feed_admin" | "feed_coder" | "coder_profile" | "coder_directory" | "vision" | "not_found";
 
@@ -274,7 +275,7 @@ function AdminAccessDenied({
           <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.requestedScreen")}</span><span className="font-mono text-white">{view}</span></div>
           <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.resolvedRole")}</span><span className="font-mono text-yellow-200">{resolvedRole}</span></div>
           <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.missingPermission")}</span><span className="font-mono text-red-200">{missingPermission}</span></div>
-          {authError && <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-yellow-100">Auth/profile error: {authError}</div>}
+          {authError && <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-yellow-100">{t("errors.authProfileError")}: {getErrorMessage(authError, t)}</div>}
         </div>
         <p className="mt-5 text-xs leading-5 text-white/55">{t("errors.founderAccessHint")}</p>
         <div className="mt-6 flex flex-wrap gap-3">

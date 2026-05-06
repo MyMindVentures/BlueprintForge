@@ -115,23 +115,23 @@ describe('openRouterModelService', () => {
           return HttpResponse.json({ something: 'else' });
         })
       );
-      await expect(syncOpenRouterModels('sk-test')).rejects.toThrow('unexpected model response');
+      await expect(syncOpenRouterModels('sk-test')).rejects.toThrow('errors.openRouterManifestInvalid');
     });
 
     it('should map 401 to Invalid API Key', async () => {
-      await expect(syncOpenRouterModels('invalid')).rejects.toThrow('Invalid API Key (401)');
+      await expect(syncOpenRouterModels('invalid')).rejects.toThrow('errors.openRouterInvalidKey');
     });
 
     it('should map 402 to No Credits', async () => {
-      await expect(syncOpenRouterModels('sk-test-402')).rejects.toThrow('No Credits (402)');
+      await expect(syncOpenRouterModels('sk-test-402')).rejects.toThrow('errors.openRouterNoCredits');
     });
 
     it('should map 429 to Rate Limited', async () => {
-      await expect(syncOpenRouterModels('sk-test-429')).rejects.toThrow('Rate Limited (429)');
+      await expect(syncOpenRouterModels('sk-test-429')).rejects.toThrow('errors.openRouterRateLimited');
     });
 
     it('should map 500+ to OpenRouter service error', async () => {
-      await expect(syncOpenRouterModels('sk-test-500')).rejects.toThrow('OpenRouter service error (500)');
+      await expect(syncOpenRouterModels('sk-test-500')).rejects.toThrow('errors.serviceUnavailable');
     });
   });
 });

@@ -3,6 +3,7 @@ import { Project, AIAgent, PipelineStep, PipelineJob, LLMSettings } from "../typ
 import { runAgentStep } from "../services/agentService";
 import { getShortTime, getCurrentTimestamp } from "../utils/time";
 import { apiRequest } from "../services/apiClient";
+import { createSafeError, getErrorTranslationKey, toSafeError } from "../i18n/errorMessages";
 
 /**
  * Handles the use pipeline workflow for BlueprintForge users or services.
@@ -19,7 +20,7 @@ export function usePipeline(
     if (!project) return;
 
     const apiKey = llmSettings.openRouterApiKey;
-    if (!apiKey) throw new Error("API Key missing.");
+    if (!apiKey) throw createSafeError("OPENROUTER_API_KEY_MISSING");
 
     let overrideId = project.modelOverrideId;
     if (overrideId === "anthropic/claude-3.5-sonnet") overrideId = "anthropic/claude-3.7-sonnet";
@@ -128,16 +129,17 @@ export function usePipeline(
 
       if (onSuccess) onSuccess();
     } catch (e: any) {
-      await log("SYSTEM", `ERROR: ${e.message}`);
+      const errorKey = getErrorTranslationKey(e, "errors.pipelineFailed");
+      await log("SYSTEM", `ERROR: ${errorKey}`);
       const last = await getLatestProject(projectId);
       if (last?.pipeline) {
         const stepId = last.pipeline.currentStepId;
-        const nextSteps = last.pipeline.steps.map(s => s.id === stepId ? { ...s, status: "Failed" as const, error: e.message } : s);
+        const nextSteps = last.pipeline.steps.map(s => s.id === stepId ? { ...s, status: "Failed" as const, error: errorKey } : s);
         await updateProjectPostgres(projectId, {
           pipeline: { ...last.pipeline, steps: nextSteps, status: "Failed" as const }
         });
       }
-      throw e;
+      throw toSafeError(e, "errors.pipelineFailed");
     }
   };
 

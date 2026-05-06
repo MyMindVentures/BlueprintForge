@@ -8,6 +8,8 @@ import { ProjectHeader } from "./ProjectHeader";
 import { RawConceptPanel } from "./RawConceptPanel";
 import { ProjectOutputTabs } from "./ProjectOutputTabs";
 import { downloadTextFile } from "../../utils/download";
+import { useI18n } from "../../i18n/I18nProvider";
+import { getErrorMessage } from "../../i18n/errorMessages";
 
 interface ProjectWorkspaceProps {
   project: Project;
@@ -25,6 +27,7 @@ interface ProjectWorkspaceProps {
  */
 export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBack, runPipeline, runImagePipeline }: ProjectWorkspaceProps) {
   const toast = useToast();
+  const { t } = useI18n();
   const [inputValue, setInputValue] = useState(project.rawConcept);
   const [activeTab, setActiveTab] = useState<"input" | "cards" | "markdown" | "validation" | "strategy" | "ux" | "architecture" | "images" | "polished">("input");
 
@@ -34,11 +37,11 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
 
   const handleGenerate = async () => {
     if (!inputValue.trim()) {
-      toast.warn("App concept required.");
+      toast.warn(t("errors.rawConceptRequired"));
       return;
     }
     if (!llmSettings.openRouterApiKey) {
-      toast.error("Config missing: OpenRouter Key.");
+      toast.error(t("errors.openRouterKeyMissing"));
       return;
     }
 
@@ -52,7 +55,7 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
       });
       toast.success("Pipeline engaged.");
     } catch (e: any) {
-      toast.error(`Pipeline aborted: ${e.message}`);
+      toast.error(getErrorMessage(e, t, "errors.pipelineFailed"));
     }
   };
 
@@ -61,7 +64,7 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
       await navigator.clipboard.writeText(text);
       toast.success("Copied to clipboard.");
     } catch {
-      toast.error("Copy failed.");
+      toast.error(t("errors.requestFailed"));
     }
   };
 

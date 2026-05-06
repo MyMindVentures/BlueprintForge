@@ -9,13 +9,14 @@ import { useGithubSettings } from '../../hooks/useGithubSettings';
 import { createGithubIssue } from '../../services/githubClient';
 import { StatusBadge } from '../ui/StatusBadge';
 import { useI18n } from '../../i18n/I18nProvider';
+import { getErrorMessage } from '../../i18n/errorMessages';
 
 /**
  * Handles the live build feed admin workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function LiveBuildFeedAdmin() {
-  const { formatRelativeTime } = useI18n();
+  const { formatRelativeTime, t } = useI18n();
   const { requests, publishRequest, updateRequest, toggleFocus, postDailySignal, dailySignals, profiles } = useBuildFeed();
   const { llmSettings } = useWorkspace();
   const { settings: githubSettings } = useGithubSettings();
@@ -32,12 +33,12 @@ export function LiveBuildFeedAdmin() {
 
   const handlePolish = async () => {
     if (!rawInput.trim()) {
-      error("Please enter what you want to build.");
+      error(t("errors.rawConceptRequired"));
       return;
     }
     
     if (!llmSettings.openRouterApiKey) {
-      error("Missing OpenRouter API Key in OpenRouter Settings.");
+      error(t("errors.openRouterKeyMissing"));
       return;
     }
 
@@ -60,7 +61,7 @@ export function LiveBuildFeedAdmin() {
       success("Build request polished!");
       setIsEditing(false);
     } catch (e: any) {
-      error(`Error polishing request: ${e.message}`);
+      error(getErrorMessage(e, t));
     } finally {
       setIsPolishing(false);
     }
@@ -89,13 +90,13 @@ export function LiveBuildFeedAdmin() {
           success("Published and GitHub issue created!");
         } catch (err: any) {
           await updateRequest(newRequestId, { github_sync_status: 'failed' });
-          error(`Feed published, but GitHub issue creation failed: ${err.message}`);
+          error(getErrorMessage(err, t, "errors.githubIssueCreateFailed"));
         }
       } else {
         success("Published to Builder Network!");
       }
     } catch (e: any) {
-      error(e.message);
+      error(getErrorMessage(e, t));
     } finally {
       setIsPublishing(false);
     }
@@ -109,7 +110,7 @@ export function LiveBuildFeedAdmin() {
       setSignalText('');
       success("Daily Signal Broadcasted!");
     } catch (e: any) {
-      error(e.message);
+      error(getErrorMessage(e, t));
     } finally {
       setIsPostingSignal(false);
     }
@@ -293,7 +294,7 @@ export function LiveBuildFeedAdmin() {
                             try {
                               await toggleFocus(req.id);
                             } catch (e: any) {
-                              error(e.message);
+                              error(getErrorMessage(e, t));
                             }
                           }}
                           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${

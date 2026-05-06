@@ -11,6 +11,8 @@ import { StatusBadge } from "../ui/StatusBadge";
 import { GlassPanel } from "../ui/GlassPanel";
 import { motion } from "motion/react";
 import { safeJsonParse } from "../../utils/safeJson";
+import { useI18n } from "../../i18n/I18nProvider";
+import { getErrorMessage, getErrorTranslationKey } from "../../i18n/errorMessages";
 
 interface DiagnosticsProps {
   llmSettings: LLMSettings;
@@ -22,6 +24,7 @@ interface DiagnosticsProps {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsProps) {
+  const { t } = useI18n();
   const [testStatus, setTestStatus] = useState<"idle" | "testing" | "success" | "error">("idle");
   const [errorDetails, setErrorDetails] = useState<string | null>(null);
   const [logs, setLogs] = useState<{ type: "info" | "success" | "error"; msg: string }[]>([]);
@@ -37,7 +40,7 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
       addLog("success", `Headers generated: ${Object.keys(headers).join(", ")}`);
       addLog("info", `Auth present: ${!!headers["Authorization"]}`);
     } catch (e: any) {
-      addLog("error", `Header test failed: ${e.message}`);
+      addLog("error", `Header test failed: ${getErrorMessage(e, t)}`);
     }
   };
 
@@ -58,7 +61,7 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
   const showLastDebug = () => {
     const lastError = getLastDebugError();
     if (lastError) {
-      addLog("error", `Last Server Feedback: [${lastError.status}] ${lastError.errorMessage}`);
+      addLog("error", `Last Server Feedback: [${lastError.status}] ${t(getErrorTranslationKey(lastError.errorMessage))}`);
       addLog("info", `Target Model: ${lastError.selectedModel}`);
     } else {
       addLog("info", "No recent server errors recorded.");
@@ -72,7 +75,7 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
 
     const apiKey = llmSettings.openRouterApiKey;
     if (!apiKey) {
-      addLog("error", "API Key is missing from settings.");
+      addLog("error", t("errors.openRouterKeyMissing"));
       setTestStatus("error");
       return;
     }
@@ -96,8 +99,9 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
 
       setTestStatus("success");
     } catch (e: any) {
-      addLog("error", `Diagnostics failed: ${e.message}`);
-      setErrorDetails(e.message);
+      const message = getErrorMessage(e, t, "errors.diagnosticsFailed");
+      addLog("error", `Diagnostics failed: ${message}`);
+      setErrorDetails(message);
       setTestStatus("error");
     }
   };
@@ -184,7 +188,7 @@ export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsPr
                   <AlertCircle size={16} /> Remediation Required
                 </div>
                 <p className="text-sm text-red-400/80 leading-relaxed font-mono px-1">
-                  {errorDetails || "Unknown protocol failure encountered during sequence."}
+                  {errorDetails || t("errors.diagnosticsFailed")}
                 </p>
              </motion.div>
            )}
