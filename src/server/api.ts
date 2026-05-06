@@ -24,6 +24,7 @@ export function registerApiRoutes(app: express.Express) {
 
   app.post('/api/auth/firebase-profile', wrap(async (req, res) => res.json(await userRepository.upsertFirebaseUser(req.body))));
   app.post('/api/auth/acknowledge-version', wrap(async (req, res) => res.json(await userRepository.acknowledgeVersion(actor(req), req.body.version))));
+  app.post('/api/auth/preferred-language', wrap(async (req, res) => res.json(await userRepository.updatePreferredLanguage(actor(req), req.body.preferred_language || 'en'))));
 
   app.get('/api/build-feed', wrap(async (_req, res) => res.json(await buildRequestRepository.listAll())));
   app.post('/api/build-requests', wrap(async (req, res) => { requireAdmin(req); res.json({ id: await buildRequestRepository.publish(req.body.request, actor(req)) }); }));

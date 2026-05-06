@@ -18,6 +18,7 @@ import { ErrorPage } from "./components/layout/ErrorPage";
 import { useWorkspace } from "./hooks/useWorkspace";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
 import { ToastProvider } from "./components/ui/Toast";
+import { I18nProvider, useI18n } from "./i18n/I18nProvider";
 import { HelpBlock } from "./components/help/HelpBlock";
 import { LoadingState } from "./components/state/LoadingState";
 import { screenGuidance } from "./content/guides/blueprintGuides";
@@ -33,7 +34,9 @@ export default function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <AppContent />
+        <I18nProvider>
+          <AppContent />
+        </I18nProvider>
       </AuthProvider>
     </ToastProvider>
   );
@@ -45,6 +48,7 @@ export default function App() {
  */
 function AppContent() {
   const { user, profile, loading, signIn, authError } = useAuth();
+  const { t } = useI18n();
   const {
     projects,
     agents,
@@ -87,8 +91,8 @@ function AppContent() {
     feed_coder: screenGuidance.liveFeed,
     coder_profile: screenGuidance.profile,
     coder_directory: screenGuidance.profile,
-    vision: { ...screenGuidance.guide, title: 'Founder Vision', purpose: 'Connect strategic product direction to visible build progress.', nextAction: 'Read the current vision, then open Current Founder Focus to see execution.' },
-    not_found: { ...screenGuidance.guide, title: 'Error / Not Found', purpose: 'Explain that the requested screen is unavailable and offer safe navigation.', nextAction: 'Return to Landing, Guide or Live Build Feed.' }
+    vision: { ...screenGuidance.guide, title: t('navigation.founderVision'), purpose: 'Connect strategic product direction to visible build progress.', nextAction: 'Read the current vision, then open Current Founder Focus to see execution.' },
+    not_found: { ...screenGuidance.guide, title: t('errors.accessDenied'), purpose: 'Explain that the requested screen is unavailable and offer safe navigation.', nextAction: 'Return to Landing, Guide or Live Build Feed.' }
   } as const;
 
   const currentGuidance = guidanceByView[view];
@@ -108,8 +112,8 @@ function AppContent() {
              </div>
           </div>
           <LoadingState
-            title={loading ? 'Authentication initializing' : 'Architect system initializing'}
-            description={loading ? 'Checking whether you are a visitor, builder or founder before enabling actions.' : 'Loading persisted projects, agents, settings and live platform state.'}
+            title={loading ? t('app.loadingAuthTitle') : t('app.loadingSystemTitle')}
+            description={loading ? t('app.loadingAuthDescription') : t('app.loadingSystemDescription')}
           />
         </div>
       </div>
@@ -259,23 +263,24 @@ function AdminAccessDenied({
   authError,
   onNavigate
 }: ReturnType<typeof describeMissingAdminAccess> & { authError: string | null; onNavigate: (view: AppView) => void }) {
+  const { t } = useI18n();
   return (
     <div className="flex min-h-full items-center justify-center px-6 py-12">
       <div className="w-full max-w-2xl rounded-3xl border border-red-500/30 bg-red-500/10 p-8 shadow-2xl">
-        <p className="mb-3 text-xs font-black uppercase tracking-[0.35em] text-red-300">Access denied</p>
+        <p className="mb-3 text-xs font-black uppercase tracking-[0.35em] text-red-300">{t("errors.accessDenied")}</p>
         <h1 className="text-3xl font-black text-white">{title}</h1>
         <p className="mt-3 text-sm leading-6 text-white/75">{message}</p>
         <div className="mt-6 grid gap-3 rounded-2xl border border-white/10 bg-black/40 p-4 text-sm">
-          <div className="flex justify-between gap-4"><span className="text-white/50">Requested screen</span><span className="font-mono text-white">{view}</span></div>
-          <div className="flex justify-between gap-4"><span className="text-white/50">Resolved role</span><span className="font-mono text-yellow-200">{resolvedRole}</span></div>
-          <div className="flex justify-between gap-4"><span className="text-white/50">Missing permission</span><span className="font-mono text-red-200">{missingPermission}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.requestedScreen")}</span><span className="font-mono text-white">{view}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.resolvedRole")}</span><span className="font-mono text-yellow-200">{resolvedRole}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white/50">{t("errors.missingPermission")}</span><span className="font-mono text-red-200">{missingPermission}</span></div>
           {authError && <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-yellow-100">Auth/profile error: {authError}</div>}
         </div>
-        <p className="mt-5 text-xs leading-5 text-white/55">If you are the founder, verify that your Firebase email or UID is listed in FOUNDER_ADMIN_EMAILS or FOUNDER_ADMIN_UIDS on Railway, then sign out and sign back in so PostgreSQL can hydrate your ROLE-01 profile.</p>
+        <p className="mt-5 text-xs leading-5 text-white/55">{t("errors.founderAccessHint")}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <button onClick={() => onNavigate("landing")} className="rounded-xl bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-black">Go Home</button>
-          <button onClick={() => onNavigate("guide")} className="rounded-xl border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10">Open Guide</button>
-          <button onClick={() => onNavigate("feed_coder")} className="rounded-xl border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10">Live Feed</button>
+          <button onClick={() => onNavigate("landing")} className="rounded-xl bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-black">{t("buttons.goHome")}</button>
+          <button onClick={() => onNavigate("guide")} className="rounded-xl border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10">{t("buttons.openGuide")}</button>
+          <button onClick={() => onNavigate("feed_coder")} className="rounded-xl border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10">{t("buttons.liveFeed")}</button>
         </div>
       </div>
     </div>

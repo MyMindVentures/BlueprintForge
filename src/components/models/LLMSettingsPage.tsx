@@ -4,7 +4,6 @@ import {
   Key, Save, RefreshCw, Star, Cpu, Zap, Info, Search, XCircle, CheckCircle2, ChevronRight, Terminal, ExternalLink, RotateCcw, Loader2, Brain, Sparkles, AlertTriangle, Github
 } from "lucide-react";
 import { LLMSettings, OpenRouterModel } from "../../types";
-import { formatDistanceToNow } from "date-fns";
 import { useToast } from "../ui/Toast";
 import { HelpIcon } from "../Onboarding";
 import { GlassPanel } from "../ui/GlassPanel";
@@ -12,6 +11,7 @@ import { StatusBadge } from "../ui/StatusBadge";
 import { ActionButton } from "../ui/ActionButton";
 import { SearchInput } from "../ui/SearchInput";
 import { useGithubSettings } from "../../hooks/useGithubSettings";
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface LLMSettingsProps {
   settings: LLMSettings;
@@ -47,6 +47,7 @@ interface LLMSettingsProps {
 export function LLMSettingsPage({ 
   settings, onUpdate, onSync, onTestConnection, onGenerateIntelligence, onRegenerateAll, syncStatus, onOpenDiagnostics 
 }: LLMSettingsProps) {
+  const { formatRelativeTime, formatDate } = useI18n();
   const toast = useToast();
   const { settings: githubSettings, setSettings: setGithubSettings } = useGithubSettings();
   const [apiKey, setApiKey] = useState(settings.openRouterApiKey || "");
@@ -194,7 +195,7 @@ export function LLMSettingsPage({
                          status={settings.connectionStatus === 'Connected' ? 'success' : 'idle'} 
                        />
                        {settings.lastTestedAt && (
-                         <span className="text-[10px] font-black text-text-dim/40 uppercase tracking-widest">Checked {formatDistanceToNow(new Date(settings.lastTestedAt))} ago</span>
+                         <span className="text-[10px] font-black text-text-dim/40 uppercase tracking-widest">Checked {formatRelativeTime(settings.lastTestedAt)}</span>
                        )}
                     </div>
                   </div>
@@ -331,7 +332,7 @@ export function LLMSettingsPage({
                 <h2 className="text-2xl md:text-3xl font-black text-white tracking-widest uppercase">Operational Manifest</h2>
                 {settings.lastSyncedAt && (
                   <p className="text-[10px] font-black text-text-dim/60 uppercase tracking-widest">
-                    Last Synced: {formatDistanceToNow(new Date(settings.lastSyncedAt))} ago
+                    Last Synced: {formatRelativeTime(settings.lastSyncedAt)}
                   </p>
                 )}
               </div>
@@ -378,7 +379,7 @@ export function LLMSettingsPage({
                           </div>
                           <div>
                             <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Timestamp</p>
-                            <p className="text-[10px] font-mono text-text-dim">{new Date(syncStatus.errorDetail.timestamp).toLocaleTimeString()}</p>
+                            <p className="text-[10px] font-mono text-text-dim">{formatDate(syncStatus.errorDetail.timestamp, { timeStyle: 'medium' })}</p>
                           </div>
                        </div>
                     </div>

@@ -116,6 +116,7 @@ export interface UserContext {
   name: string;
   role: "ROLE-01" | "admin" | "vibe_coder" | "anonymous";
   acknowledged_versions?: string[];
+  preferred_language?: string;
 }
 
 export interface AppNotification {

@@ -14,12 +14,14 @@ import { useToast } from '../ui/Toast';
 import { StatusBadge } from '../ui/StatusBadge';
 import { BuildRequest, BuildPriority, BuildDifficulty, BuildType } from '../../types/buildFeed';
 import { isFounderAdminRole } from '../../authRoles';
+import { useI18n } from '../../i18n/I18nProvider';
 
 /**
  * Handles the bootstrap page workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function BootstrapPage() {
+  const { t } = useI18n();
   const { 
     requests, publishRequest, updateRequest, currentUser, 
     claimRequest, profiles 
@@ -39,7 +41,7 @@ export function BootstrapPage() {
     if (!rawInput.trim()) return;
     
     if (!llmSettings.openRouterApiKey) {
-      error("Missing OpenRouter API Key.");
+      error(t("errors.missingOpenRouterKey"));
       return;
     }
     
@@ -65,7 +67,7 @@ export function BootstrapPage() {
         difficulty: parsed.difficulty || "Medium",
         type: parsed.type || "App Improvement"
       });
-      success("Ticket polished and ready for review.");
+      success(t("success.ticketPolished"));
     } catch (e: any) {
       error(e.message);
       setPolishedResult({
@@ -110,7 +112,7 @@ export function BootstrapPage() {
         }
       }
       
-      success("Ticket published to the Live Build Feed!");
+      success(t("success.ticketPublished"));
     } catch (e: any) {
       error(e.message);
     } finally {
@@ -119,13 +121,13 @@ export function BootstrapPage() {
   };
 
   const loopSteps = [
-    { icon: Quote, title: "Founder Thought", desc: "The Architect writes a raw, unfiltered concept or improvement idea." },
-    { icon: Sparkles, title: "AI Distillation", desc: "Our system converts vision into a structured technical blueprint." },
-    { icon: Radio, title: "Feed Broadcast", desc: "The ticket appears in the Live Build Feed for all vibe coders." },
-    { icon: Github, title: "GitHub Sync", desc: "A mirrored issue is created in the repository for technical tracking." },
-    { icon: Users, title: "Builder Claim", desc: "A builder identifies with the vision and claims the ticket." },
-    { icon: Code2, title: "Implementation", desc: "Builder forks, branches, and ships the requested feature." },
-    { icon: Rocket, title: "Launch & Improve", desc: "PR is accepted, code is merged, and the platform evolves." }
+    { icon: Quote, title: t("bootstrap.founderThought"), desc: t("bootstrap.founderThoughtDesc") },
+    { icon: Sparkles, title: t("bootstrap.aiDistillation"), desc: t("bootstrap.aiDistillationDesc") },
+    { icon: Radio, title: t("bootstrap.feedBroadcast"), desc: t("bootstrap.feedBroadcastDesc") },
+    { icon: Github, title: t("bootstrap.githubSync"), desc: t("bootstrap.githubSyncDesc") },
+    { icon: Users, title: t("bootstrap.builderClaim"), desc: t("bootstrap.builderClaimDesc") },
+    { icon: Code2, title: t("bootstrap.implementation"), desc: t("bootstrap.implementationDesc") },
+    { icon: Rocket, title: t("bootstrap.launchImprove"), desc: t("bootstrap.launchImproveDesc") }
   ];
 
   return (
@@ -189,8 +191,8 @@ export function BootstrapPage() {
         {/* WHAT IT IS SECTION */}
         <section className="py-24 border-y border-white/5 space-y-20">
           <div className="text-center space-y-6">
-            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">The Infrastructure</h2>
-            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">What is BlueprintForge?</h3>
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t("bootstrap.infrastructureEyebrow")}</h2>
+            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">{t("bootstrap.whatIs")}</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -213,7 +215,7 @@ export function BootstrapPage() {
         <section className="space-y-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
              <div className="space-y-4">
-               <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.4em]">Section 03 / The Workflow</h2>
+               <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.4em]">{t("bootstrap.workflowEyebrow")}</h2>
                <h3 className="text-4xl font-black uppercase tracking-tight">The Bootstrap Loop</h3>
              </div>
              <p className="text-text-dim max-w-sm text-sm font-medium">How we turn abstract vision into production-ready features in 7 steps.</p>

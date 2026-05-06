@@ -7,14 +7,15 @@ import { Loader2, Plus, Sparkles, Send, Edit3, Check, X, Github, Target, Radio, 
 import { useToast } from '../ui/Toast';
 import { useGithubSettings } from '../../hooks/useGithubSettings';
 import { createGithubIssue } from '../../services/githubClient';
-import { formatDistanceToNow } from 'date-fns';
 import { StatusBadge } from '../ui/StatusBadge';
+import { useI18n } from '../../i18n/I18nProvider';
 
 /**
  * Handles the live build feed admin workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function LiveBuildFeedAdmin() {
+  const { formatRelativeTime } = useI18n();
   const { requests, publishRequest, updateRequest, toggleFocus, postDailySignal, dailySignals, profiles } = useBuildFeed();
   const { llmSettings } = useWorkspace();
   const { settings: githubSettings } = useGithubSettings();
@@ -343,7 +344,7 @@ export function LiveBuildFeedAdmin() {
                        <div key={s.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-2">
                           <p className="text-xs text-white/80 leading-relaxed italic">"{s.message}"</p>
                           <div className="flex items-center justify-between text-[10px] font-mono text-text-dim">
-                             <span className="flex items-center gap-2"><Clock size={10} /> {formatDistanceToNow(new Date(s.created_at), { addSuffix: true })}</span>
+                             <span className="flex items-center gap-2"><Clock size={10} /> {formatRelativeTime(s.created_at)}</span>
                           </div>
                        </div>
                      ))}

@@ -1,19 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { useBuildFeed } from '../../hooks/useBuildFeed';
 import { Clock, CheckCircle2, User, PlayCircle, Hash, Github, Star, Link2, XCircle, AlertCircle, Filter, Zap, Target } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
 import { CurrentFocus } from './CurrentFocus';
 import { DailySignal } from './DailySignal';
 import { StartHere } from './StartHere';
 import { BuildStatus } from '../../types/buildFeed';
 import { StatusBadge } from '../ui/StatusBadge';
 import { isFounderAdminRole, normalizeRole } from '../../authRoles';
+import { useI18n } from '../../i18n/I18nProvider';
 
 /**
  * Handles the live build feed workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function LiveBuildFeed() {
+  const { formatRelativeTime, formatDate, formatNumber, t } = useI18n();
   const { 
     requests, updates, currentUser, currentUserProfile, 
     claimRequest, updateRequestStatus, updateRequest, 
@@ -206,7 +207,7 @@ export function LiveBuildFeed() {
                         <div className="flex flex-wrap items-center gap-4 text-[10px] font-mono text-text-dim">
                           <div className="flex items-center gap-1.5">
                             <Clock size={14} /> 
-                            <span>{formatDistanceToNow(new Date(req.created_at), { addSuffix: true })}</span>
+                            <span>{formatRelativeTime(req.created_at)}</span>
                           </div>
                           {claimedProfile && (
                             <div className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md">
@@ -335,7 +336,7 @@ export function LiveBuildFeed() {
                                   <div className="flex-1 space-y-1">
                                     <div className="flex items-center gap-2">
                                       <span className="text-xs font-black text-white uppercase tracking-widest">{uProfile?.username || u.user_id}</span>
-                                      <span className="text-[10px] text-text-dim font-mono">{formatDistanceToNow(new Date(u.created_at), { addSuffix: true })}</span>
+                                      <span className="text-[10px] text-text-dim font-mono">{formatRelativeTime(u.created_at)}</span>
                                     </div>
                                     <p className="text-sm text-white/70">{u.update_text}</p>
                                   </div>

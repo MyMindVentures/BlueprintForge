@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useVision } from '../../hooks/useVision';
 import { useBuildFeed } from '../../hooks/useBuildFeed';
 import { Compass, Send, CheckCircle2, FlaskConical, Target, BrainCircuit, ChevronDown, ChevronUp } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '../ui/Toast';
 import { VisionStatus } from '../../types/vision';
 import { isFounderAdminRole } from '../../authRoles';
+import { useI18n } from '../../i18n/I18nProvider';
 
 /**
  * Handles the founder vision page workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function FounderVisionPage() {
+  const { formatRelativeTime } = useI18n();
   const { visions, publishVision } = useVision();
   const { currentUser } = useBuildFeed();
   const { success } = useToast();
@@ -203,7 +204,7 @@ export function FounderVisionPage() {
 
                 <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between">
                   <span className="text-xs font-mono text-text-dim">
-                    {formatDistanceToNow(new Date(vision.created_at), { addSuffix: true })}
+                    {formatRelativeTime(vision.created_at)}
                   </span>
                 </div>
               </article>

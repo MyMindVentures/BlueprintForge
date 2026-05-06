@@ -6,26 +6,27 @@ import {
   Layers, UserPlus, Target, Radio, Star, Info
 } from 'lucide-react';
 import { useGuide } from '../../hooks/useGuide';
-import { formatDistanceToNow } from 'date-fns';
 import { AutoDemoRecorder } from './AutoDemoRecorder';
 import { guideSections, screenGuidance, statusGlossary } from '../../content/guides/blueprintGuides';
 import { StatusBadge } from '../ui/StatusBadge';
+import { useI18n } from '../../i18n/I18nProvider';
 
 /**
  * Presents the central self-explaining BlueprintForge guide, changelog and demo recorder.
  * Used by visitors, builders, founders and observers to understand screens, roles, statuses and next actions.
  */
 export function GuidePage() {
+  const { t, formatRelativeTime, formatDate } = useI18n();
   const { latestVersion, flows, recordings, currentSession, startDemoSession } = useGuide();
   const [isDemoRunning, setIsDemoRunning] = useState(false);
 
   const coreCards = [
-    { icon: Layers, title: "Founder Vision", desc: "Where high-level goals and product direction are set.", page: "vision" },
-    { icon: Zap, title: "Bootstrap Page", desc: "The movement onboarding and ticket generator.", page: "bootstrap" },
-    { icon: Radio, title: "Live Build Feed", desc: "Real-time stream of all build requests.", page: "feed_coder" },
-    { icon: Target, title: "Current Focus", desc: "The top 3 immediate priority items for the architect.", page: "feed_coder" },
-    { icon: UserPlus, title: "Coder Profiles", desc: "Set up your identity and claim your first ticket.", page: "coder_profile" },
-    { icon: Star, title: "Reputation", desc: "Earn stars by shipping accepted improvements.", page: "coder_directory" }
+    { icon: Layers, title: t("guide.founderVision"), desc: t("guide.founderVisionDesc"), page: "vision" },
+    { icon: Zap, title: t("guide.bootstrapPage"), desc: t("guide.bootstrapPageDesc"), page: "bootstrap" },
+    { icon: Radio, title: t("guide.liveBuildFeed"), desc: t("guide.liveBuildFeedDesc"), page: "feed_coder" },
+    { icon: Target, title: t("guide.currentFocus"), desc: t("guide.currentFocusDesc"), page: "feed_coder" },
+    { icon: UserPlus, title: t("guide.coderProfiles"), desc: t("guide.coderProfilesDesc"), page: "coder_profile" },
+    { icon: Star, title: t("guide.reputation"), desc: t("guide.reputationDesc"), page: "coder_directory" }
   ];
 
   return (
@@ -77,7 +78,7 @@ export function GuidePage() {
               <p className="text-3xl font-black text-white/90 uppercase tracking-tight">"{latestVersion?.release_title}"</p>
             </div>
             <div className="text-[10px] font-black text-text-dim uppercase tracking-widest bg-white/5 px-4 py-2 rounded-xl">
-               Released: {latestVersion ? new Date(latestVersion.created_at).toLocaleDateString() : 'N/A'}
+               Released: {latestVersion ? formatDate(latestVersion.created_at, { dateStyle: 'medium' }) : 'N/A'}
             </div>
           </div>
 
@@ -336,7 +337,7 @@ export function GuidePage() {
                         </div>
                         <h4 className="text-xs font-black text-white uppercase truncate">{rec.filename}</h4>
                         <div className="flex justify-between items-center pt-2">
-                           <span className="text-[10px] font-mono text-text-dim">{formatDistanceToNow(new Date(rec.created_at), { addSuffix: true })}</span>
+                           <span className="text-[10px] font-mono text-text-dim">{formatRelativeTime(rec.created_at)}</span>
                            <a href={rec.file_url} download className="text-accent hover:text-white transition-colors">
                               <Download size={14} />
                            </a>

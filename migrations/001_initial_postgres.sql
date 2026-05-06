@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'vibe_coder',
   auth_provider TEXT DEFAULT 'firebase',
+  preferred_language TEXT NOT NULL DEFAULT 'en',
   is_demo BOOLEAN NOT NULL DEFAULT FALSE,
   demo_data_set_id UUID,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
