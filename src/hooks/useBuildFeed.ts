@@ -1,205 +1,42 @@
 import { useState, useEffect } from 'react';
-import { 
-  BuildRequest, 
-  BuildRequestUpdate, 
-  VibeCoderProfile, 
-  BuilderStarEvent, 
-  DailySignal 
-} from '../types/buildFeed';
+import { BuildRequest, BuildRequestUpdate, VibeCoderProfile, DailySignal } from '../types/buildFeed';
 import { buildFeedService } from '../services/buildFeedService';
 import { useAuth } from './useAuth';
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  doc, 
-  serverTimestamp, 
-  query, 
-  onSnapshot 
-} from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from '../services/firebase';
 
-/**
- * Handles the use build feed workflow for BlueprintForge users or services.
- * Used where this module coordinates UI state, persistence, integrations or user actions.
- */
 export function useBuildFeed() {
   const { profile: currentUser } = useAuth();
-  
   const [requests, setRequests] = useState<BuildRequest[]>([]);
   const [updates, setUpdates] = useState<BuildRequestUpdate[]>([]);
   const [profiles, setProfiles] = useState<VibeCoderProfile[]>([]);
   const [dailySignals, setDailySignals] = useState<DailySignal[]>([]);
-  const [lastNotification, setLastNotification] = useState<BuildRequest | null>(null);
-
+  const [lastNotification] = useState<BuildRequest | null>(null);
   const currentUserProfile = profiles.find(p => p.user_id === currentUser?.id);
 
-  useEffect(() => {
-    const unsubRequests = buildFeedService.subscribeToRequests(setRequests);
-    const unsubSignals = buildFeedService.subscribeToDailySignals(setDailySignals);
-    const unsubProfiles = buildFeedService.subscribeToProfiles(setProfiles);
+  useEffect(() => buildFeedService.subscribeToSnapshot((snapshot) => {
+    setRequests(snapshot.requests);
+    setUpdates(snapshot.updates);
+    setProfiles(snapshot.profiles);
+    setDailySignals(snapshot.dailySignals);
+  }), []);
 
-    // Updates listener
-    const qUpdates = collection(db, 'build_request_updates');
-    const unsubUpdates = onSnapshot(qUpdates, (snap) => {
-      setUpdates(snap.docs.map(d => ({ id: d.id, ...d.data() } as BuildRequestUpdate)));
-    });
-
-    return () => {
-      unsubRequests();
-      unsubSignals();
-      unsubProfiles();
-      unsubUpdates();
-    };
-  }, []);
-
-  /** Publishes founder/admin-reviewed draft data to the shared build feed. */
-  const publishRequest = async (request: any) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
-    return await buildFeedService.publishRequest(request, currentUser.id);
-  };
-
-  /** Updates persisted build request fields such as status, focus, PR URL or implementation notes. */
-  const updateRequest = async (id: string, updates: Partial<BuildRequest>) => {
-    try {
-      await updateDoc(doc(db, 'build_requests', id), {
-        ...updates,
-        updated_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.UPDATE, `build_requests/${id}`);
-    }
-  };
-
-  /** Lets an eligible signed-in builder claim an Open request using their saved profile. */
-  const claimRequest = async (id: string) => {
-    if (!currentUser || !currentUserProfile) return;
-    await buildFeedService.claimTicket(id, currentUser.id, currentUserProfile.id);
-  };
-
-  /** Adds a builder/founder progress update to the ticket conversation stream. */
-  const postUpdate = async (build_request_id: string, update_text: string) => {
-    if (!currentUser) return;
-    try {
-      await addDoc(collection(db, 'build_request_updates'), {
-        build_request_id,
-        user_id: currentUser.id,
-        profile_id: currentUserProfile?.id || null,
-        update_text,
-        created_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.CREATE, 'build_request_updates');
-    }
-  };
-
-  /** Creates or updates the current builder profile and persistence-backed claim eligibility. */
-  const saveProfile = async (profileData: Partial<VibeCoderProfile>) => {
-    if (!currentUser) return;
-    try {
-      if (currentUserProfile) {
-        await updateDoc(doc(db, 'vibe_coder_profiles', currentUserProfile.id), {
-          ...profileData,
-          updated_at: serverTimestamp()
-        });
-      } else {
-        await addDoc(collection(db, 'vibe_coder_profiles'), {
-          ...profileData,
-          user_id: currentUser.id,
-          stars_count: 0,
-          completed_requests_count: 0,
-          created_at: serverTimestamp(),
-          updated_at: serverTimestamp(),
-          status: 'Active Builder'
-        });
-      }
-    } catch (e) {
-      handleFirestoreError(e, OperationType.WRITE, 'vibe_coder_profiles');
-    }
-  };
-
-  /** Delegates founder/admin star awards after accepted implementation work. */
-  const awardStar = async (profileId: string, buildRequestId: string) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
-    await buildFeedService.awardStar(profileId, buildRequestId, currentUser.id);
-  };
-
-  /** Publishes the founder Daily Signal for builders and public observers. */
-  const postDailySignal = async (message: string) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
-    try {
-      await addDoc(collection(db, 'daily_signals'), {
-        message,
-        created_by: currentUser.id,
-        created_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.CREATE, 'daily_signals');
-    }
-  };
-
-  /** Changes a build request lifecycle state, such as In Progress or Ready for Review. */
-  const updateRequestStatus = async (id: string, status: BuildRequest["status"]) => {
-    await updateRequest(id, { status });
-  };
-
-  /** Marks a builder profile as verified after founder/admin trust review. */
-  const verifyProfile = async (profileId: string) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
-    try {
-      await updateDoc(doc(db, 'vibe_coder_profiles', profileId), {
-        status: 'Verified Builder',
-        updated_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.UPDATE, `vibe_coder_profiles/${profileId}`);
-    }
-  };
-
-  /** Adds or removes a request from Current Founder Focus with a maximum of three active items. */
+  const publishRequest = async (request: any) => currentUser?.role === 'admin' ? buildFeedService.publishRequest(request, currentUser) : undefined;
+  const updateRequest = async (id: string, updates: Partial<BuildRequest>) => currentUser ? buildFeedService.updateRequest(id, updates, currentUser) : undefined;
+  const claimRequest = async (id: string) => currentUser && currentUserProfile ? buildFeedService.claimTicket(id, currentUser, currentUserProfile.id) : undefined;
+  const updateRequestStatus = async (id: string, status: BuildRequest['status']) => updateRequest(id, { status });
+  const postUpdate = async (build_request_id: string, update_text: string) => currentUser ? buildFeedService.postUpdate(build_request_id, currentUser, currentUserProfile?.id || null, update_text) : undefined;
+  const saveProfile = async (profileData: Partial<VibeCoderProfile>) => currentUser ? buildFeedService.saveProfile(profileData, currentUser, currentUserProfile?.id) : undefined;
+  const verifyProfile = async (profileId: string) => currentUser?.role === 'admin' ? buildFeedService.verifyProfile(profileId, currentUser) : undefined;
+  const awardStar = async (profileId: string, buildRequestId: string) => currentUser?.role === 'admin' ? buildFeedService.awardStar(profileId, buildRequestId, currentUser) : undefined;
+  const postDailySignal = async (message: string) => currentUser?.role === 'admin' ? buildFeedService.postDailySignal(message, currentUser) : undefined;
   const toggleFocus = async (id: string, reason?: string) => {
     if (!currentUser || currentUser.role !== 'admin') return;
-    
     const request = requests.find(r => r.id === id);
     if (!request) return;
-
     const currentlyFocused = requests.filter(r => r.is_current_focus).length;
     const isEnabling = !request.is_current_focus;
-
-    if (isEnabling && currentlyFocused >= 3) {
-      throw new Error("Maximum 3 focus requests allowed.");
-    }
-
-    try {
-      await updateDoc(doc(db, 'build_requests', id), {
-        is_current_focus: isEnabling,
-        focus_reason: isEnabling ? (reason || null) : null,
-        focus_set_at: isEnabling ? serverTimestamp() : null,
-        focus_order: isEnabling ? currentlyFocused + 1 : null,
-        updated_at: serverTimestamp()
-      });
-    } catch (e) {
-      handleFirestoreError(e, OperationType.UPDATE, `build_requests/${id}`);
-    }
+    if (isEnabling && currentlyFocused >= 3) throw new Error('Maximum 3 focus requests allowed.');
+    return updateRequest(id, { is_current_focus: isEnabling, focus_reason: isEnabling ? (reason || null) : null, focus_order: isEnabling ? currentlyFocused + 1 : null });
   };
 
-  return {
-    requests,
-    updates,
-    profiles,
-    currentUser,
-    currentUserProfile,
-    publishRequest,
-    updateRequest,
-    claimRequest,
-    updateRequestStatus,
-    postUpdate,
-    saveProfile,
-    verifyProfile,
-    awardStar,
-    toggleFocus,
-    postDailySignal,
-    dailySignals,
-    lastNotification
-  };
+  return { requests, updates, profiles, currentUser, currentUserProfile, publishRequest, updateRequest, claimRequest, updateRequestStatus, postUpdate, saveProfile, verifyProfile, awardStar, toggleFocus, postDailySignal, dailySignals, lastNotification };
 }

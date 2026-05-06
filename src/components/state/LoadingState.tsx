@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Displays an honest loading explanation for screens waiting on auth, Firestore or integrations.
+ * Displays an honest loading explanation for screens waiting on auth, PostgreSQL/API or integrations.
  * Used when users need to know what the app is doing and what will happen next.
  */
 export function LoadingState({ title = 'Loading state', description = 'The app is loading the latest data. Actions unlock when the required state is ready.' }: { title?: string; description?: string }) {

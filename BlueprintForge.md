@@ -53,7 +53,7 @@ BlueprintForge AI is not only an app. It is a living proof-of-mind system where 
 - **CAP-02**: AI Text Parsing & Structuring (OpenRouter).
 - **CAP-03**: GitHub OAuth Integration.
 - **CAP-04**: GitHub Webhook Receiving & Parsing.
-- **CAP-05**: Live Datastore Synchronisation (Firestore).
+- **CAP-05**: Live Datastore Synchronisation (PostgreSQL-backed API).
 - **CAP-06**: Live Ticket Feed Broadcasting.
 - **CAP-07**: Role-based View Rendering.
 - **CAP-08**: Multi-language (I18N) Rendering.

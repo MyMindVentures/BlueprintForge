@@ -3,8 +3,7 @@ import { LLMSettings, OpenRouterModel } from "../types";
 import { testOpenRouterConnection } from "../services/openRouterClient";
 import { syncOpenRouterModels, mergeSyncedModels, validateSyncedModels } from "../services/openRouterModelService";
 import { generateModelIntelligence } from "../services/modelIntelligenceService";
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from '../services/firebase';
+import { apiRequest } from '../services/apiClient';
 import { useAuth } from './useAuth';
 
 export interface SyncStatus {
@@ -28,7 +27,7 @@ export interface SyncStatus {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function useLLMSettings(
-  settings: LLMSettings, 
+  settings: LLMSettings,
   setSettings: (s: LLMSettings | ((prev: LLMSettings) => LLMSettings)) => void,
   agentNames: string[]
 ) {
@@ -40,18 +39,15 @@ export function useLLMSettings(
   const settingsRef = useRef(settings);
   useEffect(() => { settingsRef.current = settings; }, [settings]);
 
-  const updateSettingsFirebase = async (updates: Partial<LLMSettings>) => {
+  const updateSettingsPostgres = async (updates: Partial<LLMSettings>) => {
     if (!user) {
       setSettings(prev => ({ ...prev, ...updates }));
       return;
     }
     try {
-      await updateDoc(doc(db, 'settings', user.uid), {
-        ...updates,
-        updated_at: serverTimestamp()
-      });
+      await apiRequest('/api/settings', { method: 'PATCH', user: { id: user.uid, name: user.displayName || user.uid, role: 'vibe_coder' }, body: JSON.stringify({ data: updates }) });
     } catch (e) {
-      handleFirestoreError(e, OperationType.UPDATE, `settings/${user.uid}`);
+      console.error('PostgreSQL settings update failed:', e);
     }
   };
 
@@ -59,27 +55,27 @@ export function useLLMSettings(
     const current = settingsRef.current;
     if (!current.openRouterApiKey) throw new Error("API Key missing.");
 
-    setSyncStatus({ 
-      phase: "syncing", 
-      total: 0, 
-      completed: 0, 
-      failed: 0, 
-      mappingFailed: 0, 
-      currentModelName: "Synchronizing manifest...", 
-      error: null 
+    setSyncStatus({
+      phase: "syncing",
+      total: 0,
+      completed: 0,
+      failed: 0,
+      mappingFailed: 0,
+      currentModelName: "Synchronizing manifest...",
+      error: null
     });
 
     try {
       const { models: fetchedModels, failedCount } = await syncOpenRouterModels(current.openRouterApiKey);
-      
+
       if (!validateSyncedModels(fetchedModels)) {
         throw new Error("OpenRouter manifest validation failed: Invalid or empty model set.");
       }
 
       const mergedModels = mergeSyncedModels(current.models, fetchedModels);
 
-      await updateSettingsFirebase({ 
-        models: mergedModels, 
+      await updateSettingsPostgres({
+        models: mergedModels,
         lastSyncedAt: new Date().toISOString(),
         connectionStatus: "Connected",
         lastTestedAt: new Date().toISOString()
@@ -90,9 +86,9 @@ export function useLLMSettings(
       // Automatically generate intelligence for missing models
       await generateIntelligenceInternal(mergedModels, false);
     } catch (e: any) {
-      setSyncStatus(prev => ({ 
-        ...prev, 
-        phase: "error", 
+      setSyncStatus(prev => ({
+        ...prev,
+        phase: "error",
         error: e.message,
         errorDetail: {
           status: e.message.includes("401") ? 401 : e.message.includes("402") ? 402 : e.message.includes("429") ? 429 : 500,
@@ -121,12 +117,12 @@ export function useLLMSettings(
       return;
     }
 
-    setSyncStatus(prev => ({ 
-      ...prev, 
-      phase: "intelligence", 
-      total: targets.length, 
-      completed: 0, 
-      failed: 0 
+    setSyncStatus(prev => ({
+      ...prev,
+      phase: "intelligence",
+      total: targets.length,
+      completed: 0,
+      failed: 0
     }));
 
     let completedCounter = 0;
@@ -134,28 +130,28 @@ export function useLLMSettings(
 
     for (const model of targets) {
       setSyncStatus(prev => ({ ...prev, currentModelName: model.name }));
-      
+
       try {
         const analysisModelId = settingsRef.current.defaultModelId || "openai/gpt-4o-mini";
         const intelligence = await generateModelIntelligence(apiKey, analysisModelId, model, agentNames);
-        
-        const latestModels = settingsRef.current.models.map(m => m.id === model.id ? { 
-          ...m, 
-          ...intelligence, 
-          intelligenceStatus: "Ready" as const, 
-          updatedIntelligenceAt: new Date().toISOString() 
+
+        const latestModels = settingsRef.current.models.map(m => m.id === model.id ? {
+          ...m,
+          ...intelligence,
+          intelligenceStatus: "Ready" as const,
+          updatedIntelligenceAt: new Date().toISOString()
         } : m);
 
-        await updateSettingsFirebase({ models: latestModels });
+        await updateSettingsPostgres({ models: latestModels });
         completedCounter++;
       } catch (e: any) {
         failedCounter++;
-        const latestModels = settingsRef.current.models.map(m => m.id === model.id ? { 
-          ...m, 
-          intelligenceStatus: "Failed" as const, 
-          intelligenceError: e.message 
+        const latestModels = settingsRef.current.models.map(m => m.id === model.id ? {
+          ...m,
+          intelligenceStatus: "Failed" as const,
+          intelligenceError: e.message
         } : m);
-        await updateSettingsFirebase({ models: latestModels });
+        await updateSettingsPostgres({ models: latestModels });
       }
       setSyncStatus(prev => ({ ...prev, completed: completedCounter, failed: failedCounter }));
     }
@@ -167,10 +163,10 @@ export function useLLMSettings(
   const testConnection = async (key: string) => {
     try {
       await testOpenRouterConnection(key);
-      await updateSettingsFirebase({ openRouterApiKey: key, apiKeySaved: true, connectionStatus: "Connected", lastTestedAt: new Date().toISOString() });
+      await updateSettingsPostgres({ openRouterApiKey: key, apiKeySaved: true, connectionStatus: "Connected", lastTestedAt: new Date().toISOString() });
       return { success: true };
     } catch (e: any) {
-      await updateSettingsFirebase({ connectionStatus: "Error", lastTestedAt: new Date().toISOString() });
+      await updateSettingsPostgres({ connectionStatus: "Error", lastTestedAt: new Date().toISOString() });
       throw e;
     }
   };

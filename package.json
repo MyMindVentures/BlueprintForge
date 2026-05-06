@@ -16,7 +16,11 @@
     "test:ui": "vitest --ui",
     "test:smoke": "playwright test",
     "test:all": "vitest run && playwright test",
-    "debug:test": "vitest run src/services src/utils && playwright test tests/smoke"
+    "debug:test": "vitest run src/services src/utils && playwright test tests/smoke",
+    "db:generate": "echo \"No code generation required for direct PostgreSQL SQL migrations.\"",
+    "db:migrate": "tsx scripts/db-migrate.ts",
+    "db:seed": "tsx scripts/db-seed.ts",
+    "db:studio": "echo \"No database studio is configured for the direct PostgreSQL layer. Use Railway Data tab or psql.\""
   },
   "dependencies": {
     "@playwright/test": "^1.59.1",

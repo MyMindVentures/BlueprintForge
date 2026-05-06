@@ -2,8 +2,7 @@ import { useCallback } from "react";
 import { Project, AIAgent, PipelineStep, PipelineJob, LLMSettings } from "../types";
 import { runAgentStep } from "../services/agentService";
 import { getShortTime, getCurrentTimestamp } from "../utils/time";
-import { doc, updateDoc, serverTimestamp, getDoc } from "firebase/firestore";
-import { db, handleFirestoreError, OperationType } from "../services/firebase";
+import { apiRequest } from "../services/apiClient";
 
 /**
  * Handles the use pipeline workflow for BlueprintForge users or services.
@@ -45,28 +44,19 @@ export function usePipeline(
       logs: [{ timestamp: getShortTime(), step: "SYSTEM", message: "Initiating pipeline..." }]
     };
 
-    const updateProjectFirebase = async (id: string, updates: Partial<Project>) => {
-      try {
-        await updateDoc(doc(db, 'projects', id), {
-          ...updates,
-          updated_at: serverTimestamp()
-        });
-      } catch (e) {
-        handleFirestoreError(e, OperationType.UPDATE, `projects/${id}`);
-      }
+    const updateProjectPostgres = async (id: string, updates: Partial<Project>) => {
+      await apiRequest('/api/workspace/projects/' + id, { method: 'PATCH', body: JSON.stringify({ data: { ...updates, updatedAt: new Date().toISOString() } }) });
+      setProjects(prev => prev.map(project => project.id === id ? { ...project, ...updates, updatedAt: new Date().toISOString() } : project));
     };
 
-    const getLatestProject = async (id: string) => {
-      const snap = await getDoc(doc(db, 'projects', id));
-      return snap.exists() ? { id: snap.id, ...snap.data() } as Project : null;
-    };
+    const getLatestProject = async (id: string) => projects.find(project => project.id === id) || null;
 
-    await updateProjectFirebase(projectId, { pipeline: initialJob });
+    await updateProjectPostgres(projectId, { pipeline: initialJob });
 
     const log = async (step: string, message: string) => {
       const latest = await getLatestProject(projectId);
       if (latest?.pipeline) {
-        await updateProjectFirebase(projectId, {
+        await updateProjectPostgres(projectId, {
           pipeline: {
             ...latest.pipeline,
             logs: [...latest.pipeline.logs, { timestamp: getShortTime(), step, message }]
@@ -88,7 +78,7 @@ export function usePipeline(
             startedAt: status === "Running" ? getCurrentTimestamp() : s.startedAt 
           } : s
         );
-        await updateProjectFirebase(projectId, {
+        await updateProjectPostgres(projectId, {
           pipeline: {
             ...latest.pipeline,
             steps: nextSteps,
@@ -102,35 +92,35 @@ export function usePipeline(
       await setStepStatus("step1", "Running");
       await log("AGENT-01", "Starting analysis...");
       const res01 = await runAgentStep({ rawConcept: project.rawConcept, agent: agents.find(a => a.code === "AGENT-01")!, openRouterApiKey: apiKey, modelId });
-      await updateProjectFirebase(projectId, { cardStructure: res01.app.sections, markdownExport: res01.app.markdown, status: "Converted" });
+      await updateProjectPostgres(projectId, { cardStructure: res01.app.sections, markdownExport: res01.app.markdown, status: "Converted" });
       await setStepStatus("step1", "Success", "Structure mapped.");
 
       await setStepStatus("step2", "Running");
       await log("AGENT-02", "Validating...");
       const res02 = await runAgentStep({ rawConcept: `Spec: ${res01.app.markdown}`, agent: agents.find(a => a.code === "AGENT-02")!, openRouterApiKey: apiKey, modelId });
-      await updateProjectFirebase(projectId, { validationReport: res02.app.markdown });
+      await updateProjectPostgres(projectId, { validationReport: res02.app.markdown });
       await setStepStatus("step2", "Success", "Validation complete.");
 
       await setStepStatus("step3", "Running");
       const res03 = await runAgentStep({ rawConcept: `Improve this: ${res01.app.markdown}`, agent: agents.find(a => a.code === "AGENT-04")!, openRouterApiKey: apiKey, modelId });
-      await updateProjectFirebase(projectId, { cardStructure: res03.app.sections, markdownExport: res03.app.markdown });
+      await updateProjectPostgres(projectId, { cardStructure: res03.app.sections, markdownExport: res03.app.markdown });
       await setStepStatus("step3", "Success");
 
       await setStepStatus("step4", "Running");
       const res04 = await runAgentStep({ rawConcept: `Finalize markdown: ${JSON.stringify(res03.app.sections)}`, agent: agents.find(a => a.code === "AGENT-03")!, openRouterApiKey: apiKey, modelId });
-      await updateProjectFirebase(projectId, { markdownExport: res04.app.markdown });
+      await updateProjectPostgres(projectId, { markdownExport: res04.app.markdown });
       await setStepStatus("step4", "Success");
 
       await setStepStatus("step5", "Running");
       await log("AGENT-05", "Writing polished concept...");
       const polishedConceptPrompt = `Based on the original raw concept:\n\n${project.rawConcept}\n\nGenerated Markdown Spec:\n\n${res04.app.markdown}\n\nValidation Report:\n\n${res02.app.markdown}\n\nOptimization Notes:\n\n${res03.app.markdown}\n\nCard Structure:\n\n${JSON.stringify(res03.app.sections, null, 2)}\n\nRewrite the original raw concept into a clear, professional, and comprehensive project brief.`;
       const res05 = await runAgentStep({ rawConcept: polishedConceptPrompt, agent: agents.find(a => a.code === "AGENT-05")!, openRouterApiKey: apiKey, modelId });
-      await updateProjectFirebase(projectId, { polishedConcept: res05.app.markdown });
+      await updateProjectPostgres(projectId, { polishedConcept: res05.app.markdown });
       await setStepStatus("step5", "Success", "Polished concept generated.");
       
       const last = await getLatestProject(projectId);
       if (last?.pipeline) {
-        await updateProjectFirebase(projectId, {
+        await updateProjectPostgres(projectId, {
           pipeline: { ...last.pipeline, status: "Success", currentStepId: null }
         });
       }
@@ -143,7 +133,7 @@ export function usePipeline(
       if (last?.pipeline) {
         const stepId = last.pipeline.currentStepId;
         const nextSteps = last.pipeline.steps.map(s => s.id === stepId ? { ...s, status: "Failed" as const, error: e.message } : s);
-        await updateProjectFirebase(projectId, {
+        await updateProjectPostgres(projectId, {
           pipeline: { ...last.pipeline, steps: nextSteps, status: "Failed" as const }
         });
       }

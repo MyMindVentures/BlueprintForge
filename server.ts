@@ -2,6 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
+import { registerApiRoutes } from "./src/server/api";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +21,8 @@ async function startServer() {
       timestamp: new Date().toISOString()
     });
   });
+
+  registerApiRoutes(app);
 
   app.all("/api/ai/*", async (req, res) => {
     try {

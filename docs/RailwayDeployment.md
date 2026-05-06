@@ -11,10 +11,26 @@ Set these in the Railway service environment variable panel:
 | `OPENROUTER_API_KEY` | Yes | Server-side OpenRouter key used by AI ticket polishing, model sync, diagnostics, and model intelligence calls. |
 | `NODE_ENV` | Yes | Set to `production` so the Express server serves the built frontend from `dist`. |
 | `GITHUB_TOKEN` | If GitHub automation is enabled | Token for creating issues, syncing PR metadata, or other GitHub automation. Do not expose it to browser code. |
-| `DATABASE_URL` | If the active persistence layer requires it | Database connection string for production persistence. |
+| `DATABASE_URL` | Yes | Railway PostgreSQL connection string used by the server-side persistence layer. |
 | `APP_URL` | Recommended | Canonical public URL for OpenRouter referer metadata, OAuth callbacks, and generated links. |
 
 Do not add `VITE_` to secret variables. Vite only exposes variables prefixed with `VITE_`, so reserve that prefix for intentionally public values.
+
+## PostgreSQL migrations
+
+BlueprintForge AI stores production app data in Railway PostgreSQL. Add a Railway PostgreSQL plugin/service and ensure the web service receives `DATABASE_URL`. Before the first deploy, and before deploys containing new migration files, run:
+
+```bash
+npm run db:migrate
+```
+
+You can run this manually from a Railway shell/job or configure it as a pre-deploy step before `npm run start`. Optional demo starter data can be inserted with:
+
+```bash
+npm run db:seed
+```
+
+Demo seed/reset logic must only affect rows marked `is_demo` or a specific `demo_data_set_id`.
 
 ## Build command
 
@@ -104,6 +120,7 @@ Keep database migrations and destructive persistence changes separate from routi
 ## Known temporary limitations
 
 - GitHub automation requires `GITHUB_TOKEN` only when the related issue/PR automation is active.
-- `DATABASE_URL` is documented for production persistence, but the current app still uses its existing persistence integrations unless a database-backed service is added.
+- Firebase is retained temporarily for authentication only; Firestore is not the primary production data store.
+- Realtime Firestore listeners were replaced with API fetch plus polling. Future upgrades can use WebSockets, Server-Sent Events, or PostgreSQL notifications.
 - Some OpenRouter settings can be entered through the UI for diagnostics and user-managed workflows. The production `OPENROUTER_API_KEY` must remain server-side and must not be bundled into frontend code.
 - The smoke test suite is a development aid and may need updates as the public landing and navigation UX evolves.

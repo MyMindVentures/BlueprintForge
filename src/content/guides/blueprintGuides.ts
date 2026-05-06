@@ -175,7 +175,7 @@ export const screenGuidance = {
     nextAction: 'Builders should complete a profile, choose an Open request and claim it when ready.',
     disabledReason: 'Claiming is disabled for visitors, incomplete profiles, already claimed tickets or non-open statuses.',
     empty: 'No requests match this filter. Try All, Open or Current Focus.',
-    loading: 'Listening for live Firestore build request updates.',
+    loading: 'Refreshing PostgreSQL-backed build request updates.',
     error: 'Refresh or check network/auth access if live updates cannot load.',
     success: 'Updates, PR links and review state are shown on each ticket.'
   },
@@ -215,12 +215,12 @@ export const screenGuidance = {
   adminPersistence: {
     title: 'Admin Database / Persistence Layer',
     purpose: 'Explain what data is persisted and which admin actions modify shared records.',
-    state: 'Build requests, profiles, claims, PR links, stars, versions and settings persist in Firestore/local settings as implemented.',
+    state: 'Build requests, profiles, claims, PR links, stars, versions and settings persist in PostgreSQL as implemented.',
     nextAction: 'Use admin screens for protected writes and read errors before retrying.',
     disabledReason: 'Admin database actions are disabled without founder/admin access.',
     empty: 'No records means the platform has not received data for that collection yet.',
-    loading: 'Live listeners are waiting for Firestore snapshots.',
-    error: 'Firestore errors should name the failed operation and collection so admins know where to investigate.',
+    loading: 'Polling refresh is waiting for PostgreSQL-backed API responses.',
+    error: 'PostgreSQL/API errors should name the failed operation and table or endpoint so admins know where to investigate.',
     success: 'Successful writes update the live UI and persisted records.'
   }
 };
