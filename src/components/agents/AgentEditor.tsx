@@ -16,6 +16,10 @@ interface AgentEditorProps {
   onDelete: (id: string) => void;
 }
 
+/**
+ * Handles the agent editor workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function AgentEditor({ agent, llmSettings, onUpdate, onBack, onDelete }: AgentEditorProps) {
   const toast = useToast();
   const [activePanel, setActivePanel] = useState<"general" | "logic" | "parameters">("general");

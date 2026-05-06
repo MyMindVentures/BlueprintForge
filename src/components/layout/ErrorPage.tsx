@@ -8,6 +8,10 @@ interface ErrorPageProps {
   message?: string;
 }
 
+/**
+ * Handles the error page workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ErrorPage({ onNavigate, message = "The vision you are looking for has not been built yet." }: ErrorPageProps) {
   return (
     <div className="flex-1 overflow-auto bg-[#050505] text-white flex items-center justify-center min-h-[50vh]">

@@ -17,10 +17,17 @@ import { GuidePage } from "./components/guide/GuidePage";
 import { ErrorPage } from "./components/layout/ErrorPage";
 import { useWorkspace } from "./hooks/useWorkspace";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
-import { ToastProvider, useToast } from "./components/ui/Toast";
+import { ToastProvider } from "./components/ui/Toast";
+import { HelpBlock } from "./components/help/HelpBlock";
+import { LoadingState } from "./components/state/LoadingState";
+import { screenGuidance } from "./content/guides/blueprintGuides";
 
 export type AppView = "landing" | "bootstrap" | "guide" | "projects" | "agents" | "llm" | "diagnostics" | "feed_admin" | "feed_coder" | "coder_profile" | "coder_directory" | "vision" | "not_found";
 
+/**
+ * Mounts global providers for toast feedback and authentication.
+ * Used once at application startup so every screen can read auth state and show action results.
+ */
 export default function App() {
   return (
     <ToastProvider>
@@ -31,6 +38,10 @@ export default function App() {
   );
 }
 
+/**
+ * Routes users between public, builder and founder screens while preserving role-gated access.
+ * Used after providers initialize and adds universal guidance so every major view explains state and next actions.
+ */
 function AppContent() {
   const { user, profile, loading, signIn } = useAuth();
   const {
@@ -63,6 +74,24 @@ function AppContent() {
   const activeProject = activeProjectId ? projects.find(p => p.id === activeProjectId) : null;
   const activeAgent = activeAgentId ? agents.find(a => a.id === activeAgentId) : null;
 
+  const guidanceByView = {
+    landing: screenGuidance.landing,
+    bootstrap: screenGuidance.bootstrap,
+    guide: screenGuidance.guide,
+    projects: screenGuidance.adminPersistence,
+    agents: screenGuidance.adminPersistence,
+    llm: screenGuidance.settings,
+    diagnostics: screenGuidance.settings,
+    feed_admin: screenGuidance.liveFeed,
+    feed_coder: screenGuidance.liveFeed,
+    coder_profile: screenGuidance.profile,
+    coder_directory: screenGuidance.profile,
+    vision: { ...screenGuidance.guide, title: 'Founder Vision', purpose: 'Connect strategic product direction to visible build progress.', nextAction: 'Read the current vision, then open Current Founder Focus to see execution.' },
+    not_found: { ...screenGuidance.guide, title: 'Error / Not Found', purpose: 'Explain that the requested screen is unavailable and offer safe navigation.', nextAction: 'Return to Landing, Guide or Live Build Feed.' }
+  } as const;
+
+  const currentGuidance = guidanceByView[view];
+
   if (loading || !isLoaded) {
     return (
       <div className="min-h-screen bg-[#050505] flex items-center justify-center">
@@ -73,9 +102,10 @@ function AppContent() {
                 <div className="w-12 h-12 bg-accent rounded-2xl animate-pulse" />
              </div>
           </div>
-          <div className="text-text-dim font-black text-xs uppercase tracking-[0.3em] animate-pulse">
-            {loading ? 'Authentication Initializing' : 'Architect System Initializing'}
-          </div>
+          <LoadingState
+            title={loading ? 'Authentication initializing' : 'Architect system initializing'}
+            description={loading ? 'Checking whether you are a visitor, builder or founder before enabling actions.' : 'Loading persisted projects, agents, settings and live platform state.'}
+          />
         </div>
       </div>
     );
@@ -90,6 +120,16 @@ function AppContent() {
 
   return (
     <AppShell currentView={view} setView={(v) => { setView(v); setActiveProjectId(null); setActiveAgentId(null); }}>
+      <div className="px-4 pt-4 md:px-8">
+        <HelpBlock
+          title={currentGuidance.title}
+          purpose={currentGuidance.purpose}
+          state={currentGuidance.state}
+          nextAction={currentGuidance.nextAction}
+          disabledReason={currentGuidance.disabledReason}
+          className="mx-auto max-w-6xl"
+        />
+      </div>
       {/* Landing Page */}
       {view === "landing" && <LandingPage onEnter={signIn} />}
 

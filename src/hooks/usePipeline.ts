@@ -5,6 +5,10 @@ import { getShortTime, getCurrentTimestamp } from "../utils/time";
 import { doc, updateDoc, serverTimestamp, getDoc } from "firebase/firestore";
 import { db, handleFirestoreError, OperationType } from "../services/firebase";
 
+/**
+ * Handles the use pipeline workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function usePipeline(
   projects: Project[],
   setProjects: (p: Project[] | ((prev: Project[]) => Project[])) => void,

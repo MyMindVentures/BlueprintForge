@@ -44,6 +44,10 @@ export interface DebugErrorInfo {
 
 let lastDebugError: DebugErrorInfo | null = null;
 
+/**
+ * Handles the get last debug error workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function getLastDebugError(): DebugErrorInfo | null {
   return lastDebugError;
 }
@@ -78,6 +82,10 @@ async function handleResponse(response: Response, endpoint: string = "unknown", 
   return response.json();
 }
 
+/**
+ * Handles the test open router connection workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function testOpenRouterConnection(apiKey: string): Promise<boolean> {
   const url = "/api/ai/models";
   const response = await fetch(url, { method: "GET", headers: { "Authorization": `Bearer ${apiKey}` } });
@@ -94,6 +102,10 @@ export interface ChatCompletionParams {
   responseFormat?: { type: "json_object" };
 }
 
+/**
+ * Handles the call open router chat completion workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function callOpenRouterChatCompletion(params: ChatCompletionParams): Promise<string> {
   let { apiKey, model, messages, temperature, maxTokens, responseFormat } = params;
   

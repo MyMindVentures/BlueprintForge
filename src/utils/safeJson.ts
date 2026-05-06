@@ -6,6 +6,10 @@ export function safeJsonParse<T>(json: string, fallback: T): T {
   }
 }
 
+/**
+ * Handles the safe json stringify workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function safeJsonStringify(data: any): string {
   try {
     return JSON.stringify(data);

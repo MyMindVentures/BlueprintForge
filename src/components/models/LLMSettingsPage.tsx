@@ -40,6 +40,10 @@ interface LLMSettingsProps {
   onOpenDiagnostics?: () => void;
 }
 
+/**
+ * Handles the llmsettings page workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function LLMSettingsPage({ 
   settings, onUpdate, onSync, onTestConnection, onGenerateIntelligence, onRegenerateAll, syncStatus, onOpenDiagnostics 
 }: LLMSettingsProps) {

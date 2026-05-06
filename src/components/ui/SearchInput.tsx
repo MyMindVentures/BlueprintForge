@@ -8,6 +8,10 @@ interface SearchInputProps {
   className?: string;
 }
 
+/**
+ * Handles the search input workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function SearchInput({ value, onChange, placeholder = "Search...", className = "" }: SearchInputProps) {
   return (
     <div className={`relative group ${className}`}>

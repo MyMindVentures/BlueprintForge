@@ -8,6 +8,10 @@ interface NewVersionPopupProps {
   onOpenChangelog: () => void;
 }
 
+/**
+ * Handles the new version popup workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function NewVersionPopup({ onOpenChangelog }: NewVersionPopupProps) {
   const { profile, acknowledgeVersion } = useAuth();
   const { latestVersion } = useGuide();

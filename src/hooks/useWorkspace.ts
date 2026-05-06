@@ -14,6 +14,10 @@ import { useLLMSettings } from "./useLLMSettings";
 import { usePipeline } from "./usePipeline";
 import { useImagePipeline } from "./useImagePipeline";
 
+/**
+ * Handles the use workspace workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useWorkspace() {
   const { user, profile } = useAuth();
   const [isLoaded, setIsLoaded] = useState(false);

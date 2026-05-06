@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useBuildFeed } from '../../hooks/useBuildFeed';
 import { ShieldCheck, Search, Globe, Code2, User, PlayCircle, AlertCircle } from 'lucide-react';
 
+/**
+ * Handles the vibe coder directory workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function VibeCoderDirectory() {
   const { profiles, currentUser, verifyProfile, requests } = useBuildFeed();
   const [searchTerm, setSearchTerm] = useState('');

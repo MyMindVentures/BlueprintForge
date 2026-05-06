@@ -18,6 +18,10 @@ interface ProjectOutputTabsProps {
   onUsePolishedConcept?: () => void;
 }
 
+/**
+ * Handles the project output tabs workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ProjectOutputTabs({ project, activeTab, onCopy, onDownload, runImagePipeline, onUsePolishedConcept }: ProjectOutputTabsProps) {
   
   if (activeTab === 'input') {

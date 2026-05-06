@@ -1,3 +1,7 @@
+/**
+ * Handles the download text file workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function downloadTextFile(filename: string, text: string) {
   const element = document.createElement("a");
   const file = new Blob([text], { type: "text/plain" });

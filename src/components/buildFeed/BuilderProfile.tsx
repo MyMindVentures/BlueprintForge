@@ -3,6 +3,10 @@ import { useBuildFeed } from '../../hooks/useBuildFeed';
 import { Save, CheckCircle2, AlertCircle, Star, Github } from 'lucide-react';
 import { useToast } from '../ui/Toast';
 
+/**
+ * Handles the builder profile workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function BuilderProfile() {
   const { currentUser, currentUserProfile, saveProfile } = useBuildFeed();
   const { success } = useToast();

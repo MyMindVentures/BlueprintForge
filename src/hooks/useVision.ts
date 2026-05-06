@@ -6,6 +6,10 @@ import { db, handleFirestoreError, OperationType } from '../services/firebase';
 import { FounderVision } from '../types/vision';
 import { useAuth } from './useAuth';
 
+/**
+ * Handles the use vision workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useVision() {
   const [visions, setVisions] = useState<FounderVision[]>([]);
   const { profile: currentUser } = useAuth();

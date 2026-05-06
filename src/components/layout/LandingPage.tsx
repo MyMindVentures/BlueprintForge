@@ -2,6 +2,10 @@ import React from "react";
 import { motion } from "motion/react";
 import { Cpu, Zap, Target, Users, ArrowRight } from "lucide-react";
 
+/**
+ * Handles the landing page workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function LandingPage({ onEnter }: { onEnter?: () => void }) {
   return (
     <div className="flex-1 overflow-auto bg-[#050505] text-white scrollbar-thin selection:bg-accent/30 text-balance">

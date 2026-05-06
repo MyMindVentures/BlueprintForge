@@ -15,6 +15,10 @@ interface AgentListProps {
   onSetDefault: (id: string) => void;
 }
 
+/**
+ * Handles the agent list workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function AgentList({ agents, onNew, onOpen, onDelete, onDuplicate, onSetDefault }: AgentListProps) {
   const [search, setSearch] = useState("");
 

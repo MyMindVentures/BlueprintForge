@@ -6,6 +6,10 @@ interface StartHereProps {
   onAction: (action: 'profile' | 'focus' | 'repo') => void;
 }
 
+/**
+ * Handles the start here workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function StartHere({ onAction }: StartHereProps) {
   const steps = [
     {

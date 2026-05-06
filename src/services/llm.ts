@@ -69,6 +69,10 @@ export interface DebugErrorInfo {
 
 let lastDebugError: DebugErrorInfo | null = null;
 
+/**
+ * Handles the get last debug error workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function getLastDebugError(): DebugErrorInfo | null {
   return lastDebugError;
 }
@@ -177,6 +181,10 @@ export interface ChatCompletionParams {
   responseFormat?: { type: "json_object" };
 }
 
+/**
+ * Handles the call open router chat completion workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function callOpenRouterChatCompletion(params: ChatCompletionParams): Promise<string> {
   const { apiKey, model, messages, temperature, maxTokens, responseFormat } = params;
   const url = "https://openrouter.ai/api/v1/chat/completions";
@@ -291,6 +299,10 @@ export interface ConversionParams {
   allAgents?: AIAgent[];
 }
 
+/**
+ * Handles the convert project to spec workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export async function convertProjectToSpec(params: ConversionParams): Promise<AppSpec> {
   const { rawConcept, agent, openRouterApiKey, modelId, allAgents } = params;
 
@@ -440,6 +452,10 @@ async function runOrchestratorPipeline(params: ConversionParams, agents: AIAgent
 
 // Deprecated functions for compatibility during transition
 export const convertWithAgent = convertProjectToSpec;
+/**
+ * Handles the test model connection workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export const testModelConnection = async (apiKey: string) => {
     try {
         const models = await fetchOpenRouterModels(apiKey);

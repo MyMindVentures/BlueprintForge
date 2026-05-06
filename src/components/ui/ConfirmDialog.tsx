@@ -14,6 +14,10 @@ interface ConfirmDialogProps {
   variant?: "danger" | "primary";
 }
 
+/**
+ * Handles the confirm dialog workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ConfirmDialog({
   isOpen,
   title,

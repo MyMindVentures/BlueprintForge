@@ -10,6 +10,10 @@ interface ProjectHeaderProps {
   setActiveTab: (tab: any) => void;
 }
 
+/**
+ * Handles the project header workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function ProjectHeader({ projectName, onBack, onSave, tabs, activeTab, setActiveTab }: ProjectHeaderProps) {
   return (
     <header className="flex flex-col md:flex-row md:h-14 glass items-start md:items-center justify-between p-4 md:px-6 z-20 border-x-0 border-t-0 bg-black/20 backdrop-blur-3xl shrink-0 gap-4 md:gap-0">

@@ -6,6 +6,10 @@ import {
 } from "firebase/firestore";
 import { db, handleFirestoreError, OperationType } from "../services/firebase";
 
+/**
+ * Handles the use agents workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function useAgents(userId: string | undefined) {
   const addAgent = useCallback(async () => {
     if (!userId) return;

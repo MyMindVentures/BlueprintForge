@@ -6,6 +6,10 @@ interface GlassPanelProps {
   id?: string;
 }
 
+/**
+ * Handles the glass panel workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function GlassPanel({ children, className = "", id }: GlassPanelProps) {
   return (
     <div 

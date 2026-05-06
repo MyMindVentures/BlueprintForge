@@ -8,6 +8,10 @@ export interface ImagePipelineParams {
   onLog: (message: string) => void;
 }
 
+/**
+ * Handles the run screen image pipeline workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export const runScreenImagePipeline = async ({ 
   project, 
   onProgress, 

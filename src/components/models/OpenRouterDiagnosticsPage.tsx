@@ -17,6 +17,10 @@ interface DiagnosticsProps {
   onBack: () => void;
 }
 
+/**
+ * Handles the open router diagnostics page workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function OpenRouterDiagnosticsPage({ llmSettings, onBack }: DiagnosticsProps) {
   const [testStatus, setTestStatus] = useState<"idle" | "testing" | "success" | "error">("idle");
   const [errorDetails, setErrorDetails] = useState<string | null>(null);

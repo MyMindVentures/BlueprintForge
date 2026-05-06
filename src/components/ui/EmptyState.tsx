@@ -8,6 +8,10 @@ interface EmptyStateProps {
   action?: React.ReactNode;
 }
 
+/**
+ * Handles the empty state workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function EmptyState({ icon: Icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center p-20 text-center space-y-6">

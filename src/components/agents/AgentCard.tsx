@@ -14,6 +14,10 @@ interface AgentCardProps {
   onSetDefault: (id: string) => void;
 }
 
+/**
+ * Handles the agent card workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }: AgentCardProps) {
   return (
     <GlassCard 

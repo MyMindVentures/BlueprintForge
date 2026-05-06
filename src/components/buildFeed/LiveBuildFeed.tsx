@@ -8,6 +8,10 @@ import { StartHere } from './StartHere';
 import { BuildStatus } from '../../types/buildFeed';
 import { StatusBadge } from '../ui/StatusBadge';
 
+/**
+ * Handles the live build feed workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function LiveBuildFeed() {
   const { 
     requests, updates, currentUser, currentUserProfile, 
@@ -48,7 +52,14 @@ export function LiveBuildFeed() {
     });
   }, [requests, filter]);
   
-  const canClaim = role === 'vibe_coder' && currentUserProfile && currentUserProfile.status !== 'Incomplete Profile';
+  const canClaim = role === 'vibe_coder' && Boolean(currentUserProfile) && currentUserProfile?.status !== 'Incomplete Profile';
+  const claimDisabledReason = role === 'anonymous'
+    ? 'Sign in and create a builder profile before claiming work.'
+    : !currentUserProfile
+      ? 'Create your builder profile before claiming a request.'
+      : currentUserProfile.status === 'Incomplete Profile'
+        ? 'Complete required profile fields to become eligible to claim.'
+        : 'This request can be claimed when it is Open and unclaimed.';
 
   return (
     <div className="flex-1 overflow-auto bg-[#0A0A0A] p-4 md:p-8 space-y-12 scrollbar-thin">
@@ -149,11 +160,13 @@ export function LiveBuildFeed() {
 
           <div className="space-y-6">
             {filteredRequests.length === 0 ? (
-              <div className="text-center py-24 bg-[#111] border border-white/5 rounded-[40px] border-dashed">
+              <div className="text-center py-24 bg-[#111] border border-white/5 rounded-[40px] border-dashed space-y-6">
                 <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                   <Zap size={24} className="text-text-dim" />
                 </div>
+                <StatusBadge status="Read" label="Empty State" />
                 <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">No matching requests found in the stream.</p>
+                <p className="text-xs text-white/45 max-w-md mx-auto">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
                 <button 
                   onClick={() => setFilter('All')}
                   className="mt-4 text-accent text-[10px] font-black uppercase tracking-widest hover:underline"
@@ -272,14 +285,18 @@ export function LiveBuildFeed() {
                         </div>
                         
                         {req.status === 'Open' && role !== 'admin' && (
-                          <div className="pt-4">
+                          <div className="pt-4 space-y-3">
                             <button
                               onClick={() => claimRequest(req.id)}
-                              disabled={!canClaim && role === 'vibe_coder'}
+                              disabled={!canClaim}
+                              title={!canClaim ? claimDisabledReason : 'Claim this Open request and start the builder workflow.'}
                               className="w-full md:w-auto px-12 py-3 bg-accent text-white rounded-[20px] text-xs font-black uppercase tracking-[0.2em] hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:grayscale disabled:opacity-50"
                             >
-                              {role === 'anonymous' ? "Login to Architect" : canClaim ? "Claim this Request" : "Setup Profile to Claim"}
+                              {role === 'anonymous' ? "Sign in to claim this request" : canClaim ? "Claim this request" : "Complete profile to claim"}
                             </button>
+                            {!canClaim && (
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-300/80">Why disabled: {claimDisabledReason}</p>
+                            )}
                           </div>
                         )}
                       </div>

@@ -10,6 +10,10 @@ import { createGithubIssue } from '../../services/githubClient';
 import { formatDistanceToNow } from 'date-fns';
 import { StatusBadge } from '../ui/StatusBadge';
 
+/**
+ * Handles the live build feed admin workflow for BlueprintForge users or services.
+ * Used where this module coordinates UI state, persistence, integrations or user actions.
+ */
 export function LiveBuildFeedAdmin() {
   const { requests, publishRequest, updateRequest, toggleFocus, postDailySignal, dailySignals, profiles } = useBuildFeed();
   const { llmSettings } = useWorkspace();
