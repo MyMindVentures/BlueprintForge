@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Radio, Send, Clock, Quote } from 'lucide-react';
 import { DailySignal as DailySignalType } from '../../types/buildFeed';
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface DailySignalProps {
   signals: DailySignalType[];
@@ -14,6 +15,7 @@ interface DailySignalProps {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps) {
+  const { t, formatDate } = useI18n();
   const [isPosting, setIsPosting] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -36,8 +38,8 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
               <Radio size={20} className="text-indigo-400 animate-pulse" />
             </div>
             <div>
-              <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Daily Signal</h2>
-              <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-0.5">Founders Broadcast</p>
+              <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{t("notifications.dailySignal")}</h2>
+              <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-0.5">{t("notifications.foundersBroadcast")}</p>
             </div>
           </div>
 
@@ -46,7 +48,7 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
               onClick={() => setIsPosting(!isPosting)}
               className="text-[10px] font-black text-accent uppercase tracking-widest hover:text-white transition-colors"
             >
-              {isPosting ? 'Cancel' : 'Post Signal'}
+              {isPosting ? t('buttons.cancel') : t('buttons.postSignal')}
             </button>
           )}
         </div>
@@ -63,7 +65,7 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="What should builders focus on today?"
+                placeholder={t("notifications.builderFocusPlaceholder")}
                 className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-accent/40 transition-colors min-h-[100px] resize-none"
                 autoFocus
               />
@@ -74,7 +76,7 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
                   className="flex items-center gap-2 px-6 py-2 rounded-xl bg-accent text-white text-xs font-bold uppercase tracking-widest hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <Send size={14} />
-                  Publish
+                  {t("buttons.publish")}
                 </button>
               </div>
             </motion.form>
@@ -96,15 +98,15 @@ export function DailySignal({ signals, isAdmin, onPostSignal }: DailySignalProps
                     <div className="flex items-center gap-4 text-[10px] text-text-dim font-bold uppercase tracking-widest">
                        <div className="flex items-center gap-1.5">
                          <Clock size={12} />
-                         <span>{new Date(latestSignal.created_at).toLocaleDateString()}</span>
+                         <span>{formatDate(latestSignal.created_at, { dateStyle: 'medium' })}</span>
                        </div>
-                       <span>— The Architect</span>
+                       <span>{t("notifications.theArchitect")}</span>
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="py-2 text-center">
-                  <p className="text-sm text-text-dim italic">Waiting for today's signal...</p>
+                  <p className="text-sm text-text-dim italic">{t("notifications.waitingForSignal")}</p>
                 </div>
               )}
             </motion.div>

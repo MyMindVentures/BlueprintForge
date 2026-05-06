@@ -15,7 +15,7 @@ import { useI18n } from '../../i18n/I18nProvider';
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function LiveBuildFeedAdmin() {
-  const { formatRelativeTime } = useI18n();
+  const { formatRelativeTime, t } = useI18n();
   const { requests, publishRequest, updateRequest, toggleFocus, postDailySignal, dailySignals, profiles } = useBuildFeed();
   const { llmSettings } = useWorkspace();
   const { settings: githubSettings } = useGithubSettings();
@@ -32,12 +32,12 @@ export function LiveBuildFeedAdmin() {
 
   const handlePolish = async () => {
     if (!rawInput.trim()) {
-      error("Please enter what you want to build.");
+      error(t("errors.enterBuildRequest"));
       return;
     }
     
     if (!llmSettings.openRouterApiKey) {
-      error("Missing OpenRouter API Key in OpenRouter Settings.");
+      error(t("errors.missingOpenRouterKeyInSettings"));
       return;
     }
 
@@ -57,10 +57,10 @@ export function LiveBuildFeedAdmin() {
         difficulty: parsed.difficulty || "Medium",
         type: parsed.type || "App Improvement"
       });
-      success("Build request polished!");
+      success(t("notifications.buildRequestPolished"));
       setIsEditing(false);
     } catch (e: any) {
-      error(`Error polishing request: ${e.message}`);
+      error(t("errors.polishingRequest", { message: e.message }));
     } finally {
       setIsPolishing(false);
     }
@@ -86,13 +86,13 @@ export function LiveBuildFeedAdmin() {
             github_sync_status: 'success',
             github_created_at: new Date().toISOString()
           });
-          success("Published and GitHub issue created!");
+          success(t("github.publishedAndIssueCreated"));
         } catch (err: any) {
           await updateRequest(newRequestId, { github_sync_status: 'failed' });
-          error(`Feed published, but GitHub issue creation failed: ${err.message}`);
+          error(t("github.issueCreationFailedAfterPublish", { message: err.message }));
         }
       } else {
-        success("Published to Builder Network!");
+        success(t("notifications.publishedToBuilderNetwork"));
       }
     } catch (e: any) {
       error(e.message);
@@ -107,7 +107,7 @@ export function LiveBuildFeedAdmin() {
     try {
       await postDailySignal(signalText);
       setSignalText('');
-      success("Daily Signal Broadcasted!");
+      success(t("notifications.dailySignalBroadcasted"));
     } catch (e: any) {
       error(e.message);
     } finally {
@@ -129,18 +129,18 @@ export function LiveBuildFeedAdmin() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
             <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center gap-4">
-              Founder Command Center
+              {t("notifications.founderCommandCenter")}
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             </h1>
             <p className="text-sm text-text-dim max-w-md leading-relaxed font-medium">
-              Architect the next phase of the project. Polish raw thoughts, broadcast signals, and manage focus.
+              {t("notifications.founderCommandDescription")}
             </p>
           </div>
           
           <div className="flex gap-4">
              <div className="bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-3 flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-[10px] font-black text-text-dim uppercase tracking-widest">Active Focus</p>
+                  <p className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("states.activeFocus")}</p>
                   <p className={`text-xl font-black ${focusedCount >= 3 ? 'text-accent' : 'text-white'}`}>{focusedCount}/3</p>
                 </div>
                 <div className={`w-2 h-10 rounded-full ${focusedCount >= 3 ? 'bg-accent' : 'bg-white/10'}`} />
@@ -154,16 +154,16 @@ export function LiveBuildFeedAdmin() {
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <Sparkles size={20} className="text-accent" />
-                <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Publish New Request</h2>
+                <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{t("notifications.publishNewRequest")}</h2>
               </div>
               
               <div className="bg-[#111] border border-white/10 rounded-[32px] p-6 md:p-8 space-y-6 shadow-2xl">
                 <label className="block space-y-2">
-                  <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-2">Raw Founder Input</span>
+                  <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-2">{t("notifications.rawFounderInput")}</span>
                   <textarea
                     value={rawInput}
                     onChange={(e) => setRawInput(e.target.value)}
-                    placeholder="Say what you want to build, change, or improve..."
+                    placeholder={t("notifications.rawFounderInputPlaceholder")}
                     className="w-full h-40 bg-black/40 border border-white/5 rounded-2xl p-6 text-sm text-white focus:outline-none focus:border-accent/40 resize-none placeholder:text-white/10 scrollbar-thin transition-colors"
                   />
                 </label>
@@ -174,7 +174,7 @@ export function LiveBuildFeedAdmin() {
                       onClick={() => setPolishedResult(null)}
                       className="px-6 py-3 bg-white/5 text-text-dim hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
                     >
-                      Reset
+                      {t("buttons.reset")}
                     </button>
                   )}
                   <button
@@ -183,7 +183,7 @@ export function LiveBuildFeedAdmin() {
                     className="flex items-center gap-3 bg-white text-black px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all disabled:opacity-50"
                   >
                     {isPolishing ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Zap size={16} fill="currentColor" />}
-                    {polishedResult ? "Re-Polish Draft" : "Polish into Spec"}
+                    {polishedResult ? t("buttons.rePolishDraft") : t("buttons.polishIntoSpec")}
                   </button>
                 </div>
               </div>
@@ -192,7 +192,7 @@ export function LiveBuildFeedAdmin() {
                 <div className="bg-accent/5 border border-accent/20 rounded-[32px] p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 shadow-2xl shadow-accent/5">
                   <div className="flex items-center justify-between gap-4 border-b border-accent/10 pb-6">
                     <div className="flex-1">
-                       <p className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Spec Title</p>
+                       <p className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">{t("states.specTitle")}</p>
                        {isEditing ? (
                          <input
                            type="text"
@@ -215,7 +215,7 @@ export function LiveBuildFeedAdmin() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-6">
                        <label className="block space-y-2">
-                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Context</span>
+                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("states.context")}</span>
                          <textarea 
                            readOnly={!isEditing}
                            value={polishedResult.polished_context} 
@@ -226,7 +226,7 @@ export function LiveBuildFeedAdmin() {
                     </div>
                     <div className="space-y-6">
                        <label className="block space-y-2">
-                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Requested Change</span>
+                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("states.requestedChange")}</span>
                          <textarea 
                            readOnly={!isEditing}
                            value={polishedResult.polished_change} 
@@ -244,14 +244,14 @@ export function LiveBuildFeedAdmin() {
                          onChange={e => updateField('type', e.target.value)}
                          className="bg-black/60 border border-white/5 rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest text-text-dim outline-none focus:border-accent/40"
                        >
-                         {['App Improvement', 'New App Concept', 'UI Upgrade', 'Bug Fix', 'Growth Idea', 'Showcase'].map(t => <option key={t} value={t}>{t}</option>)}
+                         {['App Improvement', 'New App Concept', 'UI Upgrade', 'Bug Fix', 'Growth Idea', 'Showcase'].map(type => <option key={type} value={type}>{t(`states.buildTypes.${type.replace(/ /g, "")}`)}</option>)}
                        </select>
                        <select 
                          value={polishedResult.priority} 
                          onChange={e => updateField('priority', e.target.value)}
                          className="bg-black/60 border border-white/5 rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest text-text-dim outline-none focus:border-accent/40"
                        >
-                         {['Low', 'Medium', 'High', 'Critical'].map(p => <option key={p} value={p}>{p} Priority</option>)}
+                         {['Low', 'Medium', 'High', 'Critical'].map(priority => <option key={priority} value={priority}>{t("states.priorityLabel", { priority: t(`states.priorities.${priority}`) })}</option>)}
                        </select>
                     </div>
                     
@@ -261,7 +261,7 @@ export function LiveBuildFeedAdmin() {
                       className="w-full md:w-auto flex items-center justify-center gap-4 bg-accent text-white px-12 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] hover:bg-accent/90 transition-all shadow-2xl shadow-accent/20 disabled:opacity-50"
                     >
                       {isPublishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send size={16} />}
-                      Publish to Stream
+                      {t("buttons.publishToStream")}
                     </button>
                   </div>
                 </div>
@@ -272,7 +272,7 @@ export function LiveBuildFeedAdmin() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Radio size={20} className="text-accent" />
-                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Active Build Stream</h2>
+                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{t("notifications.activeBuildStream")}</h2>
                 </div>
               </div>
               
@@ -303,7 +303,7 @@ export function LiveBuildFeedAdmin() {
                           }`}
                         >
                           <Target size={12} />
-                          {req.is_current_focus ? 'Unfocus' : 'Focus'}
+                          {req.is_current_focus ? t('buttons.unfocus') : t('buttons.focus')}
                         </button>
                       </div>
                     </div>
@@ -316,15 +316,15 @@ export function LiveBuildFeedAdmin() {
              <div className="space-y-6">
                 <div className="flex items-center gap-3">
                   <Radio size={20} className="text-accent" />
-                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Daily Signal</h2>
+                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{t("notifications.dailySignal")}</h2>
                 </div>
                 
                 <div className="bg-[#111] border border-white/10 rounded-[32px] p-8 space-y-6 shadow-2xl">
-                   <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Broadcast to all builders</p>
+                   <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("notifications.broadcastToBuilders")}</p>
                    <textarea
                      value={signalText}
                      onChange={(e) => setSignalText(e.target.value)}
-                     placeholder="Good morning vibe coders. Today we focus on..."
+                     placeholder={t("notifications.dailySignalPlaceholder")}
                      className="w-full h-32 bg-black/40 border border-white/5 rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-accent/40 resize-none placeholder:text-white/10 scrollbar-thin"
                    />
                    <button
@@ -333,12 +333,12 @@ export function LiveBuildFeedAdmin() {
                      className="w-full flex items-center justify-center gap-3 bg-accent text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:opacity-50"
                    >
                      {isPostingSignal ? <Loader2 className="w-4 h-4 animate-spin" /> : <Radio size={14} />}
-                     Broadcast Daily Signal
+                     {t("buttons.broadcastDailySignal")}
                    </button>
                 </div>
 
                 <div className="space-y-4 pt-6">
-                  <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-4">Signal History</p>
+                  <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-4">{t("notifications.signalHistory")}</p>
                   <div className="space-y-3 max-h-[300px] overflow-auto scrollbar-none">
                      {dailySignals.map((s, i) => (
                        <div key={s.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-2">

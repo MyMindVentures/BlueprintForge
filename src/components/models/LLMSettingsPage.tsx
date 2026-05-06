@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
+import {
   Key, Save, RefreshCw, Star, Cpu, Zap, Info, Search, XCircle, CheckCircle2, ChevronRight, Terminal, ExternalLink, RotateCcw, Loader2, Brain, Sparkles, AlertTriangle, Github
 } from "lucide-react";
 import { LLMSettings, OpenRouterModel } from "../../types";
@@ -44,10 +44,10 @@ interface LLMSettingsProps {
  * Handles the llmsettings page workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
-export function LLMSettingsPage({ 
-  settings, onUpdate, onSync, onTestConnection, onGenerateIntelligence, onRegenerateAll, syncStatus, onOpenDiagnostics 
+export function LLMSettingsPage({
+  settings, onUpdate, onSync, onTestConnection, onGenerateIntelligence, onRegenerateAll, syncStatus, onOpenDiagnostics
 }: LLMSettingsProps) {
-  const { formatRelativeTime, formatDate } = useI18n();
+  const { formatRelativeTime, formatDate, t } = useI18n();
   const toast = useToast();
   const { settings: githubSettings, setSettings: setGithubSettings } = useGithubSettings();
   const [apiKey, setApiKey] = useState(settings.openRouterApiKey || "");
@@ -66,55 +66,57 @@ export function LLMSettingsPage({
   }, [settings.models]);
 
   const filteredModels = useMemo(() => {
-    return settings.models.filter(m => 
-      m.name.toLowerCase().includes(search.toLowerCase()) || 
+    return settings.models.filter(m =>
+      m.name.toLowerCase().includes(search.toLowerCase()) ||
       m.id.toLowerCase().includes(search.toLowerCase())
     );
   }, [settings.models, search]);
 
+  const translateConnectionStatus = (status: string) => t(`states.connectionStatus.${status.replace(/ /g, "")}`);
+
   const handleSaveKey = () => {
     onUpdate({ openRouterApiKey: apiKey, apiKeySaved: !!apiKey });
-    toast.success("Security settings updated.");
+    toast.success(t("openrouter.securitySettingsUpdated"));
   };
 
   const handleSync = async () => {
     try {
       await onSync();
-      toast.success("Manifest synchronized.");
+      toast.success(t("openrouter.manifestSynchronized"));
     } catch (e: any) {
-      toast.error(e.message || "Sync failure.");
+      toast.error(e.message || t("errors.syncFailure"));
     }
   };
 
   return (
     <div className="flex-1 overflow-auto p-4 sm:p-8 md:p-12 scrollbar-thin relative font-sans">
       <div className="max-w-7xl mx-auto space-y-8 md:space-y-12 pb-40">
-        
+
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 md:gap-8">
           <div className="space-y-4">
              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest">
                 <Brain size={12} />
-                Global Brain Interface
+                {t("openrouter.globalBrainInterface")}
              </div>
              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
-               Fleet <span className="text-accent underline decoration-white/10 underline-offset-8">Intelligence</span>
+               {t("openrouter.fleet")} <span className="text-accent underline decoration-white/10 underline-offset-8">{t("openrouter.intelligence")}</span>
              </h1>
              <p className="text-text-dim text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed italic">
-               Connect, analyze and optimize multi-model delivery protocols using the OpenRouter gateway.
+               {t("openrouter.settingsDescription")}
              </p>
           </div>
-          
+
           <div className="flex flex-wrap items-center gap-3">
-             <button 
+             <button
                onClick={onOpenDiagnostics}
                className="glass-btn-secondary flex-1 sm:flex-none !h-14 !px-4 sm:!px-8 !text-[10px] sm:!text-[11px] !font-black !uppercase !tracking-widest"
              >
                <Terminal size={16} className="text-accent" />
-               <span className="hidden sm:inline">Diagnostics</span>
+               <span className="hidden sm:inline">{t("openrouter.diagnostics")}</span>
              </button>
              <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer" className="glass-btn-primary flex-1 sm:flex-none justify-center !h-14 !px-4 sm:!px-8 !text-[10px] sm:!text-[11px] !font-black !uppercase !tracking-widest">
-               Console <ExternalLink size={16} />
+               {t("openrouter.console")} <ExternalLink size={16} />
              </a>
           </div>
         </div>
@@ -128,8 +130,8 @@ export function LLMSettingsPage({
                     <div className="flex items-center gap-4">
                        <RefreshCw className="text-accent animate-spin" size={20} />
                        <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-widest">Processing Intelligence</h4>
-                          <p className="text-sm font-black text-white truncate max-w-[200px]">{syncStatus.currentModelName || "Booting..."}</p>
+                          <h4 className="text-[10px] font-black text-accent uppercase tracking-widest">{t("openrouter.processingIntelligence")}</h4>
+                          <p className="text-sm font-black text-white truncate max-w-[200px]">{syncStatus.currentModelName || t("states.booting")}</p>
                        </div>
                     </div>
                     <span className="text-2xl font-black text-white">{syncStatus.total > 0 ? Math.round((syncStatus.completed + syncStatus.failed) / syncStatus.total * 100) : 0}%</span>
@@ -138,8 +140,8 @@ export function LLMSettingsPage({
                     <motion.div animate={{ width: `${(syncStatus.completed + syncStatus.failed) / syncStatus.total * 100}%` }} className="h-full bg-accent" />
                  </div>
                  <div className="flex justify-between text-[9px] font-black uppercase text-text-dim">
-                    <span>Succeeded: {syncStatus.completed}</span>
-                    <span>Failed: {syncStatus.failed}</span>
+                    <span>{t("states.succeeded")}: {syncStatus.completed}</span>
+                    <span>{t("states.failed")}: {syncStatus.failed}</span>
                  </div>
               </div>
             </motion.div>
@@ -156,14 +158,14 @@ export function LLMSettingsPage({
                       <Key size={28} />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">Security Protocol</h2>
-                      <p className="text-[10px] text-accent font-black uppercase tracking-[.2em]">OpenRouter Gateway Link</p>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">{t("openrouter.securityProtocol")}</h2>
+                      <p className="text-[10px] text-accent font-black uppercase tracking-[.2em]">{t("openrouter.gatewayLink")}</p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="relative group max-w-lg">
-                       <input 
+                       <input
                          type={showKey ? "text" : "password"}
                          value={apiKey}
                          onChange={e => setApiKey(e.target.value)}
@@ -174,28 +176,28 @@ export function LLMSettingsPage({
                          {showKey ? <XCircle size={18} /> : <CheckCircle2 size={18} className={settings.apiKeySaved ? "text-emerald-500" : ""} />}
                        </button>
                     </div>
-                    
+
                     <div className="flex gap-3">
-                       <ActionButton 
-                         label="Test Link" 
-                         loadingLabel="Pinging..."
-                         onClick={async () => { await onTestConnection(apiKey); toast.info("Verification complete."); }}
+                       <ActionButton
+                         label={t("openrouter.testLink")}
+                         loadingLabel={t("states.pinging")}
+                         onClick={async () => { await onTestConnection(apiKey); toast.info(t("openrouter.verificationComplete")); }}
                          icon={<Zap size={14} />}
                          variant="outline"
                          className="!h-12 !px-6"
                        />
                        <button onClick={handleSaveKey} className="glass-btn-primary !h-12 !px-8 !text-[11px] !font-black !uppercase !tracking-widest">
-                         Lock Protocol
+                         {t("buttons.lockProtocol")}
                        </button>
                     </div>
 
                     <div className="flex items-center gap-4 pt-2">
-                       <StatusBadge 
-                         label={settings.connectionStatus} 
-                         status={settings.connectionStatus === 'Connected' ? 'success' : 'idle'} 
+                       <StatusBadge
+                         label={translateConnectionStatus(settings.connectionStatus)}
+                         status={settings.connectionStatus === 'Connected' ? 'success' : 'idle'}
                        />
                        {settings.lastTestedAt && (
-                         <span className="text-[10px] font-black text-text-dim/40 uppercase tracking-widest">Checked {formatRelativeTime(settings.lastTestedAt)}</span>
+                         <span className="text-[10px] font-black text-text-dim/40 uppercase tracking-widest">{t("states.checked", { time: formatRelativeTime(settings.lastTestedAt) })}</span>
                        )}
                     </div>
                   </div>
@@ -205,13 +207,13 @@ export function LLMSettingsPage({
                   <div className="flex items-center justify-between">
                      <div className="flex items-center gap-3">
                         <Sparkles size={18} className="text-accent" />
-                        <h3 className="text-[11px] font-black text-white uppercase tracking-widest">Master Intelligence Engine</h3>
+                        <h3 className="text-[11px] font-black text-white uppercase tracking-widest">{t("openrouter.masterIntelligenceEngine")}</h3>
                      </div>
                   </div>
                   <div className="space-y-6">
                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Selected Primary</label>
-                        <select 
+                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("openrouter.selectedPrimary")}</label>
+                        <select
                           value={settings.defaultModelId || ""}
                           onChange={e => onUpdate({ defaultModelId: e.target.value })}
                           className="w-full h-12 bg-black/40 border border-white/5 rounded-xl px-4 text-xs font-black text-white focus:outline-none focus:border-accent/40 appearance-none cursor-pointer"
@@ -224,7 +226,7 @@ export function LLMSettingsPage({
                         onClick={onGenerateIntelligence}
                         className="w-full h-14 glass-btn-primary !text-[10px] !font-black !uppercase !tracking-widest"
                      >
-                        Initiate Global Analysis
+                        {t("openrouter.initiateGlobalAnalysis")}
                      </button>
                   </div>
                </div>
@@ -240,14 +242,14 @@ export function LLMSettingsPage({
                       <Github size={28} />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">Open Source Sync</h2>
-                      <p className="text-[10px] text-emerald-400 font-black uppercase tracking-[.2em]">GitHub Configuration</p>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">{t("github.openSourceSync")}</h2>
+                      <p className="text-[10px] text-emerald-400 font-black uppercase tracking-[.2em]">{t("github.configuration")}</p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="relative group max-w-lg">
-                       <input 
+                       <input
                          type={showGithubKey ? "text" : "password"}
                          value={githubSettings.github_token}
                          onChange={e => setGithubSettings({...githubSettings, github_token: e.target.value})}
@@ -258,16 +260,16 @@ export function LLMSettingsPage({
                          {showGithubKey ? <XCircle size={18} /> : <CheckCircle2 size={18} />}
                        </button>
                     </div>
-                    
+
                     <div className="flex items-center gap-3 bg-black/20 p-4 rounded-xl border border-white/5 max-w-lg">
-                      <input 
-                        type="checkbox" 
-                        id="auto_create_issues" 
-                        checked={githubSettings.auto_create_issues} 
-                        onChange={e => setGithubSettings({...githubSettings, auto_create_issues: e.target.checked})} 
-                        className="w-4 h-4 accent-emerald-500 rounded" 
+                      <input
+                        type="checkbox"
+                        id="auto_create_issues"
+                        checked={githubSettings.auto_create_issues}
+                        onChange={e => setGithubSettings({...githubSettings, auto_create_issues: e.target.checked})}
+                        className="w-4 h-4 accent-emerald-500 rounded"
                       />
-                      <label htmlFor="auto_create_issues" className="text-sm font-medium text-white/80 select-none">Automatically create GitHub issues when publishing to feed</label>
+                      <label htmlFor="auto_create_issues" className="text-sm font-medium text-white/80 select-none">{t("github.autoCreateIssues")}</label>
                     </div>
                   </div>
                </div>
@@ -275,8 +277,8 @@ export function LLMSettingsPage({
                <div className="space-y-6 bg-white/[0.02] p-8 rounded-[32px] border border-white/5 shadow-inner">
                   <div className="space-y-4">
                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Repo URL</label>
-                        <input 
+                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("github.repoUrl")}</label>
+                        <input
                           type="text"
                           value={githubSettings.repo_url}
                           placeholder="https://github.com/owner/repo"
@@ -291,9 +293,9 @@ export function LLMSettingsPage({
                                 name = parts[1];
                               }
                             } catch (error) {}
-                            
+
                             setGithubSettings({
-                              ...githubSettings, 
+                              ...githubSettings,
                               repo_url: val,
                               repo_owner: owner,
                               repo_name: name
@@ -304,16 +306,16 @@ export function LLMSettingsPage({
                      </div>
                      <div className="grid grid-cols-2 gap-4">
                        <div className="space-y-2">
-                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Owner</label>
-                          <input 
+                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("github.owner")}</label>
+                          <input
                             value={githubSettings.repo_owner}
                             onChange={e => setGithubSettings({...githubSettings, repo_owner: e.target.value})}
                             className="w-full h-12 bg-black/40 border border-white/5 rounded-xl px-4 text-xs text-white focus:outline-none focus:border-emerald-400/40"
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Name</label>
-                          <input 
+                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("github.name")}</label>
+                          <input
                             value={githubSettings.repo_name}
                             onChange={e => setGithubSettings({...githubSettings, repo_name: e.target.value})}
                             className="w-full h-12 bg-black/40 border border-white/5 rounded-xl px-4 text-xs text-white focus:outline-none focus:border-emerald-400/40"
@@ -329,10 +331,10 @@ export function LLMSettingsPage({
         <section className="space-y-10">
            <div className="flex flex-col md:flex-row md:items-end justify-between pb-4 gap-6">
               <div className="space-y-1">
-                <h2 className="text-2xl md:text-3xl font-black text-white tracking-widest uppercase">Operational Manifest</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-white tracking-widest uppercase">{t("openrouter.operationalManifest")}</h2>
                 {settings.lastSyncedAt && (
                   <p className="text-[10px] font-black text-text-dim/60 uppercase tracking-widest">
-                    Last Synced: {formatRelativeTime(settings.lastSyncedAt)}
+                    {t("states.lastSynced", { time: formatRelativeTime(settings.lastSyncedAt) })}
                   </p>
                 )}
               </div>
@@ -340,19 +342,19 @@ export function LLMSettingsPage({
                  {settings.models.length > 0 && (
                    <div className="flex gap-4">
                       <div className="text-left sm:text-right">
-                        <p className="text-[9px] font-black text-white/30 uppercase tracking-widest leading-none">Fleet Size</p>
+                        <p className="text-[9px] font-black text-white/30 uppercase tracking-widest leading-none">{t("openrouter.fleetSize")}</p>
                         <p className="text-sm font-black text-white">{settings.models.length}</p>
                       </div>
                       {syncStatus.mappingFailed > 0 && (
                         <div className="text-left sm:text-right">
-                          <p className="text-[9px] font-black text-red-400 uppercase tracking-widest leading-none">Failures</p>
+                          <p className="text-[9px] font-black text-red-400 uppercase tracking-widest leading-none">{t("states.failures")}</p>
                           <p className="text-sm font-black text-red-500">{syncStatus.mappingFailed}</p>
                         </div>
                       )}
                    </div>
                  )}
                  <button onClick={handleSync} className="glass-btn-secondary !h-12 w-full sm:w-auto !px-6 !text-[10px] !font-black !uppercase !tracking-widest">
-                    Sync Manifest
+                    {t("openrouter.syncManifest")}
                  </button>
               </div>
            </div>
@@ -366,19 +368,19 @@ export function LLMSettingsPage({
                       <AlertTriangle size={24} />
                     </div>
                     <div className="space-y-3 flex-1">
-                       <h4 className="text-xs font-black text-red-400 uppercase tracking-widest">Protocol Sync Failure</h4>
+                       <h4 className="text-xs font-black text-red-400 uppercase tracking-widest">{t("errors.protocolSyncFailure")}</h4>
                        <p className="text-sm text-text-dim leading-relaxed">{syncStatus.error}</p>
                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2 border-t border-red-500/10">
                           <div>
-                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">HTTP Status</p>
-                            <p className="text-[10px] font-mono text-red-400">{syncStatus.errorDetail.status || "N/A"}</p>
+                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">{t("states.httpStatus")}</p>
+                            <p className="text-[10px] font-mono text-red-400">{syncStatus.errorDetail.status || t("states.notAvailable")}</p>
                           </div>
                           <div className="col-span-2">
-                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Endpoint</p>
+                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">{t("states.endpoint")}</p>
                             <p className="text-[10px] font-mono text-text-dim truncate">{syncStatus.errorDetail.endpoint}</p>
                           </div>
                           <div>
-                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Timestamp</p>
+                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">{t("states.timestamp")}</p>
                             <p className="text-[10px] font-mono text-text-dim">{formatDate(syncStatus.errorDetail.timestamp, { timeStyle: 'medium' })}</p>
                           </div>
                        </div>
@@ -389,14 +391,14 @@ export function LLMSettingsPage({
            </AnimatePresence>
 
            <div className="max-w-xl">
-              <SearchInput value={search} onChange={setSearch} placeholder="Search active fleet..." />
+              <SearchInput value={search} onChange={setSearch} placeholder={t("openrouter.searchActiveFleet")} />
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredModels.map(model => (
-                <ModelCardSmall 
-                  key={model.id} 
-                  model={model} 
+                <ModelCardSmall
+                  key={model.id}
+                  model={model}
                   isSelected={settings.defaultModelId === model.id}
                   onSelect={() => onUpdate({ defaultModelId: model.id })}
                   onToggle={() => onUpdate({ models: settings.models.map(m => m.id === model.id ? { ...m, enabled: !m.enabled } : m) })}
@@ -410,6 +412,8 @@ export function LLMSettingsPage({
 }
 
 function ModelCardSmall({ model, isSelected, onSelect, onToggle }: any) {
+  const { t } = useI18n();
+  const translateIntelligenceStatus = (status?: string | null) => status ? t(`states.intelligenceStatus.${status.replace(/ /g, "")}`) : t("states.notAvailable");
   const isUnavailable = model.unavailable;
   return (
     <GlassPanel className={`p-6 transition-all ${(!model.enabled || isUnavailable) ? 'opacity-30 blur-[0.5px] scale-95' : 'hover:border-accent/20'} ${isSelected ? 'ring-1 ring-accent/30' : ''}`}>
@@ -421,9 +425,9 @@ function ModelCardSmall({ model, isSelected, onSelect, onToggle }: any) {
             </h4>
             <p className="text-[9px] font-mono text-white/20 truncate lowercase">{model.id.split('/').pop()}</p>
           </div>
-          <button 
+          <button
             disabled={isUnavailable}
-            onClick={onToggle} 
+            onClick={onToggle}
             className={`w-10 h-5 rounded-full relative transition-all ${model.enabled && !isUnavailable ? 'bg-emerald-500' : 'bg-white/10'}`}
           >
              <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${model.enabled && !isUnavailable ? 'right-1' : 'left-1'}`} />
@@ -431,17 +435,17 @@ function ModelCardSmall({ model, isSelected, onSelect, onToggle }: any) {
        </div>
        <div className="space-y-4">
           <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-text-dim">
-             <span>Intel Status</span>
+             <span>{t("openrouter.intelStatus")}</span>
              <span className={model.intelligenceStatus === 'Ready' ? 'text-emerald-400' : model.intelligenceStatus === 'Failed' ? 'text-red-400' : ''}>
-               {isUnavailable ? "Unavailable" : model.intelligenceStatus || "N/A"}
+               {isUnavailable ? t("states.unavailable") : translateIntelligenceStatus(model.intelligenceStatus)}
              </span>
           </div>
-          <button 
+          <button
             disabled={!model.enabled || isUnavailable}
             onClick={onSelect}
             className={`w-full h-10 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${isSelected ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-white/5 border-white/5 text-text-dim hover:text-white'}`}
           >
-            {isSelected ? "Active Primary" : isUnavailable ? "Unsupported" : "Set Primary"}
+            {isSelected ? t("openrouter.activePrimary") : isUnavailable ? t("states.unsupported") : t("openrouter.setPrimary")}
           </button>
        </div>
     </GlassPanel>

@@ -56,12 +56,12 @@ export function LiveBuildFeed() {
   
   const canClaim = role === 'vibe_coder' && Boolean(currentUserProfile) && currentUserProfile?.status !== 'Incomplete Profile';
   const claimDisabledReason = role === 'anonymous'
-    ? 'Sign in and create a builder profile before claiming work.'
+    ? t('errors.signInBeforeClaiming')
     : !currentUserProfile
-      ? 'Create your builder profile before claiming a request.'
+      ? t('errors.createProfileBeforeClaiming')
       : currentUserProfile.status === 'Incomplete Profile'
-        ? 'Complete required profile fields to become eligible to claim.'
-        : 'This request can be claimed when it is Open and unclaimed.';
+        ? t('errors.completeProfileBeforeClaiming')
+        : t('errors.requestClaimEligibility');
 
   return (
     <div className="flex-1 overflow-auto bg-[#0A0A0A] p-4 md:p-8 space-y-12 scrollbar-thin">
@@ -72,11 +72,11 @@ export function LiveBuildFeed() {
           <div className="space-y-6">
             <div className="space-y-2">
               <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center gap-4">
-                Live Build Feed
+                {t("notifications.liveBuildFeed")}
                 <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
               </h1>
               <p className="text-sm text-text-dim max-w-md leading-relaxed font-medium">
-                Real-time build requests from the founder. High signal, low noise. Claim a ticket and start building.
+                {t("notifications.liveBuildFeedDescription")}
               </p>
             </div>
             
@@ -90,14 +90,14 @@ export function LiveBuildFeed() {
           <div className="hidden lg:block space-y-4 bg-white/[0.02] border border-white/5 rounded-3xl p-6">
              <div className="flex items-center gap-2 text-accent">
                <Zap size={16} fill="currentColor" />
-               <span className="text-[10px] font-black uppercase tracking-[0.2em]">Platform Stats</span>
+               <span className="text-[10px] font-black uppercase tracking-[0.2em]">{t("states.platformStats")}</span>
              </div>
              <div className="grid grid-cols-2 gap-4">
                {[
-                 { label: 'Builds', val: requests.length },
-                 { label: 'Open', val: requests.filter(r => r.status === 'Open').length },
-                 { label: 'Completed', val: requests.filter(r => r.status === 'Accepted').length },
-                 { label: 'Coders', val: profiles.length }
+                 { label: t('states.builds'), val: formatNumber(requests.length) },
+                 { label: t('states.open'), val: formatNumber(requests.filter(r => r.status === 'Open').length) },
+                 { label: t('states.completed'), val: formatNumber(requests.filter(r => r.status === 'Accepted').length) },
+                 { label: t('states.coders'), val: formatNumber(profiles.length) }
                ].map((stat, i) => (
                  <div key={i} className="p-3 bg-black/40 rounded-xl border border-white/5">
                    <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest">{stat.label}</p>
@@ -138,7 +138,7 @@ export function LiveBuildFeed() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
             <div className="flex items-center gap-3">
               <Filter size={16} className="text-accent" />
-              <h3 className="text-sm font-black text-white uppercase tracking-widest">Filter Stream</h3>
+              <h3 className="text-sm font-black text-white uppercase tracking-widest">{t("states.filterStream")}</h3>
             </div>
             
             <div className="flex flex-wrap gap-2">
@@ -154,7 +154,7 @@ export function LiveBuildFeed() {
                       : 'bg-white/5 text-text-dim border-white/5 hover:border-white/20'
                   }`}
                 >
-                  {f}
+                  {t(`states.filters.${String(f).replace(/ /g, "")}`)}
                 </button>
               )})}
             </div>
@@ -166,14 +166,14 @@ export function LiveBuildFeed() {
                 <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                   <Zap size={24} className="text-text-dim" />
                 </div>
-                <StatusBadge status="Read" label="Empty State" />
-                <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">No matching requests found in the stream.</p>
-                <p className="text-xs text-white/45 max-w-md mx-auto">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
+                <StatusBadge status="Read" label={t("states.emptyState")} />
+                <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">{t("states.noMatchingRequests")}</p>
+                <p className="text-xs text-white/45 max-w-md mx-auto">{t("states.noVisibleWorkForFilter")}</p>
                 <button 
                   onClick={() => setFilter('All')}
                   className="mt-4 text-accent text-[10px] font-black uppercase tracking-widest hover:underline"
                 >
-                  Clear all filters
+                  {t("buttons.clearAllFilters")}
                 </button>
               </div>
             ) : (
@@ -194,12 +194,12 @@ export function LiveBuildFeed() {
                           <StatusBadge status={req.status} />
                           {req.is_current_focus && (
                             <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded-md border border-accent/20">
-                              <Target size={12} /> Focus
+                              <Target size={12} /> {t("states.focus")}
                             </span>
                           )}
                           {req.status === 'Accepted' && (
                             <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-2 py-1 rounded-md border border-amber-400/20">
-                              <Star size={12} className="fill-amber-400" /> Star Awarded
+                              <Star size={12} className="fill-amber-400" /> {t("states.starAwarded")}
                             </span>
                           )}
                         </div>
@@ -219,12 +219,12 @@ export function LiveBuildFeed() {
                           <div className="flex gap-2">
                             {req.github_issue_url ? (
                               <a href={req.github_issue_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-widest text-white/50 hover:text-accent transition-colors">
-                                <Github size={14} /> Issue #{req.github_issue_number}
+                                <Github size={14} /> {t("github.issueNumber", { number: req.github_issue_number })}
                               </a>
                             ) : null}
                             {req.implementation_pr_url && (
                                <a href={req.implementation_pr_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-widest text-purple-400 hover:text-purple-300">
-                                <Link2 size={14} /> PR Submitted
+                                <Link2 size={14} /> {t("github.prSubmitted")}
                               </a>
                             )}
                           </div>
@@ -233,9 +233,9 @@ export function LiveBuildFeed() {
                       
                       <div className="flex flex-col md:items-end gap-3 shrink-0">
                          <div className="flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-widest">
-                            <span className="bg-indigo-500/10 text-indigo-400 px-3 py-1.5 rounded-xl border border-indigo-500/10">{req.type}</span>
-                            <span className="bg-white/5 text-text-dim px-3 py-1.5 rounded-xl border border-white/5 font-mono">{req.difficulty}</span>
-                            <span className={`px-3 py-1.5 rounded-xl border font-mono ${req.priority === 'Critical' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-white/5 text-text-dim border-white/5'}`}>{req.priority}</span>
+                            <span className="bg-indigo-500/10 text-indigo-400 px-3 py-1.5 rounded-xl border border-indigo-500/10">{t(`states.buildTypes.${req.type.replace(/ /g, "")}`)}</span>
+                            <span className="bg-white/5 text-text-dim px-3 py-1.5 rounded-xl border border-white/5 font-mono">{t(`states.difficulties.${req.difficulty.replace(/ /g, "")}`)}</span>
+                            <span className={`px-3 py-1.5 rounded-xl border font-mono ${req.priority === 'Critical' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-white/5 text-text-dim border-white/5'}`}>{t(`states.priorities.${req.priority}`)}</span>
                          </div>
                          
                          {isAdmin && (
@@ -253,7 +253,7 @@ export function LiveBuildFeed() {
                                   : 'bg-accent/10 text-accent border-accent/20 hover:bg-accent/20'
                               }`}
                             >
-                              {req.is_current_focus ? 'Remove Focus' : 'Mark as Current Focus'}
+                              {req.is_current_focus ? t('buttons.removeFocus') : t('buttons.markAsCurrentFocus')}
                             </button>
                          )}
                       </div>
@@ -263,13 +263,13 @@ export function LiveBuildFeed() {
                     <div className="px-6 md:px-8 py-4 bg-white/[0.01] border-b border-white/5 flex items-center justify-between gap-4">
                        <div className="flex items-center gap-3">
                          <div className="w-2 h-2 rounded-full bg-accent/40" />
-                         <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Latest Momentum</p>
+                         <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("states.latestMomentum")}</p>
                        </div>
                        <div className="flex-1 flex items-center gap-3 overflow-hidden">
                           {lastProgressUpdate ? (
                              <p className="text-xs text-white/50 truncate italic font-medium">"{lastProgressUpdate.update_text}"</p>
                           ) : (
-                             <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest italic leading-none">No update yet — waiting for builder signal.</p>
+                             <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest italic leading-none">{t("states.noBuilderSignalYet")}</p>
                           )}
                        </div>
                     </div>
@@ -278,11 +278,11 @@ export function LiveBuildFeed() {
                     <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-8">
                       <div className="space-y-6">
                         <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Context & Problem</h4>
+                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">{t("states.contextAndProblem")}</h4>
                           <p className="text-sm text-white/70 leading-relaxed">{req.polished_context}</p>
                         </div>
                         <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Technical Implementation</h4>
+                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">{t("states.technicalImplementation")}</h4>
                           <p className="text-sm text-white/90 leading-relaxed font-semibold">{req.polished_change}</p>
                         </div>
                         
@@ -291,13 +291,13 @@ export function LiveBuildFeed() {
                             <button
                               onClick={() => claimRequest(req.id)}
                               disabled={!canClaim}
-                              title={!canClaim ? claimDisabledReason : 'Claim this Open request and start the builder workflow.'}
+                              title={!canClaim ? claimDisabledReason : t('notifications.claimRequestHint')}
                               className="w-full md:w-auto px-12 py-3 bg-accent text-white rounded-[20px] text-xs font-black uppercase tracking-[0.2em] hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:grayscale disabled:opacity-50"
                             >
-                              {role === 'anonymous' ? "Sign in to claim this request" : canClaim ? "Claim this request" : "Complete profile to claim"}
+                              {role === 'anonymous' ? t("buttons.signInToClaimRequest") : canClaim ? t("buttons.claimThisRequest") : t("buttons.completeProfileToClaim")}
                             </button>
                             {!canClaim && (
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-300/80">Why disabled: {claimDisabledReason}</p>
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-300/80">{t("errors.whyDisabled", { reason: claimDisabledReason })}</p>
                             )}
                           </div>
                         )}
@@ -305,7 +305,7 @@ export function LiveBuildFeed() {
                       
                       <div className="space-y-6">
                          <div className="bg-black/40 p-6 rounded-3xl border border-white/5 space-y-4">
-                           <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Acceptance Criteria</h4>
+                           <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("states.acceptanceCriteria")}</h4>
                            <ul className="space-y-3">
                              {req.acceptance_criteria?.map((crt, i) => (
                                <li key={i} className="text-xs text-white/60 flex gap-3 items-start group/li">
@@ -325,7 +325,7 @@ export function LiveBuildFeed() {
                       <div className="bg-black/40 border-t border-white/5 p-6 md:p-8 space-y-6">
                         {reqUpdates.length > 0 && (
                           <div className="space-y-4">
-                            <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Build Stream</h4>
+                            <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("states.buildStream")}</h4>
                             {reqUpdates.map(u => {
                               const uProfile = u.profile_id ? profiles.find(p => p.id === u.profile_id) : null;
                               return (
@@ -353,7 +353,7 @@ export function LiveBuildFeed() {
                               type="text"
                               value={updateTexts[req.id] || ''}
                               onChange={e => setUpdateTexts({ ...updateTexts, [req.id]: e.target.value })}
-                              placeholder="Add a progress update/note..."
+                              placeholder={t("notifications.progressUpdatePlaceholder")}
                               className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accent/40"
                               onKeyDown={e => {
                                 if (e.key === 'Enter' && updateTexts[req.id]?.trim()) {
@@ -373,7 +373,7 @@ export function LiveBuildFeed() {
                                 onClick={() => updateRequestStatus(req.id, 'In Progress')}
                                 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-400 hover:bg-blue-400/10 px-4 py-2 rounded-xl border border-blue-400/20"
                               >
-                                <PlayCircle size={14} /> Start Progress
+                                <PlayCircle size={14} /> {t("buttons.startProgress")}
                               </button>
                             )}
                             
@@ -383,7 +383,7 @@ export function LiveBuildFeed() {
                                   type="text"
                                   value={prUrls[req.id] || req.implementation_pr_url || ''}
                                   onChange={e => setPrUrls({...prUrls, [req.id]: e.target.value})}
-                                  placeholder="GitHub PR URL"
+                                  placeholder={t("github.prUrl")}
                                   className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white"
                                 />
                                 <button
@@ -394,7 +394,7 @@ export function LiveBuildFeed() {
                                   }}
                                   className="px-6 py-2 bg-purple-500/20 text-purple-400 rounded-xl text-[10px] font-black uppercase tracking-widest border border-purple-500/20"
                                 >
-                                  Submit Review
+                                  {t("buttons.submitReview")}
                                 </button>
                               </div>
                             )}
@@ -412,13 +412,13 @@ export function LiveBuildFeed() {
                                }}
                                className="flex items-center gap-2 bg-amber-500 text-black px-6 py-2 rounded-xl text-[10px] font-black uppercase"
                              >
-                               <Star size={14} fill="currentColor" /> Accept & Star
+                               <Star size={14} fill="currentColor" /> {t("buttons.acceptAndStar")}
                              </button>
                              <button
                                onClick={() => updateRequest(req.id, { status: 'Needs Changes' })}
                                className="px-6 py-2 border border-white/10 text-white rounded-xl text-[10px] font-black uppercase"
                              >
-                               Needs Changes
+                               {t("buttons.needsChanges")}
                              </button>
                           </div>
                         )}

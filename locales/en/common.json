@@ -45,7 +45,35 @@
     "rePolishDraft": "Re-Polish Draft",
     "startBuilding": "Start Building",
     "enterBlueprintForge": "Enter BlueprintForge",
-    "startBuilderJourney": "Start Builder Journey"
+    "startBuilderJourney": "Start Builder Journey",
+    "showMeAround": "Show me around",
+    "figureItOut": "I'll figure it out",
+    "skip": "Skip",
+    "finish": "Finish",
+    "next": "Next",
+    "viewChangelog": "View Changelog",
+    "gotIt": "Got it",
+    "lockProtocol": "Lock Protocol",
+    "clearAllFilters": "Clear all filters",
+    "removeFocus": "Remove Focus",
+    "markAsCurrentFocus": "Mark as Current Focus",
+    "signInToClaimRequest": "Sign in to claim this request",
+    "claimThisRequest": "Claim this request",
+    "completeProfileToClaim": "Complete profile to claim",
+    "startProgress": "Start Progress",
+    "submitReview": "Submit Review",
+    "acceptAndStar": "Accept & Star",
+    "needsChanges": "Needs Changes",
+    "claim": "Claim",
+    "removeFromFocus": "Remove from Focus",
+    "cancel": "Cancel",
+    "postSignal": "Post Signal",
+    "publish": "Publish",
+    "reset": "Reset",
+    "publishToStream": "Publish to Stream",
+    "unfocus": "Unfocus",
+    "focus": "Focus",
+    "broadcastDailySignal": "Broadcast Daily Signal"
   },
   "statuses": {
     "open": "Open",
@@ -72,7 +100,36 @@
   },
   "notifications": {
     "newBuildRequest": "New Build Request",
-    "fromFounder": "From founder"
+    "fromFounder": "From founder",
+    "toast": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    },
+    "liveBuildFeed": "Live Build Feed",
+    "liveBuildFeedDescription": "Real-time build requests from the founder. High signal, low noise. Claim a ticket and start building.",
+    "currentFounderFocus": "Current Founder Focus",
+    "currentFocusQuote": "This is what we are building right now.",
+    "claimRequestHint": "Claim this Open request and start the builder workflow.",
+    "dailySignal": "Daily Signal",
+    "foundersBroadcast": "Founders Broadcast",
+    "builderFocusPlaceholder": "What should builders focus on today?",
+    "theArchitect": "— The Architect",
+    "waitingForSignal": "Waiting for today's signal...",
+    "founderCommandCenter": "Founder Command Center",
+    "founderCommandDescription": "Architect the next phase of the project. Polish raw thoughts, broadcast signals, and manage focus.",
+    "publishNewRequest": "Publish New Request",
+    "rawFounderInput": "Raw Founder Input",
+    "rawFounderInputPlaceholder": "Say what you want to build, change, or improve...",
+    "buildRequestPolished": "Build request polished!",
+    "publishedToBuilderNetwork": "Published to Builder Network!",
+    "dailySignalBroadcasted": "Daily Signal Broadcasted!",
+    "activeBuildStream": "Active Build Stream",
+    "broadcastToBuilders": "Broadcast to all builders",
+    "dailySignalPlaceholder": "Good morning vibe coders. Today we focus on...",
+    "signalHistory": "Signal History",
+    "progressUpdatePlaceholder": "Add a progress update/note..."
   },
   "errors": {
     "accessDenied": "Access denied",
@@ -82,7 +139,22 @@
     "founderAccessHint": "If you are the founder, verify that your Firebase email or UID is listed in FOUNDER_ADMIN_EMAILS or FOUNDER_ADMIN_UIDS on Railway, then sign out and sign back in so PostgreSQL can hydrate your ROLE-01 profile.",
     "missingOpenRouterKey": "Missing OpenRouter API Key.",
     "screenRecordingBlocked": "Screen recording is blocked. Try opening the app in a new tab or use 'Preview Mode'.",
-    "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved."
+    "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved.",
+    "syncFailure": "Sync failure.",
+    "protocolSyncFailure": "Protocol Sync Failure",
+    "toastProviderMissing": "useToast must be used within ToastProvider",
+    "notificationPollingFailed": "Notification polling failed:",
+    "openRouterApiKeyMissingFromSettings": "API Key is missing from settings.",
+    "remediationRequired": "Remediation Required",
+    "unknownProtocolFailure": "Unknown protocol failure encountered during sequence.",
+    "signInBeforeClaiming": "Sign in and create a builder profile before claiming work.",
+    "createProfileBeforeClaiming": "Create your builder profile before claiming a request.",
+    "completeProfileBeforeClaiming": "Complete required profile fields to become eligible to claim.",
+    "requestClaimEligibility": "This request can be claimed when it is Open and unclaimed.",
+    "whyDisabled": "Why disabled: {{reason}}",
+    "enterBuildRequest": "Please enter what you want to build.",
+    "missingOpenRouterKeyInSettings": "Missing OpenRouter API Key in OpenRouter Settings.",
+    "polishingRequest": "Error polishing request: {{message}}"
   },
   "success": {
     "ticketPolished": "Ticket polished and ready for review.",
@@ -175,7 +247,19 @@
     "fork": "Fork the repository",
     "branch": "Create a focused branch",
     "commit": "Commit your implementation",
-    "pullRequest": "Open a pull request"
+    "pullRequest": "Open a pull request",
+    "openSourceSync": "Open Source Sync",
+    "configuration": "GitHub Configuration",
+    "autoCreateIssues": "Automatically create GitHub issues when publishing to feed",
+    "repoUrl": "Repo URL",
+    "owner": "Owner",
+    "name": "Name",
+    "issueNumber": "Issue #{{number}}",
+    "prSubmitted": "PR Submitted",
+    "prUrl": "GitHub PR URL",
+    "viewGithubIssue": "View GitHub Issue",
+    "publishedAndIssueCreated": "Published and GitHub issue created!",
+    "issueCreationFailedAfterPublish": "Feed published, but GitHub issue creation failed: {{message}}"
   },
   "demo": {
     "autoDemoEngine": "Auto Demo Engine",
@@ -187,7 +271,44 @@
     "activeRobotSignal": "Active Robot Signal",
     "robotCaption": "Robot Caption",
     "aiProcessing": "AI Processing...",
-    "demoCompleted": "Demo Completed"
+    "demoCompleted": "Demo Completed",
+    "welcome": {
+      "title": "Welcome to BlueprintForge AI",
+      "description": "Transform your raw app concepts into professional, structured architecture and documentation in seconds using OpenRouter AI fleet.",
+      "stepCreateOpenProject": "Create or open a project",
+      "stepPasteConcept": "Paste your app concept in the workspace",
+      "stepConvertCards": "Convert into cards and professional markdown"
+    },
+    "tour": {
+      "startFresh": {
+        "title": "Start Fresh",
+        "content": "Create a new project to organize your app concepts and conversions."
+      },
+      "defineIdea": {
+        "title": "Define Your Idea",
+        "content": "Paste your app concept, feature description, or product idea here."
+      },
+      "chooseSpecialist": {
+        "title": "Choose Your Specialist",
+        "content": "Select an AI Agent tailored for your specific app type."
+      },
+      "magicHappens": {
+        "title": "Magic Happens Here",
+        "content": "Click convert to transform your raw text into structured nested cards."
+      },
+      "browseStructure": {
+        "title": "Browse Structure",
+        "content": "Explore the nested architecture of your app with interactive 3D cards."
+      },
+      "exportReady": {
+        "title": "Export Ready",
+        "content": "Review and export your project as professional markdown documentation."
+      },
+      "configureIntelligence": {
+        "title": "Configure Intelligence",
+        "content": "Set up your OpenRouter API key and manage model intelligence fleet."
+      }
+    }
   },
   "format": {
     "justNow": "just now",
@@ -199,5 +320,168 @@
     "hours": "hours",
     "minute": "minute",
     "minutes": "minutes"
+  },
+  "changelog": {
+    "newVersionDeployed": "New Version Deployed",
+    "version": "Version",
+    "date": "Date",
+    "defaultReleaseNotes": "We have deployed a new version of BlueprintForge AI. Check out the latest features and fixes!"
+  },
+  "openrouter": {
+    "securitySettingsUpdated": "Security settings updated.",
+    "manifestSynchronized": "Manifest synchronized.",
+    "globalBrainInterface": "Global Brain Interface",
+    "fleet": "Fleet",
+    "intelligence": "Intelligence",
+    "settingsDescription": "Connect, analyze and optimize multi-model delivery protocols using the OpenRouter gateway.",
+    "diagnostics": "Diagnostics",
+    "console": "Console",
+    "processingIntelligence": "Processing Intelligence",
+    "securityProtocol": "Security Protocol",
+    "gatewayLink": "OpenRouter Gateway Link",
+    "testLink": "Test Link",
+    "verificationComplete": "Verification complete.",
+    "masterIntelligenceEngine": "Master Intelligence Engine",
+    "selectedPrimary": "Selected Primary",
+    "initiateGlobalAnalysis": "Initiate Global Analysis",
+    "operationalManifest": "Operational Manifest",
+    "fleetSize": "Fleet Size",
+    "syncManifest": "Sync Manifest",
+    "searchActiveFleet": "Search active fleet...",
+    "intelStatus": "Intel Status",
+    "activePrimary": "Active Primary",
+    "setPrimary": "Set Primary",
+    "protocolDiagnostics": "Protocol Diagnostics",
+    "diagnosticSuite": "Diagnostic Suite / OpenRouter API",
+    "initiateFullSuite": "Initiate Full Suite",
+    "testHeaders": "Test Headers",
+    "testPayload": "Test Payload",
+    "testJson": "Test JSON",
+    "showLastFeedback": "Show Last Feedback",
+    "apiFoundation": "API Foundation",
+    "authorization": "Authorization",
+    "latencyIndex": "Latency Index",
+    "terminalFeedback": "Terminal Feedback",
+    "awaitingDiagnosticInitiation": "Awaiting diagnostic initiation...",
+    "testAssistantSystemPrompt": "You are a helpful test assistant.",
+    "testAssistantUserPrompt": "Say hello briefly.",
+    "logs": {
+      "testingHeaderGeneration": "Testing Header Generation...",
+      "headersGenerated": "Headers generated: {{headers}}",
+      "authPresent": "Auth present: {{present}}",
+      "headerTestFailed": "Header test failed: {{message}}",
+      "testingPayloadValidation": "Testing Payload Validation...",
+      "payloadStructureValid": "Payload structure valid: {{bytes}} bytes",
+      "testingJsonParseSafeguards": "Testing JSON Parse Safeguards...",
+      "primaryParse": "Primary parse: {{ok}}",
+      "fallbackRecovery": "Fallback recovery: {{ok}}",
+      "lastServerFeedback": "Last Server Feedback: [{{status}}] {{message}}",
+      "targetModel": "Target Model: {{model}}",
+      "noRecentServerErrors": "No recent server errors recorded.",
+      "startingDiagnostics": "Starting full diagnostics suite...",
+      "validatingHeadersConnection": "Test 1: Validating headers and connection...",
+      "connectionEstablished": "Connection established. Headers validated.",
+      "fetchingModels": "Test 2: Fetching available models...",
+      "modelsFetched": "Successfully fetched {{count}} models.",
+      "testingMiniCompletion": "Test 3: Testing mini-completion (Hello World)...",
+      "completionSuccessful": "Completion successful: \"{{result}}\"",
+      "diagnosticsFailed": "Diagnostics failed: {{message}}"
+    }
+  },
+  "states": {
+    "justNow": "Just now",
+    "booting": "Booting...",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "checked": "Checked {{time}}",
+    "lastSynced": "Last Synced: {{time}}",
+    "failures": "Failures",
+    "httpStatus": "HTTP Status",
+    "endpoint": "Endpoint",
+    "timestamp": "Timestamp",
+    "notAvailable": "N/A",
+    "unavailable": "Unavailable",
+    "unsupported": "Unsupported",
+    "ready": "Ready",
+    "missing": "Missing",
+    "nominal": "Nominal",
+    "platformStats": "Platform Stats",
+    "builds": "Builds",
+    "open": "Open",
+    "completed": "Completed",
+    "coders": "Coders",
+    "filterStream": "Filter Stream",
+    "emptyState": "Empty State",
+    "noMatchingRequests": "No matching requests found in the stream.",
+    "noVisibleWorkForFilter": "This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.",
+    "focus": "Focus",
+    "starAwarded": "Star Awarded",
+    "latestMomentum": "Latest Momentum",
+    "noBuilderSignalYet": "No update yet — waiting for builder signal.",
+    "contextAndProblem": "Context & Problem",
+    "technicalImplementation": "Technical Implementation",
+    "acceptanceCriteria": "Acceptance Criteria",
+    "buildStream": "Build Stream",
+    "activeCount": "{{count}} Active",
+    "whyItMatters": "Why it matters",
+    "expectedOutcome": "Expected Outcome",
+    "inBuild": "In Build",
+    "activeFocus": "Active Focus",
+    "specTitle": "Spec Title",
+    "context": "Context",
+    "requestedChange": "Requested Change",
+    "priorityLabel": "{{priority}} Priority",
+    "filters": {
+      "CurrentFocus": "Current Focus",
+      "All": "All",
+      "MyClaims": "My Claims",
+      "Open": "Open",
+      "InProgress": "In Progress",
+      "ReadyforReview": "Ready for Review",
+      "Accepted": "Accepted",
+      "Backlog": "Backlog"
+    },
+    "buildTypes": {
+      "AppImprovement": "App Improvement",
+      "NewAppConcept": "New App Concept",
+      "UIUpgrade": "UI Upgrade",
+      "BugFix": "Bug Fix",
+      "GrowthIdea": "Growth Idea",
+      "Showcase": "Showcase"
+    },
+    "priorities": {
+      "Low": "Low",
+      "Medium": "Medium",
+      "High": "High",
+      "Critical": "Critical"
+    },
+    "connectionStatus": {
+      "Connected": "Connected",
+      "Disconnected": "Disconnected",
+      "Untested": "Untested",
+      "Error": "Error"
+    },
+    "intelligenceStatus": {
+      "Ready": "Ready",
+      "Failed": "Failed",
+      "Pending": "Pending",
+      "Processing": "Processing"
+    },
+    "logTypes": {
+      "info": "Info",
+      "success": "Success",
+      "error": "Error"
+    },
+    "testStatus": {
+      "idle": "Idle",
+      "testing": "Testing",
+      "success": "Success",
+      "error": "Error"
+    },
+    "difficulties": {
+      "Easy": "Easy",
+      "Medium": "Medium",
+      "Hard": "Hard"
+    }
   }
 }
