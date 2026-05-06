@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useGuide } from '../../hooks/useGuide';
 import { AutoDemoRecorder } from './AutoDemoRecorder';
-import { guideSections, screenGuidance, statusGlossary } from '../../content/guides/blueprintGuides';
+import { GUIDE_SECTION_KEYS, SCREEN_GUIDANCE_KEYS, TranslatedGuideSection, TranslatedScreenGuidance, TranslatedStatusGlossaryItem } from '../../content/guides/blueprintGuides';
 import { StatusBadge } from '../ui/StatusBadge';
 import { useI18n } from '../../i18n/I18nProvider';
 
@@ -16,9 +16,17 @@ import { useI18n } from '../../i18n/I18nProvider';
  * Used by visitors, builders, founders and observers to understand screens, roles, statuses and next actions.
  */
 export function GuidePage() {
-  const { t, formatRelativeTime, formatDate } = useI18n();
+  const { t, tData, formatRelativeTime, formatDate } = useI18n();
   const { latestVersion, flows, recordings, currentSession, startDemoSession } = useGuide();
   const [isDemoRunning, setIsDemoRunning] = useState(false);
+
+  const guideSections = GUIDE_SECTION_KEYS.map((key) => tData<TranslatedGuideSection>(`guide.${key}`));
+  const screenGuidance = SCREEN_GUIDANCE_KEYS.map((key) => tData<TranslatedScreenGuidance>(`guide.screens.${key}`));
+  const statusGlossary = tData<TranslatedStatusGlossaryItem[]>('guide.statusGlossary.items');
+  const faqs = tData<Array<{ question: string; answer: string }>>('guide.faq.items');
+
+  const latestVersionNumber = latestVersion?.version || '0.0.0';
+  const latestReleaseDate = latestVersion ? formatDate(latestVersion.created_at, { dateStyle: 'medium' }) : t('guide.latestVersion.notAvailable');
 
   const coreCards = [
     { icon: Layers, title: t("guide.founderVision"), desc: t("guide.founderVisionDesc"), page: "vision" },
@@ -39,13 +47,13 @@ export function GuidePage() {
           <div className="relative z-10 space-y-6">
             <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.3em] mx-auto">
               <HelpCircle size={14} fill="currentColor" />
-              Living Platform Guide
+              {t('guide.hero.eyebrow')}
             </div>
             <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight leading-[0.85]">
-              BlueprintForge AI Guide
+              {t('guide.hero.headline')}
             </h1>
             <p className="text-lg md:text-xl text-text-dim max-w-2xl mx-auto font-medium">
-              The living guide to the platform, updated with every new version. Discover how vision becomes reality.
+              {t('guide.hero.subtitle')}
             </p>
           </div>
           <div className="relative z-10 flex flex-wrap items-center justify-center gap-6 pt-4">
@@ -54,13 +62,13 @@ export function GuidePage() {
                className="glass-btn-primary !px-10 !py-4 flex items-center gap-3 shadow-[0_0_40px_rgba(255,107,0,0.2)]"
               >
                <Play size={18} fill="currentColor" />
-               Watch Auto Demo
+               {t('guide.hero.watchDemo')}
              </button>
              <button className="glass-btn-secondary !px-10 !py-4 border-white/5">
-                Version v{latestVersion?.version}
+                {t('guide.hero.version', { version: latestVersionNumber })}
              </button>
              <button className="glass-btn-secondary !px-10 !py-4 border-white/5">
-                GitHub Repo
+                {t('guide.hero.githubRepo')}
              </button>
           </div>
         </section>
@@ -73,12 +81,12 @@ export function GuidePage() {
                 <div className="w-10 h-10 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
                    <Terminal size={20} />
                 </div>
-                <h2 className="text-xl font-black text-white uppercase tracking-widest">Latest Version v{latestVersion?.version}</h2>
+                <h2 className="text-xl font-black text-white uppercase tracking-widest">{t('guide.latestVersion.heading', { version: latestVersionNumber })}</h2>
               </div>
               <p className="text-3xl font-black text-white/90 uppercase tracking-tight">"{latestVersion?.release_title}"</p>
             </div>
             <div className="text-[10px] font-black text-text-dim uppercase tracking-widest bg-white/5 px-4 py-2 rounded-xl">
-               Released: {latestVersion ? formatDate(latestVersion.created_at, { dateStyle: 'medium' }) : 'N/A'}
+               {t('guide.latestVersion.released', { date: latestReleaseDate })}
             </div>
           </div>
 
@@ -86,7 +94,7 @@ export function GuidePage() {
              <div className="space-y-10">
                 <div className="space-y-4">
                   <h3 className="text-xs font-black text-accent uppercase tracking-widest flex items-center gap-2">
-                    <Zap size={14} fill="currentColor" /> New Features
+                    <Zap size={14} fill="currentColor" /> {t('guide.latestVersion.newFeatures')}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      {latestVersion?.new_features.map((f, i) => (
@@ -100,7 +108,7 @@ export function GuidePage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    <div className="space-y-4">
-                      <h3 className="text-xs font-black text-text-dim uppercase tracking-widest flex items-center gap-2">Fixed Issues</h3>
+                      <h3 className="text-xs font-black text-text-dim uppercase tracking-widest flex items-center gap-2">{t('guide.latestVersion.fixedIssues')}</h3>
                       <ul className="space-y-2">
                         {latestVersion?.fixed_issues.map((f, i) => (
                           <li key={i} className="text-xs text-text-dim flex gap-3">
@@ -110,7 +118,7 @@ export function GuidePage() {
                       </ul>
                    </div>
                    <div className="space-y-4">
-                      <h3 className="text-xs font-black text-text-dim uppercase tracking-widest flex items-center gap-2">Known Limitations</h3>
+                      <h3 className="text-xs font-black text-text-dim uppercase tracking-widest flex items-center gap-2">{t('guide.latestVersion.knownLimitations')}</h3>
                       <ul className="space-y-2">
                         {latestVersion?.known_limitations.map((l, i) => (
                           <li key={i} className="text-xs text-text-dim flex gap-3">
@@ -124,13 +132,13 @@ export function GuidePage() {
 
              <div className="space-y-6">
                 <div className="bg-black/40 border border-white/5 p-6 rounded-3xl space-y-4">
-                   <h4 className="text-[10px] font-black text-text-dim uppercase tracking-widest">Release Notes</h4>
+                   <h4 className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t('guide.latestVersion.releaseNotes')}</h4>
                    <p className="text-xs text-white/60 leading-relaxed italic">
                      "{latestVersion?.release_notes}"
                    </p>
                 </div>
                 <button className="w-full glass-btn-secondary !text-[10px] !py-3 !font-black uppercase tracking-[0.2em] border-white/5 flex items-center justify-center gap-2">
-                   <Github size={14} /> Full GitHub Changelog
+                   <Github size={14} /> {t('guide.latestVersion.fullGithubChangelog')}
                 </button>
              </div>
           </div>
@@ -140,16 +148,16 @@ export function GuidePage() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
            <div className="space-y-12">
               <div className="space-y-4">
-                <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">The Anatomy</h2>
-                <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">What is<br />BlueprintForge?</h3>
+                <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t('guide.anatomy.eyebrow')}</h2>
+                <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">{t('guide.anatomy.headlineTop')}<br />{t('guide.anatomy.headlineBottom')}</h3>
               </div>
               <p className="text-xl text-text-dim leading-relaxed font-medium">
-                BlueprintForge AI is a bootstrap platform where a founder’s raw thoughts, visions and app concepts become structured build tickets.
+                {t('guide.anatomy.description')}
               </p>
               <div className="flex items-center gap-4 p-6 bg-accent/5 border-l-4 border-accent rounded-r-3xl">
                  <Info size={24} className="text-accent shrink-0" />
                  <p className="text-sm text-white/80 font-medium italic">
-                   "We prioritize signal over noise, turning abstract intuition into technical reality."
+                   "{t('guide.anatomy.quote')}"
                  </p>
               </div>
            </div>
@@ -165,7 +173,7 @@ export function GuidePage() {
                       <p className="text-[10px] text-text-dim leading-relaxed">{card.desc}</p>
                    </div>
                    <button className="text-[10px] font-black text-accent uppercase tracking-widest flex items-center gap-2 group-hover:gap-3 transition-all pt-2">
-                      Learn More <ChevronRight size={12} />
+                      {t('guide.core.learnMore')} <ChevronRight size={12} />
                    </button>
                 </div>
               ))}
@@ -175,16 +183,16 @@ export function GuidePage() {
         {/* ROLE GUIDES */}
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Role Guides</h2>
-            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">What should I do next?</h3>
-            <p className="text-text-dim max-w-2xl mx-auto">Choose the guide that matches your role. Each guide explains the current state, available next action and what success looks like.</p>
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t('guide.roleGuides.eyebrow')}</h2>
+            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">{t('guide.roleGuides.headline')}</h3>
+            <p className="text-text-dim max-w-2xl mx-auto">{t('guide.roleGuides.description')}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {guideSections.map((section) => (
               <article key={section.id} id={section.id} className="rounded-[32px] border border-white/5 bg-white/[0.02] p-6 space-y-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-accent">{section.audience} guide</p>
+                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-accent">{t('guide.roleGuides.audienceLabel', { audience: section.audience })}</p>
                     <h4 className="mt-1 text-lg font-black uppercase tracking-tight text-white">{section.title}</h4>
                   </div>
                   <StatusBadge status="Published" label={section.statusLabel} />
@@ -199,7 +207,7 @@ export function GuidePage() {
                   ))}
                 </ol>
                 <div className="rounded-2xl border border-accent/10 bg-accent/[0.04] p-4">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-accent">Next action</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-accent">{t('guide.roleGuides.nextAction')}</p>
                   <p className="mt-1 text-xs text-white/80">{section.nextAction}</p>
                 </div>
               </article>
@@ -210,11 +218,11 @@ export function GuidePage() {
         {/* SCREENS AND STATES */}
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Screens, Capabilities and States</h2>
-            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">Every screen explains itself</h3>
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t('guide.screens.eyebrow')}</h2>
+            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">{t('guide.screens.headline')}</h3>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {Object.values(screenGuidance).map((screen) => (
+            {screenGuidance.map((screen) => (
               <div key={screen.title} className="rounded-[32px] border border-white/5 bg-[#0b0b0b] p-6 space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <h4 className="text-base font-black uppercase tracking-widest text-white">{screen.title}</h4>
@@ -222,13 +230,13 @@ export function GuidePage() {
                 </div>
                 <p className="text-sm text-text-dim">{screen.purpose}</p>
                 <div className="grid gap-3 text-xs text-white/70">
-                  <p><span className="font-black uppercase tracking-widest text-white/35">State:</span> {screen.state}</p>
-                  <p><span className="font-black uppercase tracking-widest text-white/35">Next:</span> {screen.nextAction}</p>
-                  <p><span className="font-black uppercase tracking-widest text-white/35">Disabled:</span> {screen.disabledReason}</p>
-                  <p><span className="font-black uppercase tracking-widest text-white/35">Empty:</span> {screen.empty}</p>
-                  <p><span className="font-black uppercase tracking-widest text-white/35">Loading:</span> {screen.loading}</p>
-                  <p><span className="font-black uppercase tracking-widest text-white/35">Error:</span> {screen.error}</p>
-                  <p><span className="font-black uppercase tracking-widest text-white/35">Success:</span> {screen.success}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.state')}</span> {screen.state}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.next')}</span> {screen.nextAction}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.disabled')}</span> {screen.disabledReason}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.empty')}</span> {screen.empty}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.loading')}</span> {screen.loading}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.error')}</span> {screen.error}</p>
+                  <p><span className="font-black uppercase tracking-widest text-white/35">{t('guide.screens.labels.success')}</span> {screen.success}</p>
                 </div>
               </div>
             ))}
@@ -239,13 +247,13 @@ export function GuidePage() {
         <section className="space-y-8">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
-              <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Status Glossary</h2>
-              <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">What each badge means</h3>
+              <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t('guide.statusGlossary.eyebrow')}</h2>
+              <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">{t('guide.statusGlossary.headline')}</h3>
             </div>
-            <StatusBadge status="Published Version" label="Glossary Complete" />
+            <StatusBadge status="Published Version" label={t('guide.statusGlossary.completeLabel')} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {statusGlossary.map(([label, meaning]) => (
+            {statusGlossary.map(({ label, meaning }) => (
               <div key={label} className="flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-4">
                 <StatusBadge status={label} label={label} />
                 <p className="text-xs leading-relaxed text-text-dim">{meaning}</p>
@@ -257,16 +265,10 @@ export function GuidePage() {
         {/* FAQ */}
         <section className="rounded-[48px] border border-white/5 bg-white/[0.02] p-8 md:p-12 space-y-8">
           <div>
-            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">FAQ</h2>
-            <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">No guessing required</h3>
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t('guide.faq.eyebrow')}</h2>
+            <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">{t('guide.faq.headline')}</h3>
           </div>
-          {[
-            ['Why is an action disabled?', 'The UI should show the reason near the button or in the screen guidance. Common causes are missing sign-in, incomplete profile, missing API key, protected founder/admin role or a ticket that is no longer Open.'],
-            ['What if GitHub or OpenRouter is not connected?', 'The app labels the flow Not Configured, Connection Untested or Not connected yet instead of pretending the backend is complete. Configure settings and run diagnostics before relying on the integration.'],
-            ['How do stars work?', 'Stars are awarded by founder/admin review after accepted work. They represent shipped, verified contribution rather than claimed work.'],
-            ['What should demo users avoid?', 'Demo users should use only labeled demo data. Production Protected means real data and secrets are intentionally not touched.'],
-            ['Where do I see version popup state?', 'The changelog and version popup use Latest Version, Not Yet Acknowledged and Acknowledged badges so builders know whether they have read the latest release.']
-          ].map(([question, answer]) => (
+          {faqs.map(({ question, answer }) => (
             <div key={question} className="border-t border-white/5 pt-5">
               <h4 className="font-black uppercase tracking-widest text-white">{question}</h4>
               <p className="mt-2 text-sm leading-relaxed text-text-dim">{answer}</p>
@@ -277,8 +279,8 @@ export function GuidePage() {
         {/* USER FLOWS */}
         <section className="space-y-16">
           <div className="text-center space-y-4">
-             <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Process Library</h2>
-             <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">Standard User Flows</h3>
+             <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t('guide.flows.eyebrow')}</h2>
+             <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">{t('guide.flows.headline')}</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -305,7 +307,7 @@ export function GuidePage() {
                                 <span className="text-[10px] font-mono text-text-dim">{step.page}</span>
                              </div>
                              <p className="text-sm text-white/80 font-medium">{step.action}</p>
-                             <p className="text-[10px] text-text-dim italic">Result: {step.expected_result}</p>
+                             <p className="text-[10px] text-text-dim italic">{t('guide.flows.result', { result: step.expected_result })}</p>
                           </div>
                        </div>
                      ))}
@@ -319,8 +321,8 @@ export function GuidePage() {
         {recordings.length > 0 && (
           <section className="space-y-12">
              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-black uppercase tracking-widest">Demo Recordings</h3>
-                <div className="text-[10px] font-black text-text-dim uppercase tracking-widest">{recordings.length} Archvied</div>
+                <h3 className="text-2xl font-black uppercase tracking-widest">{t('guide.recordings.headline')}</h3>
+                <div className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t('guide.recordings.archived', { count: recordings.length })}</div>
              </div>
              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {recordings.map((rec) => (
@@ -354,15 +356,15 @@ export function GuidePage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,107,0,0.05)_0%,transparent_70%)] animate-pulse" />
           <div className="relative z-10 space-y-8 px-6">
             <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white text-balance">
-              Don’t just watch the vision.<br />
-              <span className="text-accent italic">Build it.</span>
+              {t('guide.cta.headlineTop')}<br />
+              <span className="text-accent italic">{t('guide.cta.headlineEmphasis')}</span>
             </h3>
             <div className="flex flex-wrap items-center justify-center gap-6 pt-6">
                <button className="glass-btn-primary !px-12 !py-5 shadow-2xl">
-                 Join as Builder
+                 {t('guide.cta.joinBuilder')}
                </button>
                <button className="glass-btn-secondary !px-12 !py-5 border-white/10 hover:bg-white/5">
-                 View Current Focus
+                 {t('guide.cta.viewCurrentFocus')}
                </button>
             </div>
           </div>

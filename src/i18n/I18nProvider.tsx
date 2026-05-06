@@ -9,6 +9,7 @@ type I18nContextValue = {
   locale: string;
   setLanguage: (language: LanguageCode) => Promise<void>;
   t: (key: string, options?: TranslationOptions) => string;
+  tData: <T,>(key: string) => T;
   formatDate: (value: string | number | Date, options?: Intl.DateTimeFormatOptions) => string;
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
   formatRelativeTime: (value: string | number | Date) => string;
@@ -47,6 +48,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     return key;
   }, [language]);
 
+  const tData = useCallback(<T,>(key: string): T => {
+    const translated = getByPath(resources[language], key) ?? getByPath(resources[DEFAULT_LANGUAGE], key);
+    return translated as T;
+  }, [language]);
+
   const setLanguage = useCallback(async (nextLanguage: LanguageCode) => {
     setLanguageState(nextLanguage);
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
@@ -76,7 +82,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     return new Intl.RelativeTimeFormat(locale, { numeric: 'auto' }).format(Math.round(deltaSeconds / seconds), unit);
   }, [locale]);
 
-  const value = useMemo(() => ({ language, locale, setLanguage, t, formatDate, formatNumber, formatRelativeTime }), [language, locale, setLanguage, t, formatDate, formatNumber, formatRelativeTime]);
+  const value = useMemo(() => ({ language, locale, setLanguage, t, tData, formatDate, formatNumber, formatRelativeTime }), [language, locale, setLanguage, t, tData, formatDate, formatNumber, formatRelativeTime]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 

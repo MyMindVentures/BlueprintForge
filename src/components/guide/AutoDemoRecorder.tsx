@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Plus, Zap, Cpu, Target, Users, Github, ArrowRight, 
-  Terminal, Monitor, X, Play, Square, Loader2, 
-  ChevronRight, Sparkles, MessageSquare, Code2, Rocket, Video
-} from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion } from 'motion/react';
+import { Target, Terminal, Monitor, X, Square, Loader2, Rocket, Video } from 'lucide-react';
 import { useGuide } from '../../hooks/useGuide';
 import { useToast } from '../ui/Toast';
 import { useAuth } from '../../hooks/useAuth';
 import { isFounderAdminRole, normalizeRole } from '../../authRoles';
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface AutoDemoRecorderProps {
   onExit: () => void;
@@ -19,11 +16,11 @@ interface AutoDemoRecorderProps {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
-  const { flows, latestVersion, startDemoSession, completeDemoSession } = useGuide();
+  const { flows, latestVersion, completeDemoSession } = useGuide();
+  const { t } = useI18n();
   const { profile } = useAuth();
-  const { success, info, error } = useToast();
+  const { error } = useToast();
   
-  const [step, setStep] = useState(0);
   const [phase, setPhase] = useState<'setup' | 'running' | 'recording' | 'finished'>('setup');
   const [currentFlowIdx, setCurrentFlowIdx] = useState(0);
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
@@ -38,7 +35,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
 
   const startDemo = async (record: boolean) => {
     if (!hasFounderAccess) {
-      error(`Demo recorder requires ROLE-01. Resolved role: ${normalizeRole(profile?.role)}.`);
+      error(t('guide.demo.recorder.accessDeniedToast', { role: normalizeRole(profile?.role) }));
       return;
     }
     if (record) {
@@ -59,10 +56,10 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
         mediaRecorder.onstop = () => {
           const blob = new Blob(chunksRef.current, { type: 'video/webm' });
           const url = URL.createObjectURL(blob);
-          const filename = `blueprintforge-auto-demo-v${latestVersion.version}-${new Date().toISOString().split('T')[0]}.webm`;
+          const filename = `blueprintforge-auto-demo-v${latestVersion?.version || '0.0.0'}-${new Date().toISOString().split('T')[0]}.webm`;
           
           completeDemoSession({
-            version: latestVersion.version,
+            version: latestVersion?.version || '0.0.0',
             filename,
             file_url: url,
             duration: timer,
@@ -79,9 +76,9 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
       } catch (err: any) {
         console.error("Recording failed", err);
         if (err.name === 'NotAllowedError' || err.message.includes('disallowed')) {
-          error("Screen recording is blocked. Try opening the app in a new tab or use 'Preview Mode'.");
+          error(t('guide.demo.recorder.screenRecordingBlocked'));
         } else {
-          error(`Recording failed: ${err.message}`);
+          error(t('guide.demo.recorder.recordingFailed', { message: err.message }));
         }
         setPhase('setup');
         return;
@@ -112,6 +109,10 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
   const startDemoLogic = () => {
     // Logic to move between steps with timeouts
     const runNextStep = () => {
+      if (!currentFlow) {
+        stopDemo();
+        return;
+      }
       if (currentStepIdx < currentFlow.steps.length - 1) {
         setCurrentStepIdx(prev => prev + 1);
       } else if (currentFlowIdx < flows.length - 1) {
@@ -150,8 +151,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                  <Terminal size={20} />
               </div>
               <div>
-                 <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">Auto Demo Engine</h2>
-                 <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-1">Platform Walkthrough v{latestVersion.version}</p>
+                 <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">{t('guide.demo.recorder.engineTitle')}</h2>
+                 <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-1">{t('guide.demo.recorder.walkthroughVersion', { version: latestVersion?.version || '0.0.0' })}</p>
               </div>
            </div>
            <button 
@@ -167,13 +168,13 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
             <div className="space-y-12 text-center py-12">
                {!hasFounderAccess && (
                  <div className="mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-100">
-                   Demo Recorder is a ROLE-01 protected admin tool. Resolved role: <span className="font-mono">{normalizeRole(profile?.role)}</span>.
+                   {t('guide.demo.recorder.accessDenied', { role: normalizeRole(profile?.role) })}
                  </div>
                )}
                <div className="space-y-4">
-                 <h3 className="text-4xl font-black text-white uppercase tracking-tight">Ready to Record?</h3>
+                 <h3 className="text-4xl font-black text-white uppercase tracking-tight">{t('guide.demo.recorder.readyTitle')}</h3>
                  <p className="text-text-dim max-w-lg mx-auto leading-relaxed">
-                   The system will launch an automated robot walkthrough of the platform. You can record the session into a high-quality video file.
+                   {t('guide.demo.recorder.readyDescription')}
                  </p>
                </div>
 
@@ -184,8 +185,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   >
                      <Video size={32} className="text-accent mx-auto group-hover:scale-110 transition-transform" />
                      <div>
-                        <h4 className="text-sm font-black text-white uppercase tracking-widest">Full Recording</h4>
-                        <p className="text-[10px] text-text-dim mt-1">Capture screen & robot steps</p>
+                        <h4 className="text-sm font-black text-white uppercase tracking-widest">{t('guide.demo.recorder.fullRecording')}</h4>
+                        <p className="text-[10px] text-text-dim mt-1">{t('guide.demo.recorder.fullRecordingDescription')}</p>
                      </div>
                   </button>
                   <button 
@@ -194,28 +195,28 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   >
                      <Monitor size={32} className="text-white mx-auto group-hover:scale-110 transition-transform" />
                      <div>
-                        <h4 className="text-sm font-black text-white uppercase tracking-widest">Preview Mode</h4>
-                        <p className="text-[10px] text-text-dim mt-1">Robot walkthrough only</p>
+                        <h4 className="text-sm font-black text-white uppercase tracking-widest">{t('guide.demo.recorder.previewMode')}</h4>
+                        <p className="text-[10px] text-text-dim mt-1">{t('guide.demo.recorder.previewModeDescription')}</p>
                      </div>
                   </button>
                </div>
             </div>
           )}
 
-          {(phase === 'running' || phase === 'recording') && (
+          {(phase === 'running' || phase === 'recording') && currentFlow && currentStep && (
             <div className="space-y-12 py-12">
                <div className="flex items-center justify-between px-8 py-4 bg-black/40 border border-white/5 rounded-3xl">
                   <div className="flex items-center gap-6">
                      <div className="flex items-center gap-2">
                         <div className={`w-3 h-3 rounded-full ${isRecording ? 'bg-red-500 animate-pulse' : 'bg-green-500 animate-pulse'}`} />
-                        <span className="text-[10px] font-black text-white uppercase tracking-widest">{isRecording ? 'Recording' : 'Running'}</span>
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest">{isRecording ? t('guide.demo.recorder.recording') : t('guide.demo.recorder.running')}</span>
                      </div>
                      <div className="h-6 w-px bg-white/10" />
                      <div className="text-[10px] font-mono text-text-dim">
-                        FLOW: <span className="text-white">{currentFlowIdx + 1}/{flows.length}</span>
+                        {t('guide.demo.recorder.flow')} <span className="text-white">{currentFlowIdx + 1}/{flows.length}</span>
                      </div>
                      <div className="text-[10px] font-mono text-text-dim">
-                        STEP: <span className="text-white">{currentStepIdx + 1}/{currentFlow.steps.length}</span>
+                        {t('guide.demo.recorder.step')} <span className="text-white">{currentStepIdx + 1}/{currentFlow.steps.length}</span>
                      </div>
                   </div>
                   {isRecording && (
@@ -228,7 +229,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-center">
                   <div className="space-y-8">
                      <div className="space-y-2">
-                        <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">Active Robot Signal</h4>
+                        <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">{t('guide.demo.recorder.activeSignal')}</h4>
                         <h3 className="text-3xl font-black text-white uppercase tracking-tighter">"{currentStep.action}"</h3>
                      </div>
                      <div className="bg-white/5 border-l-4 border-accent p-6 rounded-r-3xl">
@@ -241,14 +242,14 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                         <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
                            <Target size={16} />
                         </div>
-                        <h5 className="text-[10px] font-black text-white uppercase tracking-widest">Robot Caption</h5>
+                        <h5 className="text-[10px] font-black text-white uppercase tracking-widest">{t('guide.demo.recorder.robotCaption')}</h5>
                      </div>
                      <p className="text-sm text-text-dim leading-relaxed font-medium">
-                        Navigating to <span className="text-white font-bold">{currentStep.page}</span> to demonstrate the <span className="text-accent font-black">{currentStep.label}</span> phase of the bootstrap loop.
+                        {t('guide.demo.recorder.caption', { page: currentStep.page, label: currentStep.label })}
                      </p>
                      <div className="flex items-center gap-2 pt-4">
                         <Loader2 className="w-4 h-4 text-accent animate-spin" />
-                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">AI Processing...</span>
+                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{t('guide.demo.recorder.aiProcessing')}</span>
                      </div>
                   </div>
                </div>
@@ -259,7 +260,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                     className="flex items-center gap-3 px-8 py-3 bg-red-500/10 text-red-500 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-red-500/20 transition-all border border-red-500/20"
                   >
                      <Square size={16} fill="currentColor" />
-                     Force Stop Demo
+                     {t('guide.demo.recorder.forceStop')}
                   </button>
                </div>
             </div>
@@ -271,9 +272,9 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   <Rocket size={40} />
                </div>
                <div className="space-y-4">
-                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">Demo Completed</h3>
+                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">{t('guide.demo.recorder.completedTitle')}</h3>
                   <p className="text-text-dim max-w-lg mx-auto">
-                    The robot has finished the walkthrough. If you were recording, your video file is being prepared for download.
+                    {t('guide.demo.recorder.completedDescription')}
                   </p>
                </div>
                <div className="flex justify-center gap-6">
@@ -281,7 +282,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                     onClick={onExit}
                     className="glass-btn-primary !px-12 !py-4"
                   >
-                     Return to Guide
+                     {t('guide.demo.recorder.returnToGuide')}
                   </button>
                </div>
             </div>

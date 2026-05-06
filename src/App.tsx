@@ -21,7 +21,7 @@ import { ToastProvider } from "./components/ui/Toast";
 import { I18nProvider, useI18n } from "./i18n/I18nProvider";
 import { HelpBlock } from "./components/help/HelpBlock";
 import { LoadingState } from "./components/state/LoadingState";
-import { screenGuidance } from "./content/guides/blueprintGuides";
+import { TranslatedScreenGuidance } from "./content/guides/blueprintGuides";
 import { describeMissingAdminAccess, isFounderAdminRole, logAdminAccessDebug, normalizeRole } from "./authRoles";
 
 export type AppView = "landing" | "bootstrap" | "guide" | "projects" | "agents" | "llm" | "diagnostics" | "feed_admin" | "feed_coder" | "coder_profile" | "coder_directory" | "vision" | "not_found";
@@ -48,7 +48,7 @@ export default function App() {
  */
 function AppContent() {
   const { user, profile, loading, signIn, authError } = useAuth();
-  const { t } = useI18n();
+  const { t, tData } = useI18n();
   const {
     projects,
     agents,
@@ -79,20 +79,30 @@ function AppContent() {
   const activeProject = activeProjectId ? projects.find(p => p.id === activeProjectId) : null;
   const activeAgent = activeAgentId ? agents.find(a => a.id === activeAgentId) : null;
 
+  const translatedScreenGuidance = {
+    landing: tData<TranslatedScreenGuidance>('guide.screens.landing'),
+    bootstrap: tData<TranslatedScreenGuidance>('guide.screens.bootstrap'),
+    guide: tData<TranslatedScreenGuidance>('guide.screens.guide'),
+    adminPersistence: tData<TranslatedScreenGuidance>('guide.screens.adminPersistence'),
+    settings: tData<TranslatedScreenGuidance>('guide.screens.settings'),
+    liveFeed: tData<TranslatedScreenGuidance>('guide.screens.liveFeed'),
+    profile: tData<TranslatedScreenGuidance>('guide.screens.profile')
+  };
+
   const guidanceByView = {
-    landing: screenGuidance.landing,
-    bootstrap: screenGuidance.bootstrap,
-    guide: screenGuidance.guide,
-    projects: screenGuidance.adminPersistence,
-    agents: screenGuidance.adminPersistence,
-    llm: screenGuidance.settings,
-    diagnostics: screenGuidance.settings,
-    feed_admin: screenGuidance.liveFeed,
-    feed_coder: screenGuidance.liveFeed,
-    coder_profile: screenGuidance.profile,
-    coder_directory: screenGuidance.profile,
-    vision: { ...screenGuidance.guide, title: t('navigation.founderVision'), purpose: 'Connect strategic product direction to visible build progress.', nextAction: 'Read the current vision, then open Current Founder Focus to see execution.' },
-    not_found: { ...screenGuidance.guide, title: t('errors.accessDenied'), purpose: 'Explain that the requested screen is unavailable and offer safe navigation.', nextAction: 'Return to Landing, Guide or Live Build Feed.' }
+    landing: translatedScreenGuidance.landing,
+    bootstrap: translatedScreenGuidance.bootstrap,
+    guide: translatedScreenGuidance.guide,
+    projects: translatedScreenGuidance.adminPersistence,
+    agents: translatedScreenGuidance.adminPersistence,
+    llm: translatedScreenGuidance.settings,
+    diagnostics: translatedScreenGuidance.settings,
+    feed_admin: translatedScreenGuidance.liveFeed,
+    feed_coder: translatedScreenGuidance.liveFeed,
+    coder_profile: translatedScreenGuidance.profile,
+    coder_directory: translatedScreenGuidance.profile,
+    vision: { ...translatedScreenGuidance.guide, title: t('navigation.founderVision'), purpose: t('guide.screens.vision.purpose'), nextAction: t('guide.screens.vision.nextAction') },
+    not_found: { ...translatedScreenGuidance.guide, title: t('errors.accessDenied'), purpose: t('guide.screens.notFound.purpose'), nextAction: t('guide.screens.notFound.nextAction') }
   } as const;
 
   const currentGuidance = guidanceByView[view];
