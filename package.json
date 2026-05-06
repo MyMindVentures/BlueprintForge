@@ -20,7 +20,9 @@
     "db:generate": "echo \"No code generation required for direct PostgreSQL SQL migrations.\"",
     "db:migrate": "tsx scripts/db-migrate.ts",
     "db:seed": "tsx scripts/db-seed.ts",
-    "db:studio": "echo \"No database studio is configured for the direct PostgreSQL layer. Use Railway Data tab or psql.\""
+    "db:studio": "echo \"No database studio is configured for the direct PostgreSQL layer. Use Railway Data tab or psql.\"",
+    "i18n:check": "tsx scripts/check-locales.ts",
+    "i18n:check:identical": "tsx scripts/check-locales.ts --report-identical"
   },
   "dependencies": {
     "@playwright/test": "^1.59.1",
