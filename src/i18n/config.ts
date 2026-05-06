@@ -22,15 +22,44 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', locale: 'ja-JP' }
 ] as const;
 
+export const I18N_NAMESPACES = [
+  'common',
+  'auth',
+  'founder',
+  'builder',
+  'notifications',
+  'github',
+  'openrouter',
+  'demo',
+  'changelog',
+  'guide',
+  'errors',
+  'states',
+  'buttons',
+  'forms'
+] as const;
+
 export type LanguageCode = typeof SUPPORTED_LANGUAGES[number]['code'];
-export type TranslationOptions = Record<string, string | number | boolean | null | undefined>;
+export type I18nNamespace = typeof I18N_NAMESPACES[number];
+export type TranslationPrimitive = string | number | boolean | null | undefined;
+export type TranslationOptions = Record<string, TranslationPrimitive> & {
+  count?: number;
+  ns?: I18nNamespace;
+};
+export type I18nResourceTree = Record<string, unknown>;
+export type I18nResourceBundle = Record<I18nNamespace, I18nResourceTree>;
+
 export const DEFAULT_LANGUAGE: LanguageCode = 'en';
+export const DEFAULT_NAMESPACE: I18nNamespace = 'common';
 export const LANGUAGE_STORAGE_KEY = 'blueprintforge.preferredLanguage';
 
 export const resources: Record<LanguageCode, any> = { en, nl, fr, de, es, pt, it, pl, tr, ja };
 
 export const isSupportedLanguage = (value?: string | null): value is LanguageCode =>
   Boolean(value && SUPPORTED_LANGUAGES.some((language) => language.code === value));
+
+export const isSupportedNamespace = (value?: string | null): value is I18nNamespace =>
+  Boolean(value && I18N_NAMESPACES.includes(value as I18nNamespace));
 
 export const languageToLocale = (language: LanguageCode) =>
   SUPPORTED_LANGUAGES.find((entry) => entry.code === language)?.locale || 'en-US';

@@ -120,9 +120,9 @@ export function StatusBadge({ status, label: manualLabel, className = "", dot = 
   };
 
   return (
-    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest ${styles[color] || styles.idle} ${className}`}>
-      {dot && <span className={`w-1.5 h-1.5 rounded-full ${dotStyles[color] || dotStyles.idle} ${color === 'success' ? 'animate-pulse' : ''}`} />}
-      {label}
+    <div className={`inline-flex min-w-0 max-w-full items-center gap-2 rounded-full border px-3 py-1 text-[9px] font-black leading-snug ${styles[color] || styles.idle} ${className}`}>
+      {dot && <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotStyles[color] || dotStyles.idle} ${color === 'success' ? 'animate-pulse' : ''}`} />}
+      <span className="min-w-0 break-words whitespace-normal">{label}</span>
     </div>
   );
 }
