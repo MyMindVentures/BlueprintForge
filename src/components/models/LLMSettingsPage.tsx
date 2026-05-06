@@ -47,7 +47,7 @@ interface LLMSettingsProps {
 export function LLMSettingsPage({ 
   settings, onUpdate, onSync, onTestConnection, onGenerateIntelligence, onRegenerateAll, syncStatus, onOpenDiagnostics 
 }: LLMSettingsProps) {
-  const { formatRelativeTime, formatDate } = useI18n();
+  const { formatRelativeTime, formatDate, t } = useI18n();
   const toast = useToast();
   const { settings: githubSettings, setSettings: setGithubSettings } = useGithubSettings();
   const [apiKey, setApiKey] = useState(settings.openRouterApiKey || "");
@@ -74,15 +74,15 @@ export function LLMSettingsPage({
 
   const handleSaveKey = () => {
     onUpdate({ openRouterApiKey: apiKey, apiKeySaved: !!apiKey });
-    toast.success("Security settings updated.");
+    toast.success(t("settings.securityUpdated"));
   };
 
   const handleSync = async () => {
     try {
       await onSync();
-      toast.success("Manifest synchronized.");
+      toast.success(t("settings.manifestSynchronized"));
     } catch (e: any) {
-      toast.error(e.message || "Sync failure.");
+      toast.error(e.message || t("settings.syncFailure"));
     }
   };
 
@@ -95,13 +95,13 @@ export function LLMSettingsPage({
           <div className="space-y-4">
              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest">
                 <Brain size={12} />
-                Global Brain Interface
+                {t("settings.globalBrainInterface")}
              </div>
              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
-               Fleet <span className="text-accent underline decoration-white/10 underline-offset-8">Intelligence</span>
+               {t("settings.fleet")} <span className="text-accent underline decoration-white/10 underline-offset-8">{t("auto.lLMSettingsPage.intelligence209049")}</span>
              </h1>
              <p className="text-text-dim text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed italic">
-               Connect, analyze and optimize multi-model delivery protocols using the OpenRouter gateway.
+               {t("settings.subtitle")}
              </p>
           </div>
           
@@ -111,10 +111,10 @@ export function LLMSettingsPage({
                className="glass-btn-secondary flex-1 sm:flex-none !h-14 !px-4 sm:!px-8 !text-[10px] sm:!text-[11px] !font-black !uppercase !tracking-widest"
              >
                <Terminal size={16} className="text-accent" />
-               <span className="hidden sm:inline">Diagnostics</span>
+               <span className="hidden sm:inline">{t("auto.lLMSettingsPage.diagnostics3e5c7f")}</span>
              </button>
              <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer" className="glass-btn-primary flex-1 sm:flex-none justify-center !h-14 !px-4 sm:!px-8 !text-[10px] sm:!text-[11px] !font-black !uppercase !tracking-widest">
-               Console <ExternalLink size={16} />
+               {t("settings.console")} <ExternalLink size={16} />
              </a>
           </div>
         </div>
@@ -128,8 +128,8 @@ export function LLMSettingsPage({
                     <div className="flex items-center gap-4">
                        <RefreshCw className="text-accent animate-spin" size={20} />
                        <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-widest">Processing Intelligence</h4>
-                          <p className="text-sm font-black text-white truncate max-w-[200px]">{syncStatus.currentModelName || "Booting..."}</p>
+                          <h4 className="text-[10px] font-black text-accent uppercase tracking-widest">{t("auto.lLMSettingsPage.processingIntelligencea85055")}</h4>
+                          <p className="text-sm font-black text-white truncate max-w-[200px]">{syncStatus.currentModelName || t("settings.booting")}</p>
                        </div>
                     </div>
                     <span className="text-2xl font-black text-white">{syncStatus.total > 0 ? Math.round((syncStatus.completed + syncStatus.failed) / syncStatus.total * 100) : 0}%</span>
@@ -138,8 +138,8 @@ export function LLMSettingsPage({
                     <motion.div animate={{ width: `${(syncStatus.completed + syncStatus.failed) / syncStatus.total * 100}%` }} className="h-full bg-accent" />
                  </div>
                  <div className="flex justify-between text-[9px] font-black uppercase text-text-dim">
-                    <span>Succeeded: {syncStatus.completed}</span>
-                    <span>Failed: {syncStatus.failed}</span>
+                    <span>{t("settings.succeeded")}: {syncStatus.completed}</span>
+                    <span>{t("settings.failed")}: {syncStatus.failed}</span>
                  </div>
               </div>
             </motion.div>
@@ -156,8 +156,8 @@ export function LLMSettingsPage({
                       <Key size={28} />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">Security Protocol</h2>
-                      <p className="text-[10px] text-accent font-black uppercase tracking-[.2em]">OpenRouter Gateway Link</p>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">{t("auto.lLMSettingsPage.securityProtocol153125")}</h2>
+                      <p className="text-[10px] text-accent font-black uppercase tracking-[.2em]">{t("auto.lLMSettingsPage.openrouterGatewayLink7546f4")}</p>
                     </div>
                   </div>
                   
@@ -167,7 +167,7 @@ export function LLMSettingsPage({
                          type={showKey ? "text" : "password"}
                          value={apiKey}
                          onChange={e => setApiKey(e.target.value)}
-                         placeholder="sk-or-v1-..."
+                         placeholder={t("settings.placeholders.openRouterKey")}
                          className="w-full h-14 bg-black/40 border border-white/5 rounded-2xl px-6 pr-14 text-sm font-mono text-white focus:outline-none focus:border-accent/40"
                        />
                        <button onClick={() => setShowKey(!showKey)} className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-white">
@@ -205,12 +205,12 @@ export function LLMSettingsPage({
                   <div className="flex items-center justify-between">
                      <div className="flex items-center gap-3">
                         <Sparkles size={18} className="text-accent" />
-                        <h3 className="text-[11px] font-black text-white uppercase tracking-widest">Master Intelligence Engine</h3>
+                        <h3 className="text-[11px] font-black text-white uppercase tracking-widest">{t("auto.lLMSettingsPage.masterIntelligenceEngine59c702")}</h3>
                      </div>
                   </div>
                   <div className="space-y-6">
                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Selected Primary</label>
+                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("auto.lLMSettingsPage.selectedPrimaryb5ac52")}</label>
                         <select 
                           value={settings.defaultModelId || ""}
                           onChange={e => onUpdate({ defaultModelId: e.target.value })}
@@ -240,8 +240,8 @@ export function LLMSettingsPage({
                       <Github size={28} />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">Open Source Sync</h2>
-                      <p className="text-[10px] text-emerald-400 font-black uppercase tracking-[.2em]">GitHub Configuration</p>
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tight">{t("auto.lLMSettingsPage.openSourceSync3d9663")}</h2>
+                      <p className="text-[10px] text-emerald-400 font-black uppercase tracking-[.2em]">{t("auto.lLMSettingsPage.githubConfiguration6d8d59")}</p>
                     </div>
                   </div>
                   
@@ -251,7 +251,7 @@ export function LLMSettingsPage({
                          type={showGithubKey ? "text" : "password"}
                          value={githubSettings.github_token}
                          onChange={e => setGithubSettings({...githubSettings, github_token: e.target.value})}
-                         placeholder="ghp_..."
+                         placeholder={t("settings.placeholders.githubToken")}
                          className="w-full h-14 bg-black/40 border border-white/5 rounded-2xl px-6 pr-14 text-sm font-mono text-white focus:outline-none focus:border-emerald-400/40"
                        />
                        <button onClick={() => setShowGithubKey(!showGithubKey)} className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-white">
@@ -267,7 +267,7 @@ export function LLMSettingsPage({
                         onChange={e => setGithubSettings({...githubSettings, auto_create_issues: e.target.checked})} 
                         className="w-4 h-4 accent-emerald-500 rounded" 
                       />
-                      <label htmlFor="auto_create_issues" className="text-sm font-medium text-white/80 select-none">Automatically create GitHub issues when publishing to feed</label>
+                      <label htmlFor="auto_create_issues" className="text-sm font-medium text-white/80 select-none">{t("auto.lLMSettingsPage.automaticallyCreateGithubIssuesWhenPublishing59f0dd")}</label>
                     </div>
                   </div>
                </div>
@@ -275,11 +275,11 @@ export function LLMSettingsPage({
                <div className="space-y-6 bg-white/[0.02] p-8 rounded-[32px] border border-white/5 shadow-inner">
                   <div className="space-y-4">
                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Repo URL</label>
+                        <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("auto.lLMSettingsPage.repoUrl4a5630")}</label>
                         <input 
                           type="text"
                           value={githubSettings.repo_url}
-                          placeholder="https://github.com/owner/repo"
+                          placeholder={t("settings.placeholders.repoUrl")}
                           onChange={e => {
                             const val = e.target.value;
                             let owner = githubSettings.repo_owner;
@@ -304,7 +304,7 @@ export function LLMSettingsPage({
                      </div>
                      <div className="grid grid-cols-2 gap-4">
                        <div className="space-y-2">
-                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Owner</label>
+                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("auto.lLMSettingsPage.ownerc60083")}</label>
                           <input 
                             value={githubSettings.repo_owner}
                             onChange={e => setGithubSettings({...githubSettings, repo_owner: e.target.value})}
@@ -312,7 +312,7 @@ export function LLMSettingsPage({
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">Name</label>
+                          <label className="text-[9px] font-black text-white/30 uppercase tracking-widest px-1">{t("auto.lLMSettingsPage.name072a8c")}</label>
                           <input 
                             value={githubSettings.repo_name}
                             onChange={e => setGithubSettings({...githubSettings, repo_name: e.target.value})}
@@ -329,7 +329,7 @@ export function LLMSettingsPage({
         <section className="space-y-10">
            <div className="flex flex-col md:flex-row md:items-end justify-between pb-4 gap-6">
               <div className="space-y-1">
-                <h2 className="text-2xl md:text-3xl font-black text-white tracking-widest uppercase">Operational Manifest</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-white tracking-widest uppercase">{t("auto.lLMSettingsPage.operationalManifesta5b576")}</h2>
                 {settings.lastSyncedAt && (
                   <p className="text-[10px] font-black text-text-dim/60 uppercase tracking-widest">
                     Last Synced: {formatRelativeTime(settings.lastSyncedAt)}
@@ -340,12 +340,12 @@ export function LLMSettingsPage({
                  {settings.models.length > 0 && (
                    <div className="flex gap-4">
                       <div className="text-left sm:text-right">
-                        <p className="text-[9px] font-black text-white/30 uppercase tracking-widest leading-none">Fleet Size</p>
+                        <p className="text-[9px] font-black text-white/30 uppercase tracking-widest leading-none">{t("auto.lLMSettingsPage.fleetSize48a961")}</p>
                         <p className="text-sm font-black text-white">{settings.models.length}</p>
                       </div>
                       {syncStatus.mappingFailed > 0 && (
                         <div className="text-left sm:text-right">
-                          <p className="text-[9px] font-black text-red-400 uppercase tracking-widest leading-none">Failures</p>
+                          <p className="text-[9px] font-black text-red-400 uppercase tracking-widest leading-none">{t("auto.lLMSettingsPage.failures33250e")}</p>
                           <p className="text-sm font-black text-red-500">{syncStatus.mappingFailed}</p>
                         </div>
                       )}
@@ -366,19 +366,19 @@ export function LLMSettingsPage({
                       <AlertTriangle size={24} />
                     </div>
                     <div className="space-y-3 flex-1">
-                       <h4 className="text-xs font-black text-red-400 uppercase tracking-widest">Protocol Sync Failure</h4>
+                       <h4 className="text-xs font-black text-red-400 uppercase tracking-widest">{t("auto.lLMSettingsPage.protocolSyncFailure168d45")}</h4>
                        <p className="text-sm text-text-dim leading-relaxed">{syncStatus.error}</p>
                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2 border-t border-red-500/10">
                           <div>
-                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">HTTP Status</p>
+                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">{t("auto.lLMSettingsPage.httpStatus8cdb48")}</p>
                             <p className="text-[10px] font-mono text-red-400">{syncStatus.errorDetail.status || "N/A"}</p>
                           </div>
                           <div className="col-span-2">
-                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Endpoint</p>
+                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">{t("auto.lLMSettingsPage.endpoint76fb42")}</p>
                             <p className="text-[10px] font-mono text-text-dim truncate">{syncStatus.errorDetail.endpoint}</p>
                           </div>
                           <div>
-                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Timestamp</p>
+                            <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">{t("auto.lLMSettingsPage.timestamp92a9be")}</p>
                             <p className="text-[10px] font-mono text-text-dim">{formatDate(syncStatus.errorDetail.timestamp, { timeStyle: 'medium' })}</p>
                           </div>
                        </div>
@@ -389,7 +389,7 @@ export function LLMSettingsPage({
            </AnimatePresence>
 
            <div className="max-w-xl">
-              <SearchInput value={search} onChange={setSearch} placeholder="Search active fleet..." />
+              <SearchInput value={search} onChange={setSearch} placeholder={t("settings.placeholders.searchFleet")} />
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -410,6 +410,7 @@ export function LLMSettingsPage({
 }
 
 function ModelCardSmall({ model, isSelected, onSelect, onToggle }: any) {
+  const { t } = useI18n();
   const isUnavailable = model.unavailable;
   return (
     <GlassPanel className={`p-6 transition-all ${(!model.enabled || isUnavailable) ? 'opacity-30 blur-[0.5px] scale-95' : 'hover:border-accent/20'} ${isSelected ? 'ring-1 ring-accent/30' : ''}`}>
@@ -431,7 +432,7 @@ function ModelCardSmall({ model, isSelected, onSelect, onToggle }: any) {
        </div>
        <div className="space-y-4">
           <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-text-dim">
-             <span>Intel Status</span>
+             <span>{t("auto.lLMSettingsPage.intelStatuse2c62f")}</span>
              <span className={model.intelligenceStatus === 'Ready' ? 'text-emerald-400' : model.intelligenceStatus === 'Failed' ? 'text-red-400' : ''}>
                {isUnavailable ? "Unavailable" : model.intelligenceStatus || "N/A"}
              </span>

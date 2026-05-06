@@ -9,6 +9,7 @@ import { useGuide } from '../../hooks/useGuide';
 import { useToast } from '../ui/Toast';
 import { useAuth } from '../../hooks/useAuth';
 import { isFounderAdminRole, normalizeRole } from '../../authRoles';
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface AutoDemoRecorderProps {
   onExit: () => void;
@@ -19,6 +20,7 @@ interface AutoDemoRecorderProps {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
+  const { t } = useI18n();
   const { flows, latestVersion, startDemoSession, completeDemoSession } = useGuide();
   const { profile } = useAuth();
   const { success, info, error } = useToast();
@@ -150,7 +152,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                  <Terminal size={20} />
               </div>
               <div>
-                 <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">Auto Demo Engine</h2>
+                 <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">{t("auto.autoDemoRecorder.autoDemoEngineb72286")}</h2>
                  <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest mt-1">Platform Walkthrough v{latestVersion.version}</p>
               </div>
            </div>
@@ -171,7 +173,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                  </div>
                )}
                <div className="space-y-4">
-                 <h3 className="text-4xl font-black text-white uppercase tracking-tight">Ready to Record?</h3>
+                 <h3 className="text-4xl font-black text-white uppercase tracking-tight">{t("auto.autoDemoRecorder.readyToRecord725067")}</h3>
                  <p className="text-text-dim max-w-lg mx-auto leading-relaxed">
                    The system will launch an automated robot walkthrough of the platform. You can record the session into a high-quality video file.
                  </p>
@@ -184,8 +186,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   >
                      <Video size={32} className="text-accent mx-auto group-hover:scale-110 transition-transform" />
                      <div>
-                        <h4 className="text-sm font-black text-white uppercase tracking-widest">Full Recording</h4>
-                        <p className="text-[10px] text-text-dim mt-1">Capture screen & robot steps</p>
+                        <h4 className="text-sm font-black text-white uppercase tracking-widest">{t("auto.autoDemoRecorder.fullRecording857e28")}</h4>
+                        <p className="text-[10px] text-text-dim mt-1">{t("auto.autoDemoRecorder.captureScreenRobotStepsda97c7")}</p>
                      </div>
                   </button>
                   <button 
@@ -194,8 +196,8 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   >
                      <Monitor size={32} className="text-white mx-auto group-hover:scale-110 transition-transform" />
                      <div>
-                        <h4 className="text-sm font-black text-white uppercase tracking-widest">Preview Mode</h4>
-                        <p className="text-[10px] text-text-dim mt-1">Robot walkthrough only</p>
+                        <h4 className="text-sm font-black text-white uppercase tracking-widest">{t("auto.autoDemoRecorder.previewModed71510")}</h4>
+                        <p className="text-[10px] text-text-dim mt-1">{t("auto.autoDemoRecorder.robotWalkthroughOnlya4b819")}</p>
                      </div>
                   </button>
                </div>
@@ -228,7 +230,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-center">
                   <div className="space-y-8">
                      <div className="space-y-2">
-                        <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">Active Robot Signal</h4>
+                        <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">{t("auto.autoDemoRecorder.activeRobotSignal70ee7f")}</h4>
                         <h3 className="text-3xl font-black text-white uppercase tracking-tighter">"{currentStep.action}"</h3>
                      </div>
                      <div className="bg-white/5 border-l-4 border-accent p-6 rounded-r-3xl">
@@ -241,14 +243,14 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                         <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
                            <Target size={16} />
                         </div>
-                        <h5 className="text-[10px] font-black text-white uppercase tracking-widest">Robot Caption</h5>
+                        <h5 className="text-[10px] font-black text-white uppercase tracking-widest">{t("auto.autoDemoRecorder.robotCaptionee327e")}</h5>
                      </div>
                      <p className="text-sm text-text-dim leading-relaxed font-medium">
-                        Navigating to <span className="text-white font-bold">{currentStep.page}</span> to demonstrate the <span className="text-accent font-black">{currentStep.label}</span> phase of the bootstrap loop.
+                        Navigating to <span className="text-white font-bold">{currentStep.page}</span>{t("auto.autoDemoRecorder.toDemonstrateThe9b4a71")}<span className="text-accent font-black">{currentStep.label}</span> phase of the bootstrap loop.
                      </p>
                      <div className="flex items-center gap-2 pt-4">
                         <Loader2 className="w-4 h-4 text-accent animate-spin" />
-                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">AI Processing...</span>
+                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{t("auto.autoDemoRecorder.aiProcessing44dbde")}</span>
                      </div>
                   </div>
                </div>
@@ -271,7 +273,7 @@ export function AutoDemoRecorder({ onExit }: AutoDemoRecorderProps) {
                   <Rocket size={40} />
                </div>
                <div className="space-y-4">
-                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">Demo Completed</h3>
+                  <h3 className="text-4xl font-black text-white uppercase tracking-tight">{t("auto.autoDemoRecorder.demoCompleted9edbff")}</h3>
                   <p className="text-text-dim max-w-lg mx-auto">
                     The robot has finished the walkthrough. If you were recording, your video file is being prepared for download.
                   </p>

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useBuildFeed } from '../../hooks/useBuildFeed';
 import { Save, CheckCircle2, AlertCircle, Star, Github } from 'lucide-react';
 import { useToast } from '../ui/Toast';
+import { useI18n } from '../../i18n/I18nProvider';
 
 /**
  * Handles the builder profile workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function BuilderProfile() {
+  const { t } = useI18n();
   const { currentUser, currentUserProfile, saveProfile } = useBuildFeed();
   const { success } = useToast();
   
@@ -36,7 +38,7 @@ export function BuilderProfile() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     saveProfile(formData);
-    success("Profile saved successfully");
+    success(t("builderProfile.profileSaved"));
   };
 
   if (currentUser?.role !== 'vibe_coder') {
@@ -44,8 +46,8 @@ export function BuilderProfile() {
       <div className="flex-1 flex flex-col items-center justify-center bg-[#0A0A0A] p-8">
         <div className="text-center space-y-4">
           <AlertCircle className="w-12 h-12 text-red-400 mx-auto opacity-50" />
-          <h2 className="text-xl font-bold text-white">Access Denied</h2>
-          <p className="text-sm text-text-dim max-w-md">You must be acting as a Vibe Coder to create and edit a Builder Profile.</p>
+          <h2 className="text-xl font-bold text-white">{t("auto.builderProfile.accessDenieda617c6")}</h2>
+          <p className="text-sm text-text-dim max-w-md">{t("auto.builderProfile.youMustBeActingAsA8b296a")}</p>
         </div>
       </div>
     );
@@ -58,8 +60,8 @@ export function BuilderProfile() {
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-black text-white uppercase tracking-widest mb-2">My Builder Profile</h1>
-            <p className="text-sm text-text-dim">Complete your profile to claim and execute active build requests.</p>
+            <h1 className="text-2xl font-black text-white uppercase tracking-widest mb-2">{t("auto.builderProfile.myBuilderProfile8b072c")}</h1>
+            <p className="text-sm text-text-dim">{t("auto.builderProfile.completeYourProfileToClaimAnd5af546")}</p>
           </div>
           <div className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border flex items-center gap-2 ${
             currentUserProfile?.status === 'Verified Builder' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
@@ -74,74 +76,74 @@ export function BuilderProfile() {
         {!isComplete && (
           <div className="bg-yellow-500/10 border border-yellow-500/20 p-5 rounded-2xl flex gap-4 text-yellow-400/90 text-sm">
             <AlertCircle className="w-5 h-5 shrink-0" />
-            <p><strong>Heads up:</strong> You cannot claim build requests or receive real-time notifications until your profile is complete. Name, username, email, country, skills, and stack are required.</p>
+            <p><strong>{t("auto.builderProfile.headsUp911dfc")}</strong>{t("auto.builderProfile.youCannotClaimBuildRequestsOr5064b4")}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="bg-[#111] border border-white/5 rounded-3xl p-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Full Name *</label>
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.fullNameca1f80")}</label>
               <input required name="name" value={formData.name} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Username *</label>
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.usernamed65621")}</label>
               <input required name="username" value={formData.username} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Email *</label>
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.emaila11271")}</label>
               <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Country *</label>
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.country46f124")}</label>
               <input required name="country" value={formData.country} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Time Zone</label>
-              <input name="timezone" placeholder="e.g. UTC+1" value={formData.timezone} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.timeZonea61b55")}</label>
+              <input name="timezone" placeholder={t("builderProfile.placeholders.timezone")} value={formData.timezone} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Availability</label>
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.availabilityaddfb5")}</label>
               <select name="availability" value={formData.availability} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50 appearance-none">
-                <option value="">Select...</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Weekends only">Weekends only</option>
-                <option value="Unavailable">Unavailable</option>
+                <option value="">{t("auto.builderProfile.select00d74e")}</option>
+                <option value="Full-time">{t("auto.builderProfile.fullTime321a66")}</option>
+                <option value="Part-time">{t("auto.builderProfile.partTimef7e0b6")}</option>
+                <option value="Weekends only">{t("auto.builderProfile.weekendsOnly4a00f2")}</option>
+                <option value="Unavailable">{t("auto.builderProfile.unavailablef22fb3")}</option>
               </select>
             </div>
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-sm font-bold text-white border-b border-white/5 pb-2">Skills & Links</h3>
+            <h3 className="text-sm font-bold text-white border-b border-white/5 pb-2">{t("auto.builderProfile.skillsLinks94131b")}</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Core Skills *</label>
-                <input required name="skills" placeholder="React, Node, UI/UX, GenAI..." value={formData.skills} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
+                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.coreSkills6a5b35")}</label>
+                <input required name="skills" placeholder={t("builderProfile.placeholders.skills")} value={formData.skills} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Preferred Stack *</label>
-                <input required name="preferred_stack" placeholder="Vite, Tailwind, Supabase..." value={formData.preferred_stack} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
+                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.preferredStack45eff3")}</label>
+                <input required name="preferred_stack" placeholder={t("builderProfile.placeholders.stack")} value={formData.preferred_stack} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">GitHub URL</label>
+                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.githubUrl8b3adb")}</label>
                 <input type="url" name="github_url" value={formData.github_url} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Portfolio URL</label>
+                <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.portfolioUrlbe7ddd")}</label>
                 <input type="url" name="portfolio_url" value={formData.portfolio_url} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">Short Bio</label>
+              <label className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("auto.builderProfile.shortBioc927f9")}</label>
               <textarea name="bio" rows={3} value={formData.bio} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50 resize-none" />
             </div>
 
             <div className="flex items-center gap-3 bg-black/20 p-4 rounded-xl border border-white/5">
               <input type="checkbox" id="paid_work" name="looking_for_paid_work" checked={formData.looking_for_paid_work} onChange={handleChange} className="w-4 h-4 accent-accent rounded" />
-              <label htmlFor="paid_work" className="text-sm font-medium text-white select-none">I am looking for paid work opportunities</label>
+              <label htmlFor="paid_work" className="text-sm font-medium text-white select-none">{t("auto.builderProfile.iAmLookingForPaidWork5d1fc8")}</label>
             </div>
           </div>
 

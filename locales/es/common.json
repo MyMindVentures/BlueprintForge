@@ -45,7 +45,15 @@
     "rePolishDraft": "Re-Polish Draft",
     "startBuilding": "Start Building",
     "enterBlueprintForge": "Enter BlueprintForge",
-    "startBuilderJourney": "Start Builder Journey"
+    "startBuilderJourney": "Start Builder Journey",
+    "joinAsBuilder": "Join as Builder",
+    "viewLiveBuildFeed": "View Live Build Feed",
+    "cancel": "Cancel",
+    "claimTicket": "Claim a Ticket",
+    "viewAllTickets": "View all tickets",
+    "claim": "Claim",
+    "learnMore": "Learn More",
+    "viewCurrentFocus": "View Current Focus"
   },
   "statuses": {
     "open": "Open",
@@ -82,7 +90,8 @@
     "founderAccessHint": "If you are the founder, verify that your Firebase email or UID is listed in FOUNDER_ADMIN_EMAILS or FOUNDER_ADMIN_UIDS on Railway, then sign out and sign back in so PostgreSQL can hydrate your ROLE-01 profile.",
     "missingOpenRouterKey": "Missing OpenRouter API Key.",
     "screenRecordingBlocked": "Screen recording is blocked. Try opening the app in a new tab or use 'Preview Mode'.",
-    "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved."
+    "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved.",
+    "githubIssueCreationFailed": "Feed published, but GitHub issue creation failed: {{message}}"
   },
   "success": {
     "ticketPolished": "Ticket polished and ready for review.",
@@ -121,7 +130,142 @@
     "implementation": "Implementation",
     "implementationDesc": "Builder forks, branches, and ships the requested feature.",
     "launchImprove": "Launch & Improve",
-    "launchImproveDesc": "PR is accepted, code is merged, and the platform evolves."
+    "launchImproveDesc": "PR is accepted, code is merged, and the platform evolves.",
+    "heroEyebrowFull": "Venture Studio Movement",
+    "heroTitlePrefix": "BlueprintForge AI:",
+    "heroTitleAccent": "Where Vision",
+    "heroTitleSuffix": "Becomes Buildable Reality",
+    "heroSubtitle": "I’m The Architect. I bring raw vision, app concepts and direction. Builders bring execution. Together we turn ideas into real products.",
+    "founderSectionEyebrow": "Section 01 / The Founder",
+    "founderMind1": "The Mind",
+    "founderMind2": "Behind the",
+    "founderMind3": "Architect",
+    "founderQuote1": "“I’m a visionary app thinker with ADHD. My brain constantly generates product ideas, platform concepts, improvements and future-facing systems.”",
+    "founderQuote2": "“For months I fought inside AI build tools because I could see what needed to exist, but I could not always build it alone.”",
+    "founderQuote3": "“BlueprintForge AI is my answer: a system where my thoughts no longer disappear, but become structured tickets that builders can pick up, implement and improve.”",
+    "founderSignature": "— Kevin De Vlieger",
+    "fallbackTitle": "New Build Request",
+    "fallbackChange": "Please refine the implementation based on the context.",
+    "fallbackAcceptance": "Implemented successfully",
+    "loopTitle": "The Bootstrap Loop",
+    "loopDescription": "How we turn abstract vision into production-ready features in 7 steps.",
+    "ticketConverterTitle": "Turn my thought into a build ticket",
+    "ticketConverterQuote": "Watch the AI turn raw founder energy into actionable truth.",
+    "ticketPlaceholder": "Write what you want BlueprintForge AI to improve, build, fix or explore…",
+    "draftSpecPreview": "Draft Specification Preview",
+    "fieldTitle": "Title",
+    "problemContext": "Problem / Context",
+    "expectedBehavior": "Expected Behavior",
+    "acceptanceCriteria": "Acceptance Criteria",
+    "priority": "Priority",
+    "difficulty": "Difficulty",
+    "whenYouPublish": "When you publish:",
+    "engineEyebrow": "The Engine",
+    "buildersTitle": "Builders: This is where you come in",
+    "buildersQuote": "“You don’t need to guess what to build. Open a ticket, accept it, fork the repo, create your branch and start shipping.”",
+    "goalsTitle": "The Bootstrap Goals",
+    "contributionsTitle": "How Contributions Work",
+    "contributionsQuote": "We follow a strict decentralized high-speed protocol to ensure quality and visibility.",
+    "fellowshipEyebrow": "The Fellowship",
+    "needsBuildersTitle": "The Architect Needs Builders",
+    "needsBuildersQuote": "“The pain is simple: vision without execution stays trapped. BlueprintForge AI exists to connect The Architect and The Builders.”",
+    "togetherMore": "Together this becomes more than an app.",
+    "bootstrapMovement": "It becomes a bootstrap movement.",
+    "activeTicketsBlast": "Active Tickets Blast",
+    "buildIt": "Build it.",
+    "cards": {
+      "bootstrapPlatform": {
+        "title": "Bootstrap Platform",
+        "desc": "A system designed to rapidly prototype and evolve through collective decentralized intelligence."
+      },
+      "visionToSpec": {
+        "title": "Vision to Spec",
+        "desc": "Converts raw founder intuition into structured technical requirements without losing intent."
+      },
+      "openEcosystem": {
+        "title": "Open Ecosystem",
+        "desc": "Every ticket is a mirrored GitHub issue, allowing builders to work in a native coding environment."
+      },
+      "reputationLayer": {
+        "title": "Reputation Layer",
+        "desc": "Builders earn stars and status by shipping verified improvements to the core platform."
+      },
+      "rapidBranching": {
+        "title": "Rapid Branching",
+        "desc": "Fork, branch, build, and PR. The standard git workflow applied to high-speed innovation."
+      },
+      "collectiveGrowth": {
+        "title": "Collective Growth",
+        "desc": "Accepted code doesn't just sit in a repo—it immediately improves the workspace you build in."
+      }
+    },
+    "publishEffects": {
+      "signal": {
+        "title": "Signal Broadcasted",
+        "desc": "Ticket appears in the Live Build Feed instantly."
+      },
+      "github": {
+        "title": "GitHub Mirror",
+        "desc": "Issue created in repo if configured."
+      },
+      "builder": {
+        "title": "Builder Alert",
+        "desc": "Coders can now claim, fork, and build."
+      }
+    },
+    "builderSteps": {
+      "createProfile": {
+        "title": "Create Profile",
+        "desc": "Set up your Vibe Coder identity."
+      },
+      "pickTicket": {
+        "title": "Pick a Ticket",
+        "desc": "Choose from the Live Build Feed."
+      },
+      "openIssue": {
+        "title": "Open Issue",
+        "desc": "See tech specs on GitHub."
+      },
+      "claimFork": {
+        "title": "Claim & Fork",
+        "desc": "Take ownership and fork the repo."
+      },
+      "branchCode": {
+        "title": "Branch & Code",
+        "desc": "Work on your dedicated branch."
+      },
+      "implement": {
+        "title": "Implement",
+        "desc": "Build the requested feature."
+      },
+      "submitPr": {
+        "title": "Submit PR",
+        "desc": "Send your pull request for review."
+      },
+      "earnStars": {
+        "title": "Earn Stars",
+        "desc": "Get reputation when merged."
+      }
+    },
+    "goals": {
+      "attractCoders": "Attract the first 100 vibe coders",
+      "thoughtsToTickets": "Turn founder thoughts into tickets",
+      "visibleImprovements": "Make every improvement visible",
+      "openSourceGrowth": "Grow through open-source",
+      "reputationSystem": "Build a reputation system",
+      "showcaseConcepts": "Showcase app concepts",
+      "transparency": "Platform evolution transparency",
+      "shippedProducts": "Turn vision into shipped products"
+    },
+    "rules": {
+      "claimedInApp": "Every ticket must be claimed inside the app.",
+      "githubIssue": "Every ticket links to a GitHub issue.",
+      "forkRepo": "Builders fork the repo before implementation.",
+      "ownBranch": "Builders work on their own branch.",
+      "mentionTicket": "Pull requests must mention the ticket/issue number.",
+      "adminReview": "Admin reviews and accepts completed work.",
+      "awardStar": "Accepted implementation gives the builder +1 star."
+    }
   },
   "guide": {
     "title": "BlueprintForge Guide",
@@ -153,7 +297,9 @@
     "expectedOutcome": "Expected Outcome",
     "inBuild": "In Build",
     "viewGithubIssue": "View GitHub Issue",
-    "removeFromFocus": "Remove from Focus"
+    "removeFromFocus": "Remove from Focus",
+    "progressPlaceholder": "Add a progress update/note...",
+    "githubPrUrlPlaceholder": "GitHub PR URL"
   },
   "builderProfile": {
     "title": "Builder Profile",
@@ -164,7 +310,13 @@
     "preferredStack": "Preferred stack",
     "portfolio": "Portfolio",
     "github": "GitHub",
-    "bio": "Bio"
+    "bio": "Bio",
+    "placeholders": {
+      "timezone": "e.g. UTC+1",
+      "skills": "React, Node, UI/UX, GenAI...",
+      "stack": "Vite, Tailwind, Supabase..."
+    },
+    "profileSaved": "Profile saved successfully"
   },
   "directory": {
     "title": "Vibe Coder Directory",
@@ -198,6 +350,483 @@
     "hour": "hour",
     "hours": "hours",
     "minute": "minute",
-    "minutes": "minutes"
+    "minutes": "minutes",
+    "notAvailable": "N/A"
+  },
+  "guideContent": {
+    "sections": {
+      "founderGuide": {
+        "title": "Founder Guide",
+        "summary": "Turn raw thoughts into reviewed build requests that builders can claim and ship.",
+        "statusLabel": "Founder workflow active",
+        "nextAction": "Open Bootstrap Page and prepare the next build request.",
+        "steps": [
+          "Enter the raw thought, goal, bug, improvement or app idea in the Bootstrap Page.",
+          "Use AI polish only after OpenRouter is configured; the draft remains editable before publishing.",
+          "Review problem, goal, expected behavior, UI/UX notes and acceptance criteria before publishing.",
+          "Publish when the request is ready for the Live Build Feed and optional GitHub issue creation.",
+          "Review builder progress updates and PR URLs, then accept completed work and award stars."
+        ]
+      },
+      "builderGuide": {
+        "title": "Builder Guide",
+        "summary": "Complete your profile, claim a build request, ship through GitHub and earn reputation.",
+        "statusLabel": "Builder workflow ready",
+        "nextAction": "Complete your profile, then claim an Open or Current Focus request.",
+        "steps": [
+          "Create a builder profile with skills, stack, availability and GitHub or portfolio links.",
+          "Read Current Founder Focus first, then inspect Open requests in the Live Build Feed.",
+          "Use GitHub issue links for implementation context when a ticket has been synced.",
+          "Claim one ticket only when you can start; post progress updates as you work.",
+          "Submit a PR URL for review. Accepted work increases stars and reputation."
+        ]
+      },
+      "visitorGuide": {
+        "title": "Visitor Guide",
+        "summary": "Visitors can observe platform momentum and decide whether to become builders.",
+        "statusLabel": "Read-only visitor mode",
+        "nextAction": "Open the Live Build Feed or sign in to become a builder.",
+        "steps": [
+          "View the Landing Page, Founder Vision, Guide, Builder Directory and public Live Build Feed.",
+          "Read public build requests to understand what the platform is building now.",
+          "Sign in when you want to create a profile, claim requests or post updates.",
+          "Public feed items are real platform work unless they are labeled Demo Mode or Demo Data Active."
+        ]
+      },
+      "investorObserverGuide": {
+        "title": "Investor / Observer Guide",
+        "summary": "Read platform momentum through founder vision, active focus, builder work and accepted PRs.",
+        "statusLabel": "Observer view available",
+        "nextAction": "Compare Founder Vision with recently accepted build requests.",
+        "steps": [
+          "Use Founder Vision to understand the strategic direction.",
+          "Use Daily Signal and Current Founder Focus to see immediate priorities.",
+          "Use Live Build Feed statuses to see throughput from Open to Accepted.",
+          "Use Builder Directory and stars to assess contributor activity and reputation."
+        ]
+      },
+      "demoGuide": {
+        "title": "Demo Guide",
+        "summary": "Demo mode demonstrates the workflow with safe data and must not mutate production records.",
+        "statusLabel": "Demo mode explained",
+        "nextAction": "Start a demo recording from the Guide when you need a walkthrough.",
+        "steps": [
+          "Demo data should be clearly labeled Demo Mode or Demo Data Active.",
+          "Demo users can record walkthroughs and inspect flows with safe sample records.",
+          "Demo users must not receive production credentials or bypass role checks.",
+          "Production Protected means the action is blocked or separated from real production data."
+        ]
+      },
+      "githubContributionGuide": {
+        "title": "GitHub Contribution Guide",
+        "summary": "Move from issue to fork, branch, implementation, pull request, review and accepted work.",
+        "statusLabel": "GitHub flow documented",
+        "nextAction": "Open the issue or create your branch for the claimed ticket.",
+        "steps": [
+          "Open the GitHub issue link when it exists; otherwise use the ticket detail as source of truth.",
+          "Fork the repo if needed, create a focused branch and implement only the scoped change.",
+          "Submit a pull request URL back to the build request when ready for review.",
+          "Respond to Changes Requested, then wait for founder/admin acceptance.",
+          "Accepted work can award stars and improve your builder reputation."
+        ]
+      },
+      "openrouterAiGuide": {
+        "title": "OpenRouter AI Guide",
+        "summary": "Configure OpenRouter safely for AI ticket polishing and model sync.",
+        "statusLabel": "AI setup guide",
+        "nextAction": "Open OpenRouter Settings and run a connection test.",
+        "steps": [
+          "Add the API key only in the OpenRouter Settings screen; never paste it into tickets or public text.",
+          "Choose a model for ticket polishing and sync available models when the key is configured.",
+          "Run the connection test before relying on AI output.",
+          "Review AI-polished tickets before publishing; AI output is a draft, not an automatic publish.",
+          "If connection fails, check the key, model access and browser/network errors."
+        ]
+      },
+      "versionChangelogGuide": {
+        "title": "Version / Changelog Guide",
+        "summary": "Versions announce platform updates and builders acknowledge popups after reading changes.",
+        "statusLabel": "Version flow visible",
+        "nextAction": "Open the Guide to read the latest changelog.",
+        "steps": [
+          "Admins publish guide versions with release notes, fixed issues and breaking changes.",
+          "Builders see a popup when a newer version has not been acknowledged.",
+          "Acknowledgement persists so users know whether they have read the latest update.",
+          "Latest Version means no newer published version is waiting for that user."
+        ]
+      },
+      "notificationsGuide": {
+        "title": "Notifications Guide",
+        "summary": "Notifications explain platform events, unread state and which items require action.",
+        "statusLabel": "Notifications explained",
+        "nextAction": "Review unread notifications first, then mark them as read.",
+        "steps": [
+          "Unread notifications need attention; Read notifications are retained for context.",
+          "Action Required means the user should review, claim, update, acknowledge or fix something.",
+          "Version notifications link to the changelog; ticket notifications link to the related request.",
+          "Mark notifications as read after acting on them or deciding no action is needed."
+        ]
+      }
+    },
+    "screens": {
+      "landing": {
+        "title": "Landing Page",
+        "purpose": "Understand what BlueprintForge AI is and choose whether to observe, sign in or join as a builder.",
+        "state": "Public overview. No protected action is required to read it.",
+        "nextAction": "View the Live Build Feed, read the Guide or sign in to build.",
+        "disabledReason": "Protected actions require sign-in so claims, stars and settings remain attributable.",
+        "empty": "If no activity is visible yet, start with the Guide to understand the platform loop.",
+        "loading": "Loading public platform context and authentication state.",
+        "error": "If navigation fails, return to the Landing Page and try the Guide or Live Build Feed.",
+        "success": "You now understand the platform entry points."
+      },
+      "bootstrap": {
+        "title": "Bootstrap Page",
+        "purpose": "Convert founder thoughts into structured build request drafts.",
+        "state": "Drafting and review area. AI polish depends on OpenRouter configuration and founder/admin access.",
+        "nextAction": "Enter a raw thought, polish it, review every field and publish only when ready.",
+        "disabledReason": "Publish and AI actions are disabled when required draft text, auth or AI settings are missing.",
+        "empty": "No draft exists yet. Start by typing the smallest clear problem or improvement.",
+        "loading": "AI may be polishing the request or the app may be loading persisted settings.",
+        "error": "Check OpenRouter configuration, required fields and your founder/admin access, then try again.",
+        "success": "The build request is ready for the Live Build Feed after publishing."
+      },
+      "liveFeed": {
+        "title": "Live Build Feed",
+        "purpose": "See active work, claim tickets and track requests from Open to Accepted.",
+        "state": "Public read view with builder/admin actions revealed by role and ticket state.",
+        "nextAction": "Builders should complete a profile, choose an Open request and claim it when ready.",
+        "disabledReason": "Claiming is disabled for visitors, incomplete profiles, already claimed tickets or non-open statuses.",
+        "empty": "No requests match this filter. Try All, Open or Current Focus.",
+        "loading": "Refreshing PostgreSQL-backed build request updates.",
+        "error": "Refresh or check network/auth access if live updates cannot load.",
+        "success": "Updates, PR links and review state are shown on each ticket."
+      },
+      "profile": {
+        "title": "Builder Profile",
+        "purpose": "Describe your skills, stack, availability and links so you can claim work.",
+        "state": "Profile completeness controls claim eligibility.",
+        "nextAction": "Fill required fields and save the profile before claiming tickets.",
+        "disabledReason": "Claim actions remain disabled until required profile fields are saved.",
+        "empty": "No profile exists yet. Create one to become eligible to claim.",
+        "loading": "Loading saved profile and reputation state.",
+        "error": "Check required fields and try saving again.",
+        "success": "Saved profile changes update builder eligibility and directory information."
+      },
+      "settings": {
+        "title": "OpenRouter and GitHub Settings",
+        "purpose": "Configure integrations used by AI polishing, model sync and GitHub issue flow.",
+        "state": "Secrets are entered in protected settings and connection state is tested explicitly.",
+        "nextAction": "Save settings, sync models and run connection diagnostics.",
+        "disabledReason": "Connection tests require a configured API key; GitHub issue creation requires repo settings.",
+        "empty": "No integration is configured yet. Add settings when you are ready to connect external services.",
+        "loading": "Testing connection or syncing models.",
+        "error": "Check keys, repo details and provider access before retrying.",
+        "success": "Configured integrations can support ticket polishing and issue creation."
+      },
+      "guide": {
+        "title": "BlueprintForge Guide",
+        "purpose": "Central documentation for every role, screen, state, status and user flow.",
+        "state": "Living guide with version and demo recorder context.",
+        "nextAction": "Pick your role guide, then follow the next action checklist.",
+        "disabledReason": "Demo and admin actions may require sign-in or protected role access.",
+        "empty": "If a section is pending implementation, it is labeled honestly in the guide.",
+        "loading": "Loading guide version, flows and demo recordings.",
+        "error": "If guide data fails to load, use the static role guides on this page.",
+        "success": "You can use this page to decide what to do next."
+      },
+      "adminPersistence": {
+        "title": "Admin Database / Persistence Layer",
+        "purpose": "Explain what data is persisted and which admin actions modify shared records.",
+        "state": "Build requests, profiles, claims, PR links, stars, versions and settings persist in PostgreSQL as implemented.",
+        "nextAction": "Use admin screens for protected writes and read errors before retrying.",
+        "disabledReason": "Admin database actions are disabled without founder/admin access.",
+        "empty": "No records means the platform has not received data for that collection yet.",
+        "loading": "Polling refresh is waiting for PostgreSQL-backed API responses.",
+        "error": "PostgreSQL/API errors should name the failed operation and table or endpoint so admins know where to investigate.",
+        "success": "Successful writes update the live UI and persisted records."
+      },
+      "vision": {
+        "purpose": "Connect strategic product direction to visible build progress.",
+        "nextAction": "Read the current vision, then open Current Founder Focus to see execution."
+      },
+      "notFound": {
+        "purpose": "Explain that the requested screen is unavailable and offer safe navigation.",
+        "nextAction": "Return to Landing, Guide or Live Build Feed."
+      }
+    },
+    "statusGlossary": [
+      {
+        "term": "Draft",
+        "description": "A build request or version is being prepared and is not public yet."
+      },
+      {
+        "term": "Published",
+        "description": "The item is visible to its intended audience."
+      },
+      {
+        "term": "Open",
+        "description": "A build request is available to claim."
+      },
+      {
+        "term": "Claimed",
+        "description": "A builder has locked the request."
+      },
+      {
+        "term": "In Progress",
+        "description": "Implementation has started."
+      },
+      {
+        "term": "PR Submitted / Ready for Review",
+        "description": "A pull request or review link has been submitted."
+      },
+      {
+        "term": "In Review",
+        "description": "Founder/admin review is pending."
+      },
+      {
+        "term": "Changes Requested",
+        "description": "Builder should revise work and resubmit."
+      },
+      {
+        "term": "Accepted",
+        "description": "Founder/admin accepted the work and stars may be awarded."
+      },
+      {
+        "term": "Rejected",
+        "description": "The current implementation was not accepted."
+      },
+      {
+        "term": "Archived",
+        "description": "The item is no longer active."
+      },
+      {
+        "term": "Profile Incomplete / Complete",
+        "description": "Builder eligibility depends on saved required fields."
+      },
+      {
+        "term": "Verified / Not Verified",
+        "description": "Admin trust status for a builder profile."
+      },
+      {
+        "term": "Repo Not Connected / Repo Connected",
+        "description": "GitHub settings are missing or ready."
+      },
+      {
+        "term": "Issue Pending / Issue Created / Issue Failed",
+        "description": "GitHub issue creation lifecycle."
+      },
+      {
+        "term": "PR Waiting / PR Submitted / PR Reviewed",
+        "description": "Builder pull request lifecycle."
+      },
+      {
+        "term": "OpenRouter Not Configured / Configured / Connected / Failed",
+        "description": "AI provider setup and test state."
+      },
+      {
+        "term": "Unread / Read / Action Required",
+        "description": "Notification attention state."
+      },
+      {
+        "term": "Demo Mode / Demo Data Active / Production Protected",
+        "description": "Safe demo state and production safety labels."
+      },
+      {
+        "term": "Draft Version / Published Version / Latest Version / Acknowledged",
+        "description": "Guide and changelog release state."
+      }
+    ]
+  },
+  "guidePage": {
+    "heroEyebrow": "Living Platform Guide",
+    "heroTitle": "BlueprintForge AI Guide",
+    "heroSubtitle": "The living guide to the platform, updated with every new version. Discover how vision becomes reality.",
+    "watchAutoDemo": "Watch Auto Demo",
+    "githubRepo": "GitHub Repo",
+    "latestVersion": "Latest Version v{{version}}",
+    "released": "Released",
+    "newFeatures": "New Features",
+    "fixedIssues": "Fixed Issues",
+    "knownLimitations": "Known Limitations",
+    "releaseNotes": "Release Notes",
+    "fullGithubChangelog": "Full GitHub Changelog",
+    "anatomyEyebrow": "The Anatomy",
+    "whatIs1": "What is",
+    "whatIs2": "BlueprintForge?",
+    "whatIsDescription": "BlueprintForge AI is a bootstrap platform where a founder’s raw thoughts, visions and app concepts become structured build tickets.",
+    "signalQuote": "We prioritize signal over noise, turning abstract intuition into technical reality.",
+    "roleGuides": "Role Guides",
+    "whatNext": "What should I do next?",
+    "roleGuidesDescription": "Choose the guide that matches your role. Each guide explains the current state, available next action and what success looks like.",
+    "guideSuffix": "guide",
+    "nextAction": "Next action",
+    "screensStates": "Screens, Capabilities and States",
+    "everyScreen": "Every screen explains itself",
+    "stateLabel": "State",
+    "nextLabel": "Next",
+    "disabledLabel": "Disabled",
+    "emptyLabel": "Empty",
+    "loadingLabel": "Loading",
+    "errorLabel": "Error",
+    "successLabel": "Success",
+    "statusGlossary": "Status Glossary",
+    "badgeMeaning": "What each badge means",
+    "faq": "FAQ",
+    "noGuessing": "No guessing required",
+    "processLibrary": "Process Library",
+    "standardUserFlows": "Standard User Flows",
+    "resultLabel": "Result",
+    "demoRecordings": "Demo Recordings",
+    "recordingCount": "{{count}} Archived",
+    "finalCta1": "Don’t just watch the vision.",
+    "finalCta2": "Build it.",
+    "glossaryComplete": "Glossary Complete"
+  },
+  "auto": {
+    "lLMSettingsPage": {
+      "promiseb1123c": "Promise",
+      "intelligence209049": "Intelligence",
+      "diagnostics3e5c7f": "Diagnostics",
+      "processingIntelligencea85055": "Processing Intelligence",
+      "securityProtocol153125": "Security Protocol",
+      "openrouterGatewayLink7546f4": "OpenRouter Gateway Link",
+      "masterIntelligenceEngine59c702": "Master Intelligence Engine",
+      "selectedPrimaryb5ac52": "Selected Primary",
+      "openSourceSync3d9663": "Open Source Sync",
+      "githubConfiguration6d8d59": "GitHub Configuration",
+      "automaticallyCreateGithubIssuesWhenPublishing59f0dd": "Automatically create GitHub issues when publishing to feed",
+      "repoUrl4a5630": "Repo URL",
+      "ownerc60083": "Owner",
+      "name072a8c": "Name",
+      "operationalManifesta5b576": "Operational Manifest",
+      "fleetSize48a961": "Fleet Size",
+      "failures33250e": "Failures",
+      "protocolSyncFailure168d45": "Protocol Sync Failure",
+      "httpStatus8cdb48": "HTTP Status",
+      "endpoint76fb42": "Endpoint",
+      "timestamp92a9be": "Timestamp",
+      "intelStatuse2c62f": "Intel Status"
+    },
+    "liveBuildFeed": {
+      "platformStatsd77556": "Platform Stats",
+      "filterStreamc8f425": "Filter Stream",
+      "noMatchingRequestsFoundInThe5e907d": "No matching requests found in the stream.",
+      "thisFilterHasNoVisibleWork1a847b": "This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.",
+      "latestMomentum34a874": "Latest Momentum",
+      "noUpdateYetWaitingForBuilderab0570": "No update yet — waiting for builder signal.",
+      "contextProblema59419": "Context & Problem",
+      "technicalImplementation7f908b": "Technical Implementation",
+      "acceptanceCriteria4c5622": "Acceptance Criteria",
+      "buildStreambaba53": "Build Stream"
+    },
+    "liveBuildFeedAdmin": {
+      "activeFocus69e335": "Active Focus",
+      "publishNewRequeste5911f": "Publish New Request",
+      "rawFounderInputb2c9e2": "Raw Founder Input",
+      "specTitle28eab7": "Spec Title",
+      "contexte77109": "Context",
+      "requestedChange3d73c4": "Requested Change",
+      "activeBuildStream27752c": "Active Build Stream",
+      "dailySignalc5a68b": "Daily Signal",
+      "broadcastToAllBuildersdb8c74": "Broadcast to all builders",
+      "signalHistory614d55": "Signal History"
+    },
+    "builderProfile": {
+      "accessDenieda617c6": "Access Denied",
+      "youMustBeActingAsA8b296a": "You must be acting as a Vibe Coder to create and edit a Builder Profile.",
+      "myBuilderProfile8b072c": "My Builder Profile",
+      "completeYourProfileToClaimAnd5af546": "Complete your profile to claim and execute active build requests.",
+      "headsUp911dfc": "Heads up:",
+      "youCannotClaimBuildRequestsOr5064b4": "You cannot claim build requests or receive real-time notifications until your profile is complete. Name, username, email, country, skills, and stack are required.",
+      "fullNameca1f80": "Full Name *",
+      "usernamed65621": "Username *",
+      "emaila11271": "Email *",
+      "country46f124": "Country *",
+      "timeZonea61b55": "Time Zone",
+      "availabilityaddfb5": "Availability",
+      "select00d74e": "Select...",
+      "fullTime321a66": "Full-time",
+      "partTimef7e0b6": "Part-time",
+      "weekendsOnly4a00f2": "Weekends only",
+      "unavailablef22fb3": "Unavailable",
+      "skillsLinks94131b": "Skills & Links",
+      "coreSkills6a5b35": "Core Skills *",
+      "preferredStack45eff3": "Preferred Stack *",
+      "githubUrl8b3adb": "GitHub URL",
+      "portfolioUrlbe7ddd": "Portfolio URL",
+      "shortBioc927f9": "Short Bio",
+      "iAmLookingForPaidWork5d1fc8": "I am looking for paid work opportunities"
+    },
+    "autoDemoRecorder": {
+      "autoDemoEngineb72286": "Auto Demo Engine",
+      "readyToRecord725067": "Ready to Record?",
+      "fullRecording857e28": "Full Recording",
+      "captureScreenRobotStepsda97c7": "Capture screen & robot steps",
+      "previewModed71510": "Preview Mode",
+      "robotWalkthroughOnlya4b819": "Robot walkthrough only",
+      "activeRobotSignal70ee7f": "Active Robot Signal",
+      "robotCaptionee327e": "Robot Caption",
+      "toDemonstrateThe9b4a71": "to demonstrate the",
+      "aiProcessing44dbde": "AI Processing...",
+      "demoCompleted9edbff": "Demo Completed"
+    },
+    "openRouterDiagnosticsPage": {
+      "protocolDiagnosticsccb192": "Protocol Diagnostics",
+      "diagnosticSuiteOpenrouterApidc19ff": "Diagnostic Suite / OpenRouter API",
+      "testHeaders8c8fb1": "Test Headers",
+      "testPayloadfadbaa": "Test Payload",
+      "testJsonb6ea79": "Test JSON",
+      "showLastFeedback69728d": "Show Last Feedback",
+      "awaitingDiagnosticInitiationd01757": "Awaiting diagnostic initiation..."
+    },
+    "agentEditor": {
+      "protocolConfigurationa2e85a": "Protocol Configuration",
+      "operationalStatus6b4578": "Operational Status",
+      "draft0a9235": "Draft",
+      "activea7aaca": "Active",
+      "baseInstructions60789f": "Base Instructions",
+      "fundamentalProtocolLogicForIntelligenceGrounding179049": "Fundamental protocol logic for intelligence grounding.",
+      "globalProtocolDefaulte3aaf3": "Global Protocol Default",
+      "deterministic004fe690": "Deterministic (0.0)",
+      "creative10e019d2": "Creative (1.0)"
+    }
+  },
+  "settings": {
+    "placeholders": {
+      "openRouterKey": "sk-or-v1-...",
+      "githubToken": "ghp_...",
+      "repoUrl": "https://github.com/owner/repo",
+      "searchFleet": "Search active fleet..."
+    },
+    "testLink": "Test Link",
+    "globalBrainInterface": "Global Brain Interface",
+    "fleet": "Fleet",
+    "subtitle": "Connect, analyze and optimize multi-model delivery protocols using the OpenRouter gateway.",
+    "console": "Console",
+    "booting": "Booting...",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "securityUpdated": "Security settings updated.",
+    "manifestSynchronized": "Manifest synchronized.",
+    "syncFailure": "Sync failure."
+  },
+  "states": {
+    "emptyState": "Empty State"
+  },
+  "diagnostics": {
+    "apiFoundation": "API Foundation",
+    "authorization": "Authorization",
+    "latencyIndex": "Latency Index"
+  },
+  "agents": {
+    "terminateProtocol": "Terminate Protocol",
+    "protocolIdentifier": "Protocol Identifier",
+    "collectiveIdentity": "Collective Identity",
+    "strategicMandate": "Strategic Mandate",
+    "dataSchematics": "Data Schematics",
+    "engineeringStandards": "Engineering Standards",
+    "structuralVetoes": "Structural Vetoes",
+    "exportAesthetics": "Export Aesthetics"
   }
 }

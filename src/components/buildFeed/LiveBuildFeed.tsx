@@ -90,7 +90,7 @@ export function LiveBuildFeed() {
           <div className="hidden lg:block space-y-4 bg-white/[0.02] border border-white/5 rounded-3xl p-6">
              <div className="flex items-center gap-2 text-accent">
                <Zap size={16} fill="currentColor" />
-               <span className="text-[10px] font-black uppercase tracking-[0.2em]">Platform Stats</span>
+               <span className="text-[10px] font-black uppercase tracking-[0.2em]">{t("auto.liveBuildFeed.platformStatsd77556")}</span>
              </div>
              <div className="grid grid-cols-2 gap-4">
                {[
@@ -138,7 +138,7 @@ export function LiveBuildFeed() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
             <div className="flex items-center gap-3">
               <Filter size={16} className="text-accent" />
-              <h3 className="text-sm font-black text-white uppercase tracking-widest">Filter Stream</h3>
+              <h3 className="text-sm font-black text-white uppercase tracking-widest">{t("auto.liveBuildFeed.filterStreamc8f425")}</h3>
             </div>
             
             <div className="flex flex-wrap gap-2">
@@ -166,9 +166,9 @@ export function LiveBuildFeed() {
                 <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                   <Zap size={24} className="text-text-dim" />
                 </div>
-                <StatusBadge status="Read" label="Empty State" />
-                <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">No matching requests found in the stream.</p>
-                <p className="text-xs text-white/45 max-w-md mx-auto">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
+                <StatusBadge status="Read" label={t("states.emptyState")} />
+                <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">{t("auto.liveBuildFeed.noMatchingRequestsFoundInThe5e907d")}</p>
+                <p className="text-xs text-white/45 max-w-md mx-auto">{t("auto.liveBuildFeed.thisFilterHasNoVisibleWork1a847b")}</p>
                 <button 
                   onClick={() => setFilter('All')}
                   className="mt-4 text-accent text-[10px] font-black uppercase tracking-widest hover:underline"
@@ -263,13 +263,13 @@ export function LiveBuildFeed() {
                     <div className="px-6 md:px-8 py-4 bg-white/[0.01] border-b border-white/5 flex items-center justify-between gap-4">
                        <div className="flex items-center gap-3">
                          <div className="w-2 h-2 rounded-full bg-accent/40" />
-                         <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Latest Momentum</p>
+                         <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("auto.liveBuildFeed.latestMomentum34a874")}</p>
                        </div>
                        <div className="flex-1 flex items-center gap-3 overflow-hidden">
                           {lastProgressUpdate ? (
                              <p className="text-xs text-white/50 truncate italic font-medium">"{lastProgressUpdate.update_text}"</p>
                           ) : (
-                             <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest italic leading-none">No update yet — waiting for builder signal.</p>
+                             <p className="text-[10px] text-text-dim font-bold uppercase tracking-widest italic leading-none">{t("auto.liveBuildFeed.noUpdateYetWaitingForBuilderab0570")}</p>
                           )}
                        </div>
                     </div>
@@ -278,11 +278,11 @@ export function LiveBuildFeed() {
                     <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-8">
                       <div className="space-y-6">
                         <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Context & Problem</h4>
+                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">{t("auto.liveBuildFeed.contextProblema59419")}</h4>
                           <p className="text-sm text-white/70 leading-relaxed">{req.polished_context}</p>
                         </div>
                         <div>
-                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Technical Implementation</h4>
+                          <h4 className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">{t("auto.liveBuildFeed.technicalImplementation7f908b")}</h4>
                           <p className="text-sm text-white/90 leading-relaxed font-semibold">{req.polished_change}</p>
                         </div>
                         
@@ -305,7 +305,7 @@ export function LiveBuildFeed() {
                       
                       <div className="space-y-6">
                          <div className="bg-black/40 p-6 rounded-3xl border border-white/5 space-y-4">
-                           <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Acceptance Criteria</h4>
+                           <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("auto.liveBuildFeed.acceptanceCriteria4c5622")}</h4>
                            <ul className="space-y-3">
                              {req.acceptance_criteria?.map((crt, i) => (
                                <li key={i} className="text-xs text-white/60 flex gap-3 items-start group/li">
@@ -325,7 +325,7 @@ export function LiveBuildFeed() {
                       <div className="bg-black/40 border-t border-white/5 p-6 md:p-8 space-y-6">
                         {reqUpdates.length > 0 && (
                           <div className="space-y-4">
-                            <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Build Stream</h4>
+                            <h4 className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{t("auto.liveBuildFeed.buildStreambaba53")}</h4>
                             {reqUpdates.map(u => {
                               const uProfile = u.profile_id ? profiles.find(p => p.id === u.profile_id) : null;
                               return (
@@ -353,7 +353,7 @@ export function LiveBuildFeed() {
                               type="text"
                               value={updateTexts[req.id] || ''}
                               onChange={e => setUpdateTexts({ ...updateTexts, [req.id]: e.target.value })}
-                              placeholder="Add a progress update/note..."
+                              placeholder={t("buildFeed.progressPlaceholder")}
                               className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accent/40"
                               onKeyDown={e => {
                                 if (e.key === 'Enter' && updateTexts[req.id]?.trim()) {
@@ -383,7 +383,7 @@ export function LiveBuildFeed() {
                                   type="text"
                                   value={prUrls[req.id] || req.implementation_pr_url || ''}
                                   onChange={e => setPrUrls({...prUrls, [req.id]: e.target.value})}
-                                  placeholder="GitHub PR URL"
+                                  placeholder={t("buildFeed.githubPrUrlPlaceholder")}
                                   className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white"
                                 />
                                 <button

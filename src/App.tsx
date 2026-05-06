@@ -21,7 +21,7 @@ import { ToastProvider } from "./components/ui/Toast";
 import { I18nProvider, useI18n } from "./i18n/I18nProvider";
 import { HelpBlock } from "./components/help/HelpBlock";
 import { LoadingState } from "./components/state/LoadingState";
-import { screenGuidance } from "./content/guides/blueprintGuides";
+import { createScreenGuidance } from "./content/guides/blueprintGuides";
 import { describeMissingAdminAccess, isFounderAdminRole, logAdminAccessDebug, normalizeRole } from "./authRoles";
 
 export type AppView = "landing" | "bootstrap" | "guide" | "projects" | "agents" | "llm" | "diagnostics" | "feed_admin" | "feed_coder" | "coder_profile" | "coder_directory" | "vision" | "not_found";
@@ -49,6 +49,7 @@ export default function App() {
 function AppContent() {
   const { user, profile, loading, signIn, authError } = useAuth();
   const { t } = useI18n();
+  const screenGuidance = createScreenGuidance(t);
   const {
     projects,
     agents,
@@ -91,8 +92,8 @@ function AppContent() {
     feed_coder: screenGuidance.liveFeed,
     coder_profile: screenGuidance.profile,
     coder_directory: screenGuidance.profile,
-    vision: { ...screenGuidance.guide, title: t('navigation.founderVision'), purpose: 'Connect strategic product direction to visible build progress.', nextAction: 'Read the current vision, then open Current Founder Focus to see execution.' },
-    not_found: { ...screenGuidance.guide, title: t('errors.accessDenied'), purpose: 'Explain that the requested screen is unavailable and offer safe navigation.', nextAction: 'Return to Landing, Guide or Live Build Feed.' }
+    vision: { ...screenGuidance.guide, title: t('navigation.founderVision'), purpose: t('guideContent.screens.vision.purpose'), nextAction: t('guideContent.screens.vision.nextAction') },
+    not_found: { ...screenGuidance.guide, title: t('errors.accessDenied'), purpose: t('guideContent.screens.notFound.purpose'), nextAction: t('guideContent.screens.notFound.nextAction') }
   } as const;
 
   const currentGuidance = guidanceByView[view];
@@ -264,6 +265,7 @@ function AdminAccessDenied({
   onNavigate
 }: ReturnType<typeof describeMissingAdminAccess> & { authError: string | null; onNavigate: (view: AppView) => void }) {
   const { t } = useI18n();
+  const screenGuidance = createScreenGuidance(t);
   return (
     <div className="flex min-h-full items-center justify-center px-6 py-12">
       <div className="w-full max-w-2xl rounded-3xl border border-red-500/30 bg-red-500/10 p-8 shadow-2xl">

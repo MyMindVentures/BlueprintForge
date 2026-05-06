@@ -72,11 +72,11 @@ export function BootstrapPage() {
       error(e.message);
       setPolishedResult({
         raw_input: rawInput,
-        polished_title: "New Build Request",
+        polished_title: t("bootstrap.fallbackTitle"),
         polished_context: rawInput,
-        polished_change: "Please refine the implementation based on the context.",
+        polished_change: t("bootstrap.fallbackChange"),
         ticket_problem: rawInput,
-        acceptance_criteria: ["Implemented successfully"],
+        acceptance_criteria: [t("bootstrap.fallbackAcceptance")],
         priority: "Medium",
         difficulty: "Medium",
         type: "App Improvement"
@@ -108,7 +108,7 @@ export function BootstrapPage() {
           });
         } catch (err: any) {
           await updateRequest(newRequestId, { github_sync_status: 'failed' });
-          error(`Feed published, but GitHub issue creation failed: ${err.message}`);
+          error(t("errors.githubIssueCreationFailed", { message: err.message }));
         }
       }
       
@@ -138,27 +138,27 @@ export function BootstrapPage() {
         <section className="min-h-[50vh] flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.3em]">
             <Zap size={14} fill="currentColor" className="animate-pulse" />
-            Venture Studio Movement
+            {t("bootstrap.heroEyebrowFull")}
           </div>
           <div className="space-y-6 max-w-5xl">
             <h1 className="text-5xl md:text-8xl font-black tracking-tight leading-[0.85] uppercase">
-              BlueprintForge AI:<br />
-              <span className="text-accent underline decoration-white/10 underline-offset-[12px] italic">Where Vision</span><br />
-              Becomes Buildable Reality
+              {t("bootstrap.heroTitlePrefix")}<br />
+              <span className="text-accent underline decoration-white/10 underline-offset-[12px] italic">{t("bootstrap.heroTitleAccent")}</span><br />
+              {t("bootstrap.heroTitleSuffix")}
             </h1>
             <p className="text-lg md:text-2xl text-text-dim max-w-3xl mx-auto leading-relaxed font-medium">
-              I’m The Architect. I bring raw vision, app concepts and direction. Builders bring execution. Together we turn ideas into real products.
+              {t("bootstrap.heroSubtitle")}
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-6 pt-4">
              <button className="glass-btn-primary !px-12 !py-5 shadow-[0_0_60px_rgba(255,107,0,0.3)]">
-               Join as Builder
+               {t("buttons.joinAsBuilder")}
              </button>
              <button className="glass-btn-secondary !px-12 !py-5 border-white/5 hover:bg-white/5">
-               View Live Build Feed
+               {t("buttons.viewLiveBuildFeed")}
              </button>
              <button className="glass-btn-secondary !px-12 !py-5 border-white/5 hover:bg-white/5">
-               Open GitHub Repo
+               {t("buttons.openGithubRepo")}
              </button>
           </div>
         </section>
@@ -167,22 +167,22 @@ export function BootstrapPage() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
             <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">
-              Section 01 / The Founder
+              {t("bootstrap.founderSectionEyebrow")}
             </div>
             <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
-              The Mind<br />Behind the<br /><span className="text-accent">Architect</span>
+              {t("bootstrap.founderMind1")}<br />{t("bootstrap.founderMind2")}<br /><span className="text-accent">{t("bootstrap.founderMind3")}</span>
             </h2>
           </div>
           <div className="space-y-8 bg-white/[0.02] border border-white/5 rounded-[48px] p-8 md:p-12 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <Quote size={48} className="text-accent/20 mb-4" />
             <div className="space-y-6 text-lg md:text-xl text-text-dim font-medium leading-relaxed italic">
-              <p>“I’m a visionary app thinker with ADHD. My brain constantly generates product ideas, platform concepts, improvements and future-facing systems.”</p>
-              <p>“For months I fought inside AI build tools because I could see what needed to exist, but I could not always build it alone.”</p>
-              <p>“BlueprintForge AI is my answer: a system where my thoughts no longer disappear, but become structured tickets that builders can pick up, implement and improve.”</p>
+              <p>{t("bootstrap.founderQuote1")}</p>
+              <p>{t("bootstrap.founderQuote2")}</p>
+              <p>{t("bootstrap.founderQuote3")}</p>
             </div>
             <div className="pt-8 border-t border-white/5 flex items-center justify-between">
-               <p className="font-mono text-sm tracking-[0.3em] uppercase text-white/20">— Kevin De Vlieger</p>
+               <p className="font-mono text-sm tracking-[0.3em] uppercase text-white/20">{t("bootstrap.founderSignature")}</p>
                <div className="w-12 h-1 bg-accent" />
             </div>
           </div>
@@ -196,12 +196,12 @@ export function BootstrapPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { t: "Bootstrap Platform", d: "A system designed to rapidly prototype and evolve through collective decentralized intelligence." },
-              { t: "Vision to Spec", d: "Converts raw founder intuition into structured technical requirements without losing intent." },
-              { t: "Open Ecosystem", d: "Every ticket is a mirrored GitHub issue, allowing builders to work in a native coding environment." },
-              { t: "Reputation Layer", d: "Builders earn stars and status by shipping verified improvements to the core platform." },
-              { t: "Rapid Branching", d: "Fork, branch, build, and PR. The standard git workflow applied to high-speed innovation." },
-              { t: "Collective Growth", d: "Accepted code doesn't just sit in a repo—it immediately improves the workspace you build in." }
+              { t: t("bootstrap.cards.bootstrapPlatform.title"), d: t("bootstrap.cards.bootstrapPlatform.desc") },
+              { t: t("bootstrap.cards.visionToSpec.title"), d: t("bootstrap.cards.visionToSpec.desc") },
+              { t: t("bootstrap.cards.openEcosystem.title"), d: t("bootstrap.cards.openEcosystem.desc") },
+              { t: t("bootstrap.cards.reputationLayer.title"), d: t("bootstrap.cards.reputationLayer.desc") },
+              { t: t("bootstrap.cards.rapidBranching.title"), d: t("bootstrap.cards.rapidBranching.desc") },
+              { t: t("bootstrap.cards.collectiveGrowth.title"), d: t("bootstrap.cards.collectiveGrowth.desc") }
             ].map((item, i) => (
               <div key={i} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl hover:bg-white/[0.04] transition-colors group">
                 <h4 className="text-lg font-black uppercase text-white mb-3 group-hover:text-accent transition-colors">{item.t}</h4>
@@ -216,9 +216,9 @@ export function BootstrapPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
              <div className="space-y-4">
                <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.4em]">{t("bootstrap.workflowEyebrow")}</h2>
-               <h3 className="text-4xl font-black uppercase tracking-tight">The Bootstrap Loop</h3>
+               <h3 className="text-4xl font-black uppercase tracking-tight">{t("bootstrap.loopTitle")}</h3>
              </div>
-             <p className="text-text-dim max-w-sm text-sm font-medium">How we turn abstract vision into production-ready features in 7 steps.</p>
+             <p className="text-text-dim max-w-sm text-sm font-medium">{t("bootstrap.loopDescription")}</p>
           </div>
 
           <div className="relative">
@@ -246,8 +246,8 @@ export function BootstrapPage() {
         {isAdmin && (
           <section className="p-12 md:p-24 bg-accent/5 border border-accent/20 rounded-[64px] space-y-16">
             <div className="text-center space-y-4">
-              <h2 className="text-5xl font-black uppercase tracking-tighter">Turn my thought into a build ticket</h2>
-              <p className="text-text-dim text-lg font-medium italic">"Watch the AI turn raw founder energy into actionable truth."</p>
+              <h2 className="text-5xl font-black uppercase tracking-tighter">{t("bootstrap.ticketConverterTitle")}</h2>
+              <p className="text-text-dim text-lg font-medium italic">{t("bootstrap.ticketConverterQuote")}</p>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-12">
@@ -256,7 +256,7 @@ export function BootstrapPage() {
                   <textarea
                     value={rawInput}
                     onChange={(e) => setRawInput(e.target.value)}
-                    placeholder="Write what you want BlueprintForge AI to improve, build, fix or explore…"
+                    placeholder={t("bootstrap.ticketPlaceholder")}
                     className="w-full h-64 bg-black/60 border border-white/10 rounded-[40px] p-10 text-xl text-white placeholder:text-white/10 focus:outline-none focus:border-accent/40 transition-all resize-none shadow-inner"
                   />
                   <div className="absolute bottom-10 right-10">
@@ -266,7 +266,7 @@ export function BootstrapPage() {
                       className="flex items-center gap-3 bg-white text-black px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all shadow-2xl disabled:opacity-50"
                     >
                       {isPolishing ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />}
-                      Convert to Ticket
+                      {t("buttons.convertToTicket")}
                     </button>
                   </div>
                 </div>
@@ -282,7 +282,7 @@ export function BootstrapPage() {
                       <div className="p-8 border-b border-white/5 flex items-center justify-between">
                          <div className="flex items-center gap-3">
                            <div className="w-2 h-2 rounded-full bg-accent animate-ping" />
-                           <h4 className="text-lg font-black uppercase tracking-tight text-white">Draft Specification Preview</h4>
+                           <h4 className="text-lg font-black uppercase tracking-tight text-white">{t("bootstrap.draftSpecPreview")}</h4>
                          </div>
                          <div className="flex gap-2">
                             <StatusBadge status={polishedResult.status || 'Open'} />
@@ -293,21 +293,21 @@ export function BootstrapPage() {
                       <div className="p-10 grid grid-cols-1 md:grid-cols-2 gap-12">
                          <div className="space-y-6">
                             <div>
-                               <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">Title</p>
+                               <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">{t("bootstrap.fieldTitle")}</p>
                                <p className="text-2xl font-black text-white leading-tight">{polishedResult.polished_title}</p>
                             </div>
                             <div>
-                               <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">Problem / Context</p>
+                               <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">{t("bootstrap.problemContext")}</p>
                                <p className="text-sm text-text-dim leading-relaxed">{polishedResult.polished_context}</p>
                             </div>
                             <div>
-                               <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">Expected Behavior</p>
+                               <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">{t("bootstrap.expectedBehavior")}</p>
                                <p className="text-sm text-white font-bold leading-relaxed">{polishedResult.polished_change}</p>
                             </div>
                          </div>
                          <div className="space-y-6">
                             <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-4">
-                               <p className="text-[10px] font-black text-text-dim uppercase tracking-widest">Acceptance Criteria</p>
+                               <p className="text-[10px] font-black text-text-dim uppercase tracking-widest">{t("bootstrap.acceptanceCriteria")}</p>
                                <ul className="space-y-3">
                                  {polishedResult.acceptance_criteria?.map((c, i) => (
                                    <li key={i} className="flex gap-3 text-xs text-white/70">
@@ -319,11 +319,11 @@ export function BootstrapPage() {
                             </div>
                             <div className="flex gap-4">
                                <div className="flex-1 p-4 bg-white/5 rounded-2xl border border-white/5">
-                                 <p className="text-[10px] font-black text-text-dim uppercase tracking-widest mb-1">Priority</p>
+                                 <p className="text-[10px] font-black text-text-dim uppercase tracking-widest mb-1">{t("bootstrap.priority")}</p>
                                  <p className="text-xs font-black text-white">{polishedResult.priority}</p>
                                </div>
                                <div className="flex-1 p-4 bg-white/5 rounded-2xl border border-white/5">
-                                 <p className="text-[10px] font-black text-text-dim uppercase tracking-widest mb-1">Difficulty</p>
+                                 <p className="text-[10px] font-black text-text-dim uppercase tracking-widest mb-1">{t("bootstrap.difficulty")}</p>
                                  <p className="text-xs font-black text-white">{polishedResult.difficulty}</p>
                                </div>
                             </div>
@@ -331,14 +331,14 @@ export function BootstrapPage() {
                       </div>
 
                       <div className="p-8 bg-accent/10 border-t border-accent/20 flex justify-end gap-4">
-                         <button onClick={() => setPolishedResult(null)} className="px-8 py-3 rounded-xl text-[10px] font-black text-white uppercase tracking-widest hover:bg-white/5">Cancel</button>
+                         <button onClick={() => setPolishedResult(null)} className="px-8 py-3 rounded-xl text-[10px] font-black text-white uppercase tracking-widest hover:bg-white/5">{t("buttons.cancel")}</button>
                          <button 
                            onClick={handlePublish}
                            disabled={isPublishing}
                            className="flex items-center gap-3 bg-accent text-white px-12 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 shadow-xl shadow-accent/20"
                          >
                            {isPublishing ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-                           Publish Ticket
+                           {t("buttons.publishTicket")}
                          </button>
                       </div>
                     </motion.div>
@@ -352,12 +352,12 @@ export function BootstrapPage() {
                       <Zap size={24} fill="currentColor" />
                     </div>
                     <div className="space-y-2">
-                       <h5 className="font-bold uppercase tracking-widest text-sm text-white">When you publish:</h5>
+                       <h5 className="font-bold uppercase tracking-widest text-sm text-white">{t("bootstrap.whenYouPublish")}</h5>
                        <ul className="space-y-4">
                          {[
-                           { icon: MessageSquare, t: "Signal Broadcasted", d: "Ticket appears in the Live Build Feed instantly." },
-                           { icon: Github, t: "GitHub Mirror", d: "Issue created in repo if configured." },
-                           { icon: Users, t: "Builder Alert", d: "Coders can now claim, fork, and build." }
+                           { icon: MessageSquare, t: t("bootstrap.publishEffects.signal.title"), d: t("bootstrap.publishEffects.signal.desc") },
+                           { icon: Github, t: t("bootstrap.publishEffects.github.title"), d: t("bootstrap.publishEffects.github.desc") },
+                           { icon: Users, t: t("bootstrap.publishEffects.builder.title"), d: t("bootstrap.publishEffects.builder.desc") }
                          ].map((item, i) => (
                            <li key={i} className="flex gap-4">
                              <item.icon size={16} className="text-white/20 shrink-0 mt-1" />
@@ -378,23 +378,23 @@ export function BootstrapPage() {
         {/* FOR BUILDERS SECTION */}
         <section className="space-y-20">
           <div className="text-center space-y-6">
-            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">The Engine</h2>
-            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">Builders: This is where you come in</h3>
+            <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">{t("bootstrap.engineEyebrow")}</h2>
+            <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight">{t("bootstrap.buildersTitle")}</h3>
             <p className="text-lg text-text-dim max-w-2xl mx-auto font-medium">
-              “You don’t need to guess what to build. Open a ticket, accept it, fork the repo, create your branch and start shipping.”
+              {t("bootstrap.buildersQuote")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { i: UserPlus, t: "Create Profile", d: "Set up your Vibe Coder identity." },
-              { i: Target, t: "Pick a Ticket", d: "Choose from the Live Build Feed." },
-              { i: Github, t: "Open Issue", d: "See tech specs on GitHub." },
-              { i: Rocket, t: "Claim & Fork", d: "Take ownership and fork the repo." },
-              { i: Code2, t: "Branch & Code", d: "Work on your dedicated branch." },
-              { i: Sparkles, t: "Implement", d: "Build the requested feature." },
-              { i: Send, t: "Submit PR", d: "Send your pull request for review." },
-              { i: Star, t: "Earn Stars", d: "Get reputation when merged." }
+              { i: UserPlus, t: t("bootstrap.builderSteps.createProfile.title"), d: t("bootstrap.builderSteps.createProfile.desc") },
+              { i: Target, t: t("bootstrap.builderSteps.pickTicket.title"), d: t("bootstrap.builderSteps.pickTicket.desc") },
+              { i: Github, t: t("bootstrap.builderSteps.openIssue.title"), d: t("bootstrap.builderSteps.openIssue.desc") },
+              { i: Rocket, t: t("bootstrap.builderSteps.claimFork.title"), d: t("bootstrap.builderSteps.claimFork.desc") },
+              { i: Code2, t: t("bootstrap.builderSteps.branchCode.title"), d: t("bootstrap.builderSteps.branchCode.desc") },
+              { i: Sparkles, t: t("bootstrap.builderSteps.implement.title"), d: t("bootstrap.builderSteps.implement.desc") },
+              { i: Send, t: t("bootstrap.builderSteps.submitPr.title"), d: t("bootstrap.builderSteps.submitPr.desc") },
+              { i: Star, t: t("bootstrap.builderSteps.earnStars.title"), d: t("bootstrap.builderSteps.earnStars.desc") }
             ].map((step, idx) => (
               <div key={idx} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl hover:border-accent/30 transition-all group">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
@@ -407,26 +407,26 @@ export function BootstrapPage() {
           </div>
 
           <div className="flex justify-center gap-6">
-            <button className="glass-btn-primary !px-8 !py-4">Create Builder Profile</button>
-            <button className="glass-btn-secondary !px-8 !py-4">Claim a Ticket</button>
+            <button className="glass-btn-primary !px-8 !py-4">{t("buttons.createBuilderProfile")}</button>
+            <button className="glass-btn-secondary !px-8 !py-4">{t("buttons.claimTicket")}</button>
           </div>
         </section>
 
         {/* GOALS SECTION */}
         <section className="space-y-16">
           <div className="text-center">
-            <h3 className="text-4xl font-black uppercase tracking-tight">The Bootstrap Goals</h3>
+            <h3 className="text-4xl font-black uppercase tracking-tight">{t("bootstrap.goalsTitle")}</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              "Attract the first 100 vibe coders",
-              "Turn founder thoughts into tickets",
-              "Make every improvement visible",
-              "Grow through open-source",
-              "Build a reputation system",
-              "Showcase app concepts",
-              "Platform evolution transparency",
-              "Turn vision into shipped products"
+              t("bootstrap.goals.attractCoders"),
+              t("bootstrap.goals.thoughtsToTickets"),
+              t("bootstrap.goals.visibleImprovements"),
+              t("bootstrap.goals.openSourceGrowth"),
+              t("bootstrap.goals.reputationSystem"),
+              t("bootstrap.goals.showcaseConcepts"),
+              t("bootstrap.goals.transparency"),
+              t("bootstrap.goals.shippedProducts")
             ].map((goal, i) => (
               <div key={i} className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center gap-4">
                 <div className="w-2 h-2 rounded-full bg-accent" />
@@ -439,20 +439,20 @@ export function BootstrapPage() {
         {/* OPEN SOURCE RULES */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-20 py-24 border-t border-white/5">
           <div className="space-y-8">
-            <h3 className="text-4xl font-black uppercase tracking-tight">How Contributions Work</h3>
+            <h3 className="text-4xl font-black uppercase tracking-tight">{t("bootstrap.contributionsTitle")}</h3>
             <p className="text-text-dim font-medium leading-relaxed max-w-md italic">
-              "We follow a strict decentralized high-speed protocol to ensure quality and visibility."
+              {t("bootstrap.contributionsQuote")}
             </p>
           </div>
           <div className="space-y-4">
             {[
-              "Every ticket must be claimed inside the app.",
-              "Every ticket links to a GitHub issue.",
-              "Builders fork the repo before implementation.",
-              "Builders work on their own branch.",
-              "Pull requests must mention the ticket/issue number.",
-              "Admin reviews and accepts completed work.",
-              "Accepted implementation gives the builder +1 star."
+              t("bootstrap.rules.claimedInApp"),
+              t("bootstrap.rules.githubIssue"),
+              t("bootstrap.rules.forkRepo"),
+              t("bootstrap.rules.ownBranch"),
+              t("bootstrap.rules.mentionTicket"),
+              t("bootstrap.rules.adminReview"),
+              t("bootstrap.rules.awardStar")
             ].map((rule, i) => (
               <div key={i} className="flex gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors group">
                 <CheckCircle2 size={16} className="text-accent mt-1 shrink-0" />
@@ -465,16 +465,16 @@ export function BootstrapPage() {
         {/* TRUST SECTION */}
         <section className="text-center py-32 space-y-12">
           <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/20 border border-accent/40 text-accent text-[10px] font-black uppercase tracking-[0.4em]">
-            The Fellowship
+            {t("bootstrap.fellowshipEyebrow")}
           </div>
           <div className="max-w-4xl mx-auto space-y-10">
-            <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">The Architect Needs Builders</h3>
+            <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">{t("bootstrap.needsBuildersTitle")}</h3>
             <p className="text-xl md:text-3xl text-text-dim italic font-medium leading-relaxed">
-              “The pain is simple: vision without execution stays trapped. BlueprintForge AI exists to connect The Architect and The Builders.”
+              {t("bootstrap.needsBuildersQuote")}
             </p>
             <div className="pt-8 space-y-4">
-               <p className="text-accent text-3xl font-black uppercase tracking-tighter">Together this becomes more than an app.</p>
-               <p className="text-white text-3xl font-black uppercase tracking-tighter">It becomes a bootstrap movement.</p>
+               <p className="text-accent text-3xl font-black uppercase tracking-tighter">{t("bootstrap.togetherMore")}</p>
+               <p className="text-white text-3xl font-black uppercase tracking-tighter">{t("bootstrap.bootstrapMovement")}</p>
             </div>
           </div>
         </section>
@@ -482,9 +482,9 @@ export function BootstrapPage() {
         {/* LIVE TICKETS PREVIEW */}
         <section className="space-y-12">
           <div className="flex items-center justify-between border-b border-white/5 pb-8">
-            <h3 className="text-2xl font-black uppercase tracking-widest">Active Tickets Blast</h3>
+            <h3 className="text-2xl font-black uppercase tracking-widest">{t("bootstrap.activeTicketsBlast")}</h3>
             <button className="text-[10px] font-black uppercase tracking-widest text-accent flex items-center gap-2 hover:underline">
-              View all tickets <ArrowRight size={14} />
+              {t("buttons.viewAllTickets")} <ArrowRight size={14} />
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -502,14 +502,14 @@ export function BootstrapPage() {
                     <div className="flex items-center gap-3">
                       {req.claimed_by ? (
                         <div className="flex items-center gap-2 text-[10px] font-black uppercase text-green-400">
-                          <CheckCircle2 size={14} /> Claimed
+                          <CheckCircle2 size={14} /> {t("statuses.claimed")}
                         </div>
                       ) : (
                         <button 
                           onClick={() => claimRequest(req.id)}
                           className="px-4 py-2 bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase rounded-lg hover:bg-accent hover:text-white transition-all shadow-xl shadow-accent/10"
                         >
-                          Claim
+                          {t("buttons.claim")}
                         </button>
                       )}
                     </div>
@@ -530,17 +530,17 @@ export function BootstrapPage() {
           <div className="relative z-10 space-y-8 px-6">
             <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white text-balance">
               Don’t just watch the vision.<br />
-              <span className="text-accent italic">Build it.</span>
+              <span className="text-accent italic">{t("bootstrap.buildIt")}</span>
             </h3>
             <div className="flex flex-wrap items-center justify-center gap-6 pt-6">
                <button className="glass-btn-primary !px-12 !py-5 shadow-2xl !bg-white !text-black hover:!bg-accent hover:!text-white border-none">
-                 Join as Builder
+                 {t("buttons.joinAsBuilder")}
                </button>
                <button className="glass-btn-secondary !px-12 !py-5 border-white/10 hover:bg-white/5">
                  View Current Focus
                </button>
                <button className="glass-btn-secondary !px-12 !py-5 border-white/10 hover:bg-white/5">
-                 Open GitHub Repo
+                 {t("buttons.openGithubRepo")}
                </button>
             </div>
           </div>
