@@ -10,6 +10,7 @@ const rowToUser = (row: any) => ({
   name: row.name,
   role: normalizeRole(row.role),
   acknowledged_versions: row.acknowledged_versions ? JSON.parse(row.acknowledged_versions) : [],
+  preferred_language: row.preferred_language || 'en',
   role_resolution: row.role_resolution ? JSON.parse(row.role_resolution) : undefined
 });
 
@@ -40,7 +41,7 @@ export const userRepository = {
         firebase_uid = COALESCE(users.firebase_uid, EXCLUDED.firebase_uid),
         auth_provider = COALESCE(users.auth_provider, EXCLUDED.auth_provider),
         updated_at = now()
-      RETURNING id, name, role,
+      RETURNING id, name, role, preferred_language,
         json_build_object(
           'provider', auth_provider,
           'matchedFounderEmail', ${isFounderAdminIdentity(input) && Boolean(input.email)},
@@ -53,7 +54,12 @@ export const userRepository = {
   },
   async acknowledgeVersion(userId: string, version: string) {
     await getDb().query(`INSERT INTO version_acknowledgements (user_id, version) VALUES (${sqlValue(userId)}, ${sqlValue(version)}) ON CONFLICT (user_id, version) DO NOTHING`);
-    const rows = await getDb().query(`SELECT id, name, role, COALESCE((SELECT json_agg(version) FROM version_acknowledgements WHERE user_id = users.id), '[]'::json) AS acknowledged_versions FROM users WHERE id = ${sqlValue(userId)}`);
+    const rows = await getDb().query(`SELECT id, name, role, preferred_language, COALESCE((SELECT json_agg(version) FROM version_acknowledgements WHERE user_id = users.id), '[]'::json) AS acknowledged_versions FROM users WHERE id = ${sqlValue(userId)}`);
+    return rows[0] ? rowToUser(rows[0]) : null;
+  },
+  async updatePreferredLanguage(userId: string, preferredLanguage: string) {
+    await getDb().query(`UPDATE users SET preferred_language = ${sqlValue(preferredLanguage)}, updated_at = now() WHERE id = ${sqlValue(userId)}`);
+    const rows = await getDb().query(`SELECT id, name, role, preferred_language, COALESCE((SELECT json_agg(version) FROM version_acknowledgements WHERE user_id = users.id), '[]'::json) AS acknowledged_versions FROM users WHERE id = ${sqlValue(userId)}`);
     return rows[0] ? rowToUser(rows[0]) : null;
   }
 };

@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "motion/react";
 import { Brain, Star, Clock, Copy, Trash2, Settings2, LayoutTemplate, Cpu } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { AIAgent } from "../../types";
 import { GlassCard } from "../ui/GlassCard";
 import { StatusBadge } from "../ui/StatusBadge";
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface AgentCardProps {
   agent: AIAgent;
@@ -19,6 +19,7 @@ interface AgentCardProps {
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }: AgentCardProps) {
+  const { formatRelativeTime } = useI18n();
   return (
     <GlassCard 
       onClick={() => onOpen(agent.id)}
@@ -79,7 +80,7 @@ export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }
       <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between z-10">
         <div className="flex items-center gap-2 text-[10px] font-black text-text-dim uppercase tracking-widest opacity-60">
           <Clock size={12} />
-          {formatDistanceToNow(new Date(agent.updatedAt))} ago
+          {formatRelativeTime(agent.updatedAt)}
         </div>
         
         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>

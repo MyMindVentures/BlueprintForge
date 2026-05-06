@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "motion/react";
 import { Pencil, Copy, FileText, Trash2, Clock, ExternalLink } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { Project } from "../../types";
 import { useToast } from "../ui/Toast";
 import { GlassCard } from "../ui/GlassCard";
 import { StatusBadge } from "../ui/StatusBadge";
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface ProjectCardProps {
   project: Project;
@@ -23,6 +23,7 @@ interface ProjectCardProps {
 export function ProjectCard({ 
   project, onOpen, onDelete, onDuplicate, onRename, onExport 
 }: ProjectCardProps) {
+  const { formatRelativeTime } = useI18n();
   const toast = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(project.name);
@@ -145,7 +146,7 @@ export function ProjectCard({
       <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between relative z-10">
         <div className="flex items-center gap-2 text-[10px] text-text-dim uppercase tracking-widest font-black opacity-40 group-hover:opacity-80 transition-opacity">
           <Clock size={12} className="text-accent" />
-          {formatDistanceToNow(new Date(project.updatedAt))} ago
+          {formatRelativeTime(project.updatedAt)}
         </div>
         <button
           className="flex items-center gap-2 text-white/40 hover:text-white text-[10px] uppercase font-black tracking-widest transition-colors group/btn"
@@ -158,6 +159,7 @@ export function ProjectCard({
 }
 
 function IconButton({ icon, title, onClick, variant = "normal" }: { icon: React.ReactNode; title: string; onClick: (e: any) => void; variant?: "normal" | "danger" }) {
+  const { formatRelativeTime } = useI18n();
   return (
     <button
       title={title}

@@ -1,12 +1,14 @@
 import React from "react";
 import { motion } from "motion/react";
 import { Cpu, Zap, Target, Users, ArrowRight } from "lucide-react";
+import { useI18n } from "../../i18n/I18nProvider";
 
 /**
  * Handles the landing page workflow for BlueprintForge users or services.
  * Used where this module coordinates UI state, persistence, integrations or user actions.
  */
 export function LandingPage({ onEnter }: { onEnter?: () => void }) {
+  const { t } = useI18n();
   return (
     <div className="flex-1 overflow-auto bg-[#050505] text-white scrollbar-thin selection:bg-accent/30 text-balance">
       <div className="max-w-7xl mx-auto px-6 py-12 md:py-24 space-y-32">
@@ -15,20 +17,20 @@ export function LandingPage({ onEnter }: { onEnter?: () => void }) {
         <section id="solution" className="min-h-[60vh] flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
           <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.3em]">
             <Cpu size={14} className="animate-pulse" />
-            The Architect System
+            {t("landing.eyebrow")}
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9] max-w-4xl uppercase">
-            Transforming <span className="text-accent underline decoration-white/10 underline-offset-8 italic">Vision</span> into Absolute Reality.
+            {t("landing.headline")}
           </h1>
           <p className="text-lg md:text-xl text-text-dim max-w-2xl leading-relaxed font-medium">
-            A high-signal workspace for neurodiverse founders and elite builders. We convert raw concepts into technical blueprints and ship them with precision.
+            {t("landing.support")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
              <button className="glass-btn-primary !px-12 !py-4 shadow-[0_0_50px_rgba(255,107,0,0.3)]">
-               Start Building
+               {t("buttons.startBuilding")}
              </button>
              <button className="glass-btn-secondary !px-12 !py-4 border-white/5 hover:bg-white/5">
-               Explore Vision
+               {t("navigation.founderVision")}
              </button>
           </div>
         </section>

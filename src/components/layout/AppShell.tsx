@@ -8,6 +8,8 @@ import { useBuildFeed } from "../../hooks/useBuildFeed";
 import { useAuth } from "../../hooks/useAuth";
 import { LogOut, User as UserIcon } from "lucide-react";
 import { NewVersionPopup } from "./NewVersionPopup";
+import { LanguageSelector } from "../../i18n/LanguageSelector";
+import { useI18n } from "../../i18n/I18nProvider";
 import { isFounderAdminRole, normalizeRole } from "../../authRoles";
 
 interface AppShellProps {
@@ -25,23 +27,24 @@ interface AppShellProps {
 export function AppShell({ children, currentView, setView: onViewChange, onAddProject, onOpenHelp }: AppShellProps) {
   const { lastNotification } = useBuildFeed();
   const { profile, user, logout } = useAuth();
+  const { t } = useI18n();
   
   const role = normalizeRole(profile?.role || 'visitor');
   const hasFounderAccess = isFounderAdminRole(role);
 
   const tabs = [
-    { id: "landing", label: "Home", icon: Home },
-    { id: "bootstrap", label: "Bootstrap", icon: Zap },
-    { id: "guide", label: "Guide", icon: HelpCircle },
-    { id: "vision", label: "Founder Vision", icon: Compass },
-    ...(hasFounderAccess ? [{ id: "feed_admin", label: "Command Center", icon: Tv }] : []),
-    ...(hasFounderAccess ? [{ id: "coder_directory", label: "Global Network", icon: Users }] : []),
-    ...(role === 'vibe_coder' ? [{ id: "coder_profile", label: "Builder Profile", icon: UserIcon }] : []),
-    { id: "feed_coder", label: "Live Feed", icon: Radio },
+    { id: "landing", label: t("navigation.home"), icon: Home },
+    { id: "bootstrap", label: t("navigation.bootstrap"), icon: Zap },
+    { id: "guide", label: t("navigation.guide"), icon: HelpCircle },
+    { id: "vision", label: t("navigation.founderVision"), icon: Compass },
+    ...(hasFounderAccess ? [{ id: "feed_admin", label: t("navigation.commandCenter"), icon: Tv }] : []),
+    ...(hasFounderAccess ? [{ id: "coder_directory", label: t("navigation.globalNetwork"), icon: Users }] : []),
+    ...(role === 'vibe_coder' ? [{ id: "coder_profile", label: t("navigation.builderProfile"), icon: UserIcon }] : []),
+    { id: "feed_coder", label: t("navigation.liveBuildFeed"), icon: Radio },
     ...(user ? [
-      { id: "projects", label: "Projects", icon: Layers },
-      { id: "agents", label: "AI Agents", icon: Zap },
-      { id: "llm", label: "OpenRouter Settings", icon: Settings },
+      { id: "projects", label: t("navigation.projects"), icon: Layers },
+      { id: "agents", label: t("navigation.aiAgents"), icon: Zap },
+      { id: "llm", label: t("navigation.openRouterSettings"), icon: Settings },
     ] : []),
   ];
 
@@ -59,8 +62,8 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
                 <Radio className="w-4 h-4 animate-pulse" />
               </div>
               <div>
-                <h4 className="text-xs font-black uppercase tracking-widest text-white">New Build Request</h4>
-                <p className="text-[10px] font-mono text-text-dim">From founder</p>
+                <h4 className="text-xs font-black uppercase tracking-widest text-white">{t("notifications.newBuildRequest")}</h4>
+                <p className="text-[10px] font-mono text-text-dim">{t("notifications.fromFounder")}</p>
               </div>
             </div>
             <p className="text-sm font-bold text-white truncate">{lastNotification.polished_title}</p>
@@ -69,7 +72,7 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
               onClick={() => onViewChange("feed_coder")}
               className="mt-2 w-full py-2 bg-accent/10 text-accent hover:bg-accent/20 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
             >
-              View Request
+              {t("buttons.viewRequest")}
             </button>
           </div>
         )}
@@ -121,12 +124,13 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
             ))}
         </div>
 
-        <div className="flex flex-row md:flex-col gap-6 ml-4 md:ml-0 items-center justify-center w-full relative">
+        <div className="flex flex-row md:flex-col gap-3 md:gap-5 ml-4 md:ml-0 items-center justify-center w-full relative">
+           <LanguageSelector compact />
            {user ? (
              <div className="group relative">
                <button 
                  className="w-12 h-12 flex flex-col items-center justify-center rounded-2xl hover:bg-white/5 text-text-dim hover:text-white transition-colors"
-                 title="Account"
+                 title={t("navigation.account")}
                >
                  {user.photoURL ? (
                     <img src={user.photoURL} className="w-6 h-6 rounded-lg grayscale group-hover:grayscale-0 transition-all" alt="Avatar" referrerPolicy="no-referrer" />
@@ -135,7 +139,7 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
                  )}
                </button>
                <div className="absolute bottom-16 left-1/2 -translate-x-1/2 md:left-full md:translate-x-2 md:bottom-auto md:top-1/2 md:-translate-y-1/2 hidden group-hover:flex flex-col gap-1 bg-[#111] border border-white/5 p-2 rounded-xl shadow-xl w-40 z-[100]">
-                 <div className="text-[8px] uppercase tracking-widest text-text-dim mb-1 px-2 font-black">Logged in as</div>
+                 <div className="text-[8px] uppercase tracking-widest text-text-dim mb-1 px-2 font-black">{t("navigation.loggedInAs")}</div>
                  <div className="px-2 py-1 text-[10px] text-white font-bold truncate">{user.displayName || user.email}</div>
                  <div className="px-2 py-0.5 text-[8px] text-accent uppercase tracking-widest font-black mb-2">{role}</div>
                  <button
@@ -143,7 +147,7 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
                    className="text-xs p-2 rounded-lg truncate text-left w-full hover:bg-red-500/10 text-red-400 flex items-center gap-2 transition-colors"
                  >
                    <LogOut size={12} />
-                   Logout
+                   {t("navigation.logout")}
                  </button>
                </div>
              </div>
@@ -151,7 +155,7 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
              <button 
                onClick={() => onViewChange("landing")}
                className="w-12 h-12 flex flex-col items-center justify-center rounded-2xl hover:bg-white/5 text-text-dim hover:text-white transition-colors"
-               title="Sign In"
+               title={t("navigation.signIn")}
              >
                <UserIcon size={18} />
              </button>

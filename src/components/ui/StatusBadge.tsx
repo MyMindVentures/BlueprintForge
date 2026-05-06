@@ -1,5 +1,6 @@
 import React from "react";
 import { BuildStatus } from "../../types/buildFeed";
+import { useI18n } from "../../i18n/I18nProvider";
 
 type BadgeColor = "success" | "warning" | "error" | "info" | "idle";
 
@@ -24,6 +25,7 @@ interface StatusBadgeProps {
  * Used wherever users need quick confirmation of what state something is in and what may happen next.
  */
 export function StatusBadge({ status, label: manualLabel, className = "", dot = true }: StatusBadgeProps) {
+  const { t } = useI18n();
   const mapping: Partial<Record<KnownStatus, { color: BadgeColor; label: string }>> = {
     'Open': { color: 'info', label: 'Open' },
     'Claimed': { color: 'warning', label: 'Claimed' },
@@ -71,13 +73,24 @@ export function StatusBadge({ status, label: manualLabel, className = "", dot = 
     'Not Yet Acknowledged': { color: 'warning', label: 'Not Yet Acknowledged' }
   };
 
+  const statusTranslationKeys: Partial<Record<KnownStatus, string>> = {
+    'Open': 'statuses.open',
+    'Claimed': 'statuses.claimed',
+    'In Progress': 'statuses.inProgress',
+    'Ready for Review': 'statuses.readyForReview',
+    'Accepted': 'statuses.accepted',
+    'Done': 'statuses.done',
+    'Needs Changes': 'statuses.needsChanges',
+    'Rejected': 'statuses.rejected'
+  };
+
   let color: BadgeColor = 'idle';
   let label: string = manualLabel || '';
 
   if (status && mapping[status as KnownStatus]) {
     const mapped = mapping[status as KnownStatus]!;
     color = mapped.color;
-    label = manualLabel || mapped.label;
+    label = manualLabel || (statusTranslationKeys[status as KnownStatus] ? t(statusTranslationKeys[status as KnownStatus]!) : mapped.label);
   } else if (status) {
     // If it's a direct color keyword
     const colors: BadgeColor[] = ["success", "warning", "error", "info", "idle"];
