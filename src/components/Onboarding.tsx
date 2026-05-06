@@ -104,7 +104,7 @@ export function Onboarding() {
               <div className="w-16 h-16 bg-accent/20 text-accent rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Sparkles size={32} />
               </div>
-              <h2 className="text-3xl font-black text-white mb-4 tracking-tight">Welcome to Multi-Project App Spec Converter</h2>
+              <h2 className="text-3xl font-black text-white mb-4 tracking-tight">Welcome to BlueprintForge AI</h2>
               <p className="text-text-dim mb-8 leading-relaxed">
                 Transform your raw app concepts into professional, structured architecture and documentation in seconds using OpenRouter AI fleet.
               </p>

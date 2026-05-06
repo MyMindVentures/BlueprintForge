@@ -5,7 +5,7 @@ import { syncOpenRouterModels, mapOpenRouterModel, mergeSyncedModels, buildModel
 import { OpenRouterModel } from '../types';
 
 const server = setupServer(
-  http.get('https://openrouter.ai/api/v1/models', ({ request }) => {
+  http.get('*/api/ai/models', ({ request }) => {
     const auth = request.headers.get('Authorization');
     const referer = request.headers.get('HTTP-Referer');
     const title = request.headers.get('X-OpenRouter-Title');
@@ -52,7 +52,7 @@ describe('openRouterModelService', () => {
       const headers = buildModelHeaders('test-key');
       expect(headers['Authorization']).toBe('Bearer test-key');
       expect(headers['HTTP-Referer']).toBeDefined();
-      expect(headers['X-OpenRouter-Title']).toBe('Multi-Project App Spec Converter');
+      expect(headers['X-OpenRouter-Title']).toBe('BlueprintForge AI');
     });
   });
 
@@ -111,7 +111,7 @@ describe('openRouterModelService', () => {
   describe('syncOpenRouterModels API Contracts', () => {
     it('should fail safely with missing data array', async () => {
       server.use(
-        http.get('https://openrouter.ai/api/v1/models', () => {
+        http.get('*/api/ai/models', () => {
           return HttpResponse.json({ something: 'else' });
         })
       );

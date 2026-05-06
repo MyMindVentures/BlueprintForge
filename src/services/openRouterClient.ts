@@ -1,4 +1,4 @@
-const APP_NAME = "Multi-Project App Spec Converter";
+const APP_NAME = "BlueprintForge AI";
 
 /**
  * Clean string for safe Header usage (ISO-8859-1 only)
@@ -28,7 +28,7 @@ export function buildOpenRouterHeaders(apiKey: string): Record<string, string> {
   return {
     "Authorization": `Bearer ${apiKey}`,
     "Content-Type": "application/json",
-    "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "https://ai.studio/build",
+    "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "https://blueprintforge.ai",
     "X-OpenRouter-Title": APP_NAME
   };
 }

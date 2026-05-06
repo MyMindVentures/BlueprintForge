@@ -123,20 +123,32 @@ npm install
 
 ### 3. Configure environment variables
 
-Create a `.env.local` file in the project root.
+Copy `.env.example` to `.env.local` for local development and fill in safe local values.
 
 ```env
-OPENROUTER_API_KEY=your_openrouter_key_here
-GITHUB_TOKEN=your_github_token_here
+OPENROUTER_API_KEY=sk-or-v1-your-openrouter-key-here
+NODE_ENV=production
+APP_URL=http://localhost:3000
+GITHUB_TOKEN=ghp_your_github_token_placeholder
+DATABASE_URL=postgresql://user:password@host:5432/blueprintforge
 ```
 
-Never expose API keys or tokens in frontend code.
+`OPENROUTER_API_KEY`, `GITHUB_TOKEN`, and `DATABASE_URL` are server-side values. Do not prefix them with `VITE_`, do not read them from browser code, and never commit real secrets. Vite should only expose intentionally public variables with the `VITE_` prefix.
 
 ### 4. Run locally
 
 ```bash
 npm run dev
 ```
+
+### 5. Build and start production locally
+
+```bash
+npm run build
+npm run start
+```
+
+The production server serves the Vite build from `dist`, supports client-side routing by falling back to `index.html`, and exposes `/health` for uptime checks.
 
 ---
 
@@ -202,6 +214,26 @@ BlueprintForge AI uses OpenRouter for AI-assisted ticket polishing.
 AI should help convert raw founder thoughts into structured, editable, reviewable build requests. The founder remains in control before anything is published.
 
 ---
+## 🚆 Railway Deployment
+
+Railway is the temporary production host for BlueprintForge AI. The app deploys as a normal Node/Express production web app; it does not depend on a hosted IDE or provider-specific runtime.
+
+1. Connect the GitHub repository to a Railway project.
+2. Deploy from the `main` branch.
+3. Set environment variables in Railway:
+   - `OPENROUTER_API_KEY` — required for OpenRouter AI features.
+   - `NODE_ENV=production` — required so Express serves the production build.
+   - `GITHUB_TOKEN` — required only if GitHub automation is enabled.
+   - `DATABASE_URL` — required only if the active persistence layer uses it.
+   - `APP_URL` — recommended canonical Railway service URL.
+4. Set the build command to `npm run build`.
+5. Set the start command to `npm run start`.
+6. Do not set `PORT` manually; Railway provides it automatically. The server listens on `0.0.0.0:$PORT`.
+7. After deployment, check `https://<your-railway-domain>/health` for a JSON health response.
+
+See [`docs/RailwayDeployment.md`](docs/RailwayDeployment.md) for the full deployment runbook.
+
+---
 
 ## 🔔 Version Updates
 
@@ -228,6 +260,9 @@ Demo users should never mutate production data. Demo recorder and walkthrough fl
 ## ✅ Contribution Philosophy
 
 - Read `/Agent.md` first
+- Treat Railway as the temporary production host
+- Treat OpenRouter as the AI provider
+- Do not reintroduce provider-specific deployment assumptions
 - Keep changes small and focused
 - Reuse existing patterns
 - Protect role-based actions

@@ -5,7 +5,7 @@ import { buildOpenRouterHeaders, callOpenRouterChatCompletion } from './openRout
 
 const server = setupServer(
   // Mock Models API
-  http.get('https://openrouter.ai/api/v1/models', ({ request }) => {
+  http.get('*/api/ai/models', ({ request }) => {
     const auth = request.headers.get('Authorization');
     if (!auth || !auth.includes('sk-test')) {
       return new HttpResponse(JSON.stringify({ error: { message: "Invalid API Key" } }), { status: 401 });
@@ -19,7 +19,7 @@ const server = setupServer(
   }),
 
   // Mock Completion API
-  http.post('https://openrouter.ai/api/v1/chat/completions', async ({ request }) => {
+  http.post('*/api/ai/chat/completions', async ({ request }) => {
     const auth = request.headers.get('Authorization');
     const clonedReq = request.clone();
     const body = await clonedReq.json() as any;

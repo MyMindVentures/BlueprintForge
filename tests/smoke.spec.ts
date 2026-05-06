@@ -9,7 +9,6 @@ test.describe('App Smoke Tests', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           data: [
-            { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash' },
             { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini' }
           ]
         })
