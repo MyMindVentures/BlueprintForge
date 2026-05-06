@@ -58,6 +58,7 @@
 ## Multilingual Rules
 - The app must support multilingual UI
 - Do not hardcode user-facing text if an i18n system exists
+- Run `npm run i18n:check` when changing frontend `.tsx` UI copy; move visible JSX text and user-facing `label`, `title`, `placeholder`, `aria-label`, `description`, `emptyMessage`, `error`, and `success` prop values into i18n resources unless they are documented internal exceptions.
 
 ## Demo Rules
 - Demo recorder and demo user must only use safe demo data
