@@ -2,6 +2,11 @@ import { getDb, sqlValue } from '../db/postgres';
 import { FOUNDER_ROLE, BUILDER_ROLE, normalizeRole } from '../../authRoles';
 
 const parseList = (value?: string) => (value || '').split(',').map((entry) => entry.trim().toLowerCase()).filter(Boolean);
+const supportedPreferredLanguages = new Set(['en', 'nl', 'fr', 'de', 'es', 'pt', 'it', 'pl', 'tr', 'ja']);
+const normalizePreferredLanguage = (value?: string | null) => {
+  const preferredLanguage = value?.trim().toLowerCase() || 'en';
+  return supportedPreferredLanguages.has(preferredLanguage) ? preferredLanguage : 'en';
+};
 const founderEmails = () => parseList(process.env.FOUNDER_ADMIN_EMAILS || process.env.ADMIN_EMAILS || 'lacometta33@gmail.com');
 const founderUids = () => parseList(process.env.FOUNDER_ADMIN_UIDS || process.env.ADMIN_UIDS);
 
@@ -10,7 +15,7 @@ const rowToUser = (row: any) => ({
   name: row.name,
   role: normalizeRole(row.role),
   acknowledged_versions: row.acknowledged_versions ? JSON.parse(row.acknowledged_versions) : [],
-  preferred_language: row.preferred_language || 'en',
+  preferred_language: normalizePreferredLanguage(row.preferred_language),
   role_resolution: row.role_resolution ? JSON.parse(row.role_resolution) : undefined
 });
 
@@ -58,7 +63,8 @@ export const userRepository = {
     return rows[0] ? rowToUser(rows[0]) : null;
   },
   async updatePreferredLanguage(userId: string, preferredLanguage: string) {
-    await getDb().query(`UPDATE users SET preferred_language = ${sqlValue(preferredLanguage)}, updated_at = now() WHERE id = ${sqlValue(userId)}`);
+    const normalizedPreferredLanguage = normalizePreferredLanguage(preferredLanguage);
+    await getDb().query(`UPDATE users SET preferred_language = ${sqlValue(normalizedPreferredLanguage)}, updated_at = now() WHERE id = ${sqlValue(userId)}`);
     const rows = await getDb().query(`SELECT id, name, role, preferred_language, COALESCE((SELECT json_agg(version) FROM version_acknowledgements WHERE user_id = users.id), '[]'::json) AS acknowledged_versions FROM users WHERE id = ${sqlValue(userId)}`);
     return rows[0] ? rowToUser(rows[0]) : null;
   }
