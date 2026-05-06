@@ -1,0 +1,15 @@
+{
+  "title": "BlueprintForge Guide",
+  "founderVision": "Founder Vision",
+  "founderVisionDesc": "Where high-level goals and product direction are set.",
+  "bootstrapPage": "Bootstrap Page",
+  "bootstrapPageDesc": "The movement onboarding and ticket generator.",
+  "liveBuildFeed": "Live Build Feed",
+  "liveBuildFeedDesc": "Real-time stream of all build requests.",
+  "currentFocus": "Current Focus",
+  "currentFocusDesc": "The top 3 immediate priority items for the architect.",
+  "coderProfiles": "Coder Profiles",
+  "coderProfilesDesc": "Set up your identity and claim your first ticket.",
+  "reputation": "Reputation",
+  "reputationDesc": "Earn stars by shipping accepted improvements."
+}

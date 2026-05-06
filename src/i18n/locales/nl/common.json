@@ -1,0 +1,135 @@
+{
+  "language": {
+    "en": "English",
+    "nl": "Nederlands",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+    "pt": "Portuguese",
+    "it": "Italian",
+    "pl": "Polish",
+    "hi": "Hindi",
+    "ja": "Japanese",
+    "selector": "Language",
+    "tr": "Turkish"
+  },
+  "navigation": {
+    "home": "Home",
+    "bootstrap": "Bootstrap",
+    "guide": "Gids",
+    "founderVision": "Founder Visie",
+    "commandCenter": "Commandocentrum",
+    "globalNetwork": "Wereldwijd netwerk",
+    "builderProfile": "Builderprofiel",
+    "liveBuildFeed": "Live feed",
+    "projects": "Projecten",
+    "aiAgents": "AI-agenten",
+    "openRouterSettings": "OpenRouter-instellingen",
+    "account": "Account",
+    "loggedInAs": "Ingelogd als",
+    "logout": "Uitloggen",
+    "signIn": "Inloggen"
+  },
+  "app": {
+    "loadingAuthTitle": "Authentication initializing",
+    "loadingAuthDescription": "Checking whether you are a visitor, builder or founder before enabling actions.",
+    "loadingSystemTitle": "Architect system initializing",
+    "loadingSystemDescription": "Loading persisted projects, agents, settings and live platform state."
+  },
+  "notifications": {
+    "newBuildRequest": "New Build Request",
+    "fromFounder": "From founder"
+  },
+  "landing": {
+    "eyebrow": "BlueprintForge AI",
+    "headline": "Stop met denken. Begin met bouwen.",
+    "subtitle": "De Architect brengt richting. Builders brengen realiteit.",
+    "support": "Visie zonder uitvoering blijft gevangen. Elke gedachte kan een ticket worden.",
+    "ctaPrimary": "Enter BlueprintForge",
+    "ctaSecondary": "Open the guide"
+  },
+  "bootstrap": {
+    "heroEyebrow": "Where Vision",
+    "heroTitle": "Meets Execution",
+    "founderStoryTitle": "The Mind Behind the Architect",
+    "infrastructureEyebrow": "The Infrastructure",
+    "whatIs": "What is BlueprintForge?",
+    "workflowEyebrow": "Section 03 / The Workflow",
+    "founderThought": "Founder Thought",
+    "founderThoughtDesc": "The Architect writes a raw, unfiltered concept or improvement idea.",
+    "aiDistillation": "AI Distillation",
+    "aiDistillationDesc": "Our system converts vision into a structured technical blueprint.",
+    "feedBroadcast": "Feed Broadcast",
+    "feedBroadcastDesc": "The ticket appears in the Live Build Feed for all vibe coders.",
+    "githubSync": "GitHub Sync",
+    "githubSyncDesc": "A mirrored issue is created in the repository for technical tracking.",
+    "builderClaim": "Builder Claim",
+    "builderClaimDesc": "A builder identifies with the vision and claims the ticket.",
+    "implementation": "Implementation",
+    "implementationDesc": "Builder forks, branches, and ships the requested feature.",
+    "launchImprove": "Launch & Improve",
+    "launchImproveDesc": "PR is accepted, code is merged, and the platform evolves."
+  },
+  "buildFeed": {
+    "activeBuildStream": "Active Build Stream",
+    "dailySignal": "Dagelijks signaal",
+    "foundersBroadcast": "Founders Broadcast",
+    "broadcastToBuilders": "Broadcast to all builders",
+    "signalHistory": "Signal History",
+    "dailySignalPlaceholder": "Good morning vibe coders. Today we focus on...",
+    "builderFocusPlaceholder": "What should builders focus on today?",
+    "waitingForSignal": "Waiting for today's signal...",
+    "currentFounderFocus": "Huidige founder-focus",
+    "currentFocusQuote": "This is what we are building right now.",
+    "whyItMatters": "Waarom het belangrijk is",
+    "expectedOutcome": "Verwachte uitkomst",
+    "inBuild": "In Build",
+    "viewGithubIssue": "View GitHub Issue",
+    "removeFromFocus": "Remove from Focus"
+  },
+  "builderProfile": {
+    "title": "Builder Profile",
+    "onboarding": "Vibe Coder onboarding",
+    "stars": "Stars",
+    "reputation": "Reputation",
+    "availability": "Availability",
+    "preferredStack": "Preferred stack",
+    "portfolio": "Portfolio",
+    "github": "GitHub",
+    "bio": "Bio"
+  },
+  "directory": {
+    "title": "Vibe Coder Directory",
+    "empty": "No builders have joined the directory yet."
+  },
+  "github": {
+    "contributionSteps": "GitHub contribution steps",
+    "fork": "Fork the repository",
+    "branch": "Create a focused branch",
+    "commit": "Commit your implementation",
+    "pullRequest": "Open a pull request"
+  },
+  "demo": {
+    "autoDemoEngine": "Auto Demo Engine",
+    "readyToRecord": "Ready to Record?",
+    "fullRecording": "Full Recording",
+    "captureScreenRobot": "Capture screen & robot steps",
+    "previewMode": "Preview Mode",
+    "robotWalkthroughOnly": "Robot walkthrough only",
+    "activeRobotSignal": "Active Robot Signal",
+    "robotCaption": "Robot Caption",
+    "aiProcessing": "AI Processing...",
+    "demoCompleted": "Demo Completed"
+  },
+  "format": {
+    "justNow": "just now",
+    "relativePast": "{{value}} {{unit}} ago",
+    "relativeFuture": "in {{value}} {{unit}}",
+    "day": "day",
+    "days": "days",
+    "hour": "hour",
+    "hours": "hours",
+    "minute": "minute",
+    "minutes": "minutes"
+  }
+}

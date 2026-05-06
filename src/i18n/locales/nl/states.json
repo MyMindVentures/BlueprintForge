@@ -1,0 +1,23 @@
+{
+  "statuses": {
+    "open": "Open",
+    "claimed": "Geclaimd",
+    "inProgress": "Bezig",
+    "readyForReview": "Ready for Review",
+    "accepted": "Geaccepteerd",
+    "done": "Klaar",
+    "needsChanges": "Needs Changes",
+    "rejected": "Rejected",
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "critical": "Critical",
+    "easy": "Easy",
+    "hard": "Hard",
+    "thinking": "Thinking"
+  },
+  "success": {
+    "ticketPolished": "Ticket polished and ready for review.",
+    "ticketPublished": "Ticket published to the Live Build Feed!"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "accessDenied": "Accesso negato",
+  "requestedScreen": "Requested screen",
+  "resolvedRole": "Resolved role",
+  "missingPermission": "Missing permission",
+  "founderAccessHint": "If you are the founder, verify that your Firebase email or UID is listed in FOUNDER_ADMIN_EMAILS or FOUNDER_ADMIN_UIDS on Railway, then sign out and sign back in so PostgreSQL can hydrate your ROLE-01 profile.",
+  "missingOpenRouterKey": "Missing OpenRouter API Key.",
+  "screenRecordingBlocked": "Screen recording is blocked. Try opening the app in a new tab or use 'Preview Mode'.",
+  "profilePersistenceFailed": "Could not save preferred language to your profile. The local preference was saved."
+}

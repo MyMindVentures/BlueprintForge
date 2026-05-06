@@ -1,0 +1,18 @@
+{
+  "createBuilderProfile": "Create Builder Profile",
+  "claimBuildRequest": "Claim Build Request",
+  "convertToTicket": "Convert to Ticket",
+  "publishTicket": "Publish Ticket",
+  "openGithubRepo": "Open GitHub Repo",
+  "recordAutoDemo": "Record Auto Demo",
+  "saveChanges": "変更を保存",
+  "viewRequest": "リクエストを見る",
+  "goHome": "Go Home",
+  "openGuide": "Open Guide",
+  "liveFeed": "Live Feed",
+  "polishIntoSpec": "Polish into Spec",
+  "rePolishDraft": "Re-Polish Draft",
+  "startBuilding": "Start Building",
+  "enterBlueprintForge": "Enter BlueprintForge",
+  "startBuilderJourney": "Start Builder Journey"
+}

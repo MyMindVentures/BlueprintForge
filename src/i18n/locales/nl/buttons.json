@@ -1,0 +1,18 @@
+{
+  "createBuilderProfile": "Create Builder Profile",
+  "claimBuildRequest": "Claim Build Request",
+  "convertToTicket": "Convert to Ticket",
+  "publishTicket": "Publish Ticket",
+  "openGithubRepo": "Open GitHub Repo",
+  "recordAutoDemo": "Record Auto Demo",
+  "saveChanges": "Wijzigingen opslaan",
+  "viewRequest": "Bekijk verzoek",
+  "goHome": "Naar home",
+  "openGuide": "Open gids",
+  "liveFeed": "Live Feed",
+  "polishIntoSpec": "Polish into Spec",
+  "rePolishDraft": "Re-Polish Draft",
+  "startBuilding": "Begin met bouwen",
+  "enterBlueprintForge": "Enter BlueprintForge",
+  "startBuilderJourney": "Start Builder Journey"
+}
