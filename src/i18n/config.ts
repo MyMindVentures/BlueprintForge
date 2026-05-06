@@ -6,7 +6,7 @@ import es from '../../locales/es/common.json';
 import pt from '../../locales/pt/common.json';
 import it from '../../locales/it/common.json';
 import pl from '../../locales/pl/common.json';
-import hi from '../../locales/hi/common.json';
+import tr from '../../locales/tr/common.json';
 import ja from '../../locales/ja/common.json';
 
 export const SUPPORTED_LANGUAGES = [
@@ -18,7 +18,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹', locale: 'pt-PT' },
   { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹', locale: 'it-IT' },
   { code: 'pl', name: 'Polish', nativeName: 'Polski', flag: '🇵🇱', locale: 'pl-PL' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', flag: '🇮🇳', locale: 'hi-IN' },
+  { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷', locale: 'tr-TR' },
   { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', locale: 'ja-JP' }
 ] as const;
 
@@ -27,7 +27,7 @@ export type TranslationOptions = Record<string, string | number | boolean | null
 export const DEFAULT_LANGUAGE: LanguageCode = 'en';
 export const LANGUAGE_STORAGE_KEY = 'blueprintforge.preferredLanguage';
 
-export const resources: Record<LanguageCode, any> = { en, nl, fr, de, es, pt, it, pl, hi, ja };
+export const resources: Record<LanguageCode, any> = { en, nl, fr, de, es, pt, it, pl, tr, ja };
 
 export const isSupportedLanguage = (value?: string | null): value is LanguageCode =>
   Boolean(value && SUPPORTED_LANGUAGES.some((language) => language.code === value));
