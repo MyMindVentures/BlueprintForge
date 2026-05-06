@@ -71,7 +71,7 @@ export function ActionButton({
       aria-disabled={disabled || status === "loading"}
       title={title || disabledReason}
       className={`
-        relative group flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-200
+        relative group flex min-w-0 items-center justify-center gap-2 rounded-xl px-4 py-2 text-xs font-bold leading-snug transition-all duration-200 whitespace-normal
         ${variants[variant]}
         ${(disabled || status === "loading") ? "opacity-50 cursor-not-allowed" : "cursor-pointer active:scale-95"}
         ${className}
@@ -84,10 +84,10 @@ export function ActionButton({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="flex items-center gap-2"
+            className="flex min-w-0 items-center justify-center gap-2"
           >
             <Loader2 size={14} className="animate-spin" />
-            <span>{loadingLabel}</span>
+            <span className="min-w-0 break-words text-center">{loadingLabel}</span>
           </motion.div>
         )}
 
@@ -97,10 +97,10 @@ export function ActionButton({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="flex items-center gap-2 text-emerald-500"
+            className="flex min-w-0 items-center justify-center gap-2 text-emerald-500"
           >
             <Check size={14} />
-            <span>{successLabel}</span>
+            <span className="min-w-0 break-words text-center">{successLabel}</span>
           </motion.div>
         )}
 
@@ -110,10 +110,10 @@ export function ActionButton({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="flex items-center gap-2 text-red-500"
+            className="flex min-w-0 items-center justify-center gap-2 text-red-500"
           >
             <AlertCircle size={14} />
-            <span>{errorLabel}</span>
+            <span className="min-w-0 break-words text-center">{errorLabel}</span>
           </motion.div>
         )}
 
@@ -123,10 +123,10 @@ export function ActionButton({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex items-center gap-2"
+            className="flex min-w-0 items-center justify-center gap-2"
           >
             {icon}
-            <span>{label}</span>
+            <span className="min-w-0 break-words text-center">{label}</span>
           </motion.div>
         )}
       </AnimatePresence>
