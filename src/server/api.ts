@@ -8,6 +8,12 @@ import { getDb, sqlValue } from './db/postgres';
 import { FOUNDER_ROLE, isFounderAdminRole, normalizeRole } from '../authRoles';
 
 const actor = (req: express.Request) => String(req.headers['x-user-id'] || req.body?.userId || 'anonymous');
+const SUPPORTED_PREFERRED_LANGUAGES = new Set(['en', 'nl', 'fr', 'de', 'es', 'pt', 'it', 'pl', 'tr', 'ja']);
+const normalizePreferredLanguage = (value: unknown) => {
+  if (typeof value !== 'string') return 'en';
+  const preferredLanguage = value.trim().toLowerCase();
+  return SUPPORTED_PREFERRED_LANGUAGES.has(preferredLanguage) ? preferredLanguage : 'en';
+};
 const role = (req: express.Request) => normalizeRole(String(req.headers['x-user-role'] || req.body?.role || 'anonymous'));
 const requireAdmin = (req: express.Request) => {
   if (!isFounderAdminRole(role(req))) {
@@ -24,7 +30,10 @@ export function registerApiRoutes(app: express.Express) {
 
   app.post('/api/auth/firebase-profile', wrap(async (req, res) => res.json(await userRepository.upsertFirebaseUser(req.body))));
   app.post('/api/auth/acknowledge-version', wrap(async (req, res) => res.json(await userRepository.acknowledgeVersion(actor(req), req.body.version))));
-  app.post('/api/auth/preferred-language', wrap(async (req, res) => res.json(await userRepository.updatePreferredLanguage(actor(req), req.body.preferred_language || 'en'))));
+  app.post('/api/auth/preferred-language', wrap(async (req, res) => {
+    const preferredLanguage = normalizePreferredLanguage(req.body?.preferred_language);
+    res.json(await userRepository.updatePreferredLanguage(actor(req), preferredLanguage));
+  }));
 
   app.get('/api/build-feed', wrap(async (_req, res) => res.json(await buildRequestRepository.listAll())));
   app.post('/api/build-requests', wrap(async (req, res) => { requireAdmin(req); res.json({ id: await buildRequestRepository.publish(req.body.request, actor(req)) }); }));
