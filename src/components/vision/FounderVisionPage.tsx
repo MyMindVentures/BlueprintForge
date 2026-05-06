@@ -5,7 +5,7 @@ import { Compass, Send, CheckCircle2, FlaskConical, Target, BrainCircuit, Chevro
 import { useToast } from '../ui/Toast';
 import { VisionStatus } from '../../types/vision';
 import { isFounderAdminRole } from '../../authRoles';
-import { useI18n } from '../../i18n/I18nProvider';
+import { useI18n , tx } from '../../i18n/I18nProvider';
 
 /**
  * Handles the founder vision page workflow for BlueprintForge users or services.
@@ -84,22 +84,20 @@ export function FounderVisionPage() {
           <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Compass className="w-8 h-8 text-white/80" />
           </div>
-          <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em]">Founder Vision</h1>
-          <p className="text-sm text-text-dim max-w-xl mx-auto leading-relaxed">
-            High-signal strategic direction. How this platform will evolve, what we are trying to build, and why it matters. 
-          </p>
+          <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em]">{tx("uiLegacy.components.vision.foundervisionpage.001")}</h1>
+          <p className="text-sm text-text-dim max-w-xl mx-auto leading-relaxed">{tx("uiLegacy.components.vision.foundervisionpage.002")}</p>
         </header>
 
         {isFounderAdminRole(currentUser?.role) && (
           <form onSubmit={handleSubmit} className="bg-[#111] border border-white/10 rounded-3xl p-8 space-y-6">
-            <h2 className="text-sm font-black text-white uppercase tracking-widest border-b border-white/5 pb-4">Draft New Vision</h2>
+            <h2 className="text-sm font-black text-white uppercase tracking-widest border-b border-white/5 pb-4">{tx("uiLegacy.components.vision.foundervisionpage.003")}</h2>
             
             <div className="space-y-4">
               <input
                 required
                 value={formData.title}
                 onChange={e => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Title (e.g. The Next Era of Builder Networks)"
+                placeholder={tx("uiLegacy.components.vision.foundervisionpage.004")}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-lg font-bold text-white focus:outline-none focus:border-accent/50 placeholder:text-white/20"
               />
               
@@ -107,7 +105,7 @@ export function FounderVisionPage() {
                 required
                 value={formData.vision_statement}
                 onChange={e => setFormData({ ...formData, vision_statement: e.target.value })}
-                placeholder="Core Vision Statement (Short & powerful)"
+                placeholder={tx("uiLegacy.components.vision.foundervisionpage.005")}
                 rows={2}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm font-medium text-white/90 focus:outline-none focus:border-accent/50 placeholder:text-white/20 resize-none"
               />
@@ -116,30 +114,30 @@ export function FounderVisionPage() {
                 required
                 value={formData.goal}
                 onChange={e => setFormData({ ...formData, goal: e.target.value })}
-                placeholder="Goal / Direction (What action does this drive?)"
+                placeholder={tx("uiLegacy.components.vision.foundervisionpage.006")}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent/50 placeholder:text-white/20"
               />
               
               <textarea
                 value={formData.context}
                 onChange={e => setFormData({ ...formData, context: e.target.value })}
-                placeholder="Broader Context & Why (Optional)"
+                placeholder={tx("uiLegacy.components.vision.foundervisionpage.007")}
                 rows={4}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white/70 focus:outline-none focus:border-accent/50 placeholder:text-white/20 resize-none"
               />
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black tracking-widest uppercase text-text-dim">Status:</span>
+                  <span className="text-[10px] font-black tracking-widest uppercase text-text-dim">{tx("uiLegacy.components.vision.foundervisionpage.008")}</span>
                   <select 
                     value={formData.status}
                     onChange={e => setFormData({ ...formData, status: e.target.value as VisionStatus })}
                     className="bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-accent/50 appearance-none"
                   >
-                    <option value="Thinking">Thinking</option>
-                    <option value="Testing">Testing</option>
-                    <option value="Building">Building</option>
-                    <option value="Achieved">Achieved</option>
+                    <option value="Thinking">{tx("uiLegacy.components.vision.foundervisionpage.009")}</option>
+                    <option value="Testing">{tx("uiLegacy.components.vision.foundervisionpage.010")}</option>
+                    <option value="Building">{tx("uiLegacy.components.vision.foundervisionpage.011")}</option>
+                    <option value="Achieved">{tx("uiLegacy.components.vision.foundervisionpage.012")}</option>
                   </select>
                 </div>
                 
@@ -148,9 +146,7 @@ export function FounderVisionPage() {
                   disabled={isPublishing || !formData.title || !formData.vision_statement || !formData.goal}
                   className="flex items-center gap-2 bg-white text-black px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg disabled:opacity-50 w-full sm:w-auto justify-center"
                 >
-                  <Send className="w-3.5 h-3.5" />
-                  Publish Vision
-                </button>
+                  <Send className="w-3.5 h-3.5" />{tx("uiLegacy.components.vision.foundervisionpage.013")}</button>
               </div>
             </div>
           </form>
@@ -159,7 +155,7 @@ export function FounderVisionPage() {
         <div className="space-y-8">
           {sortedVisions.length === 0 ? (
             <div className="text-center py-20 bg-[#111]/50 border border-white/5 rounded-3xl">
-              <p className="text-text-dim font-black uppercase tracking-widest text-xs">No visions published yet.</p>
+              <p className="text-text-dim font-black uppercase tracking-widest text-xs">{tx("uiLegacy.components.vision.foundervisionpage.014")}</p>
             </div>
           ) : (
             sortedVisions.map(vision => (
@@ -178,7 +174,7 @@ export function FounderVisionPage() {
                   </p>
 
                   <div className="bg-black/30 border border-white/5 rounded-2xl p-5 inline-block min-w-[50%]">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-text-dim mb-1">Direction / Goal</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-text-dim mb-1">{tx("uiLegacy.components.vision.foundervisionpage.015")}</p>
                     <p className="text-sm text-white/80">{vision.goal}</p>
                   </div>
 
@@ -188,9 +184,7 @@ export function FounderVisionPage() {
                          onClick={() => toggleContext(vision.id)}
                          className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/40 hover:text-white/60 transition-colors"
                        >
-                         {expandedContexts[vision.id] ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                         Context & Thinking
-                       </button>
+                         {expandedContexts[vision.id] ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}{tx("uiLegacy.components.vision.foundervisionpage.016")}</button>
                        {expandedContexts[vision.id] && (
                          <div className="mt-4 text-sm text-white/60 leading-relaxed bg-black/20 p-5 rounded-2xl border border-white/5 animate-in fade-in slide-in-from-top-2">
                            {vision.context.split('\n').map((paragraph, i) => (

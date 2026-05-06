@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState, useMemo } from "react";
 import { Plus, Brain, Users } from "lucide-react";
 import { AIAgent } from "../../types";
@@ -38,15 +39,10 @@ export function AgentList({ agents, onNew, onOpen, onDelete, onDuplicate, onSetD
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 md:gap-8">
           <div className="space-y-4">
              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest">
-                <Brain size={12} />
-                Strategic Intelligence
-             </div>
-             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
-               AI Architect <span className="text-accent underline decoration-white/10 underline-offset-8">Guild</span>
+                <Brain size={12} />{tx("uiLegacy.components.agents.agentlist.001")}</div>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">{tx("uiLegacy.components.agents.agentlist.002")}<span className="text-accent underline decoration-white/10 underline-offset-8">{tx("uiLegacy.components.agents.agentlist.003")}</span>
              </h1>
-             <div className="text-text-dim text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed italic">
-               Deploy specialized intelligence modules optimized for distinct software engineering domains.
-               <HelpIcon title="Agent Protocol" content="Agents encapsulate specific system instructions. Create specialists for Mobile, Desktop, SaaS, or Web3 architectures." />
+             <div className="text-text-dim text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed italic">{tx("uiLegacy.components.agents.agentlist.004")}<HelpIcon title={tx("uiLegacy.components.agents.agentlist.005")} content="Agents encapsulate specific system instructions. Create specialists for Mobile, Desktop, SaaS, or Web3 architectures." />
              </div>
           </div>
           
@@ -54,9 +50,7 @@ export function AgentList({ agents, onNew, onOpen, onDelete, onDuplicate, onSetD
             onClick={onNew}
             className="glass-btn-primary w-full lg:w-auto !h-14 sm:!h-16 !px-10 !text-sm !font-black !rounded-[24px] shadow-[0_20px_40px_rgba(255,107,0,0.2)]"
           >
-            <Plus size={20} />
-            Recruit Specialist
-          </button>
+            <Plus size={20} />{tx("uiLegacy.components.agents.agentlist.006")}</button>
         </div>
 
         {/* Browser Section */}
@@ -64,7 +58,7 @@ export function AgentList({ agents, onNew, onOpen, onDelete, onDuplicate, onSetD
            <SearchInput 
              value={search} 
              onChange={setSearch} 
-             placeholder="Search by agent name, code, or specialty..."
+             placeholder={tx("uiLegacy.components.agents.agentlist.007")}
              className="w-full"
            />
         </div>
@@ -74,12 +68,10 @@ export function AgentList({ agents, onNew, onOpen, onDelete, onDuplicate, onSetD
           <div className="pt-20">
             <EmptyState 
               icon={Users} 
-              title="No specialists recruited" 
-              description="Your guild is empty. Start by recruiting a master architect or importing standard protocols."
+              title={tx("uiLegacy.components.agents.agentlist.008")} 
+              description={tx("uiLegacy.components.agents.agentlist.009")}
               action={
-                <button onClick={onNew} className="glass-btn-primary !px-10 !py-4">
-                  Initialize Agent
-                </button>
+                <button onClick={onNew} className="glass-btn-primary !px-10 !py-4">{tx("uiLegacy.components.agents.agentlist.010")}</button>
               }
             />
           </div>
@@ -87,12 +79,10 @@ export function AgentList({ agents, onNew, onOpen, onDelete, onDuplicate, onSetD
           <div className="pt-20">
              <EmptyState 
                 icon={Plus} 
-                title="Protocol not found" 
+                title={tx("uiLegacy.components.agents.agentlist.011")} 
                 description={`We couldn't find any specialist matching "${search}".`}
                 action={
-                  <button onClick={() => setSearch("")} className="text-accent font-black uppercase text-[11px] tracking-widest hover:underline">
-                    Reset search
-                  </button>
+                  <button onClick={() => setSearch("")} className="text-accent font-black uppercase text-[11px] tracking-widest hover:underline">{tx("uiLegacy.components.agents.agentlist.012")}</button>
                 }
              />
           </div>

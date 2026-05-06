@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from 'react';
 import { Info, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
 
@@ -20,15 +21,15 @@ export function HelpBlock({ title, purpose, state, nextAction, disabledReason, c
       <div className="flex items-start gap-3">
         <div className="mt-0.5 rounded-2xl bg-accent/10 p-2 text-accent"><Info size={16} /></div>
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.25em] text-accent">What this screen does</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.25em] text-accent">{tx("uiLegacy.components.help.helpblock.001")}</p>
           <h2 className="mt-1 text-lg font-black uppercase tracking-tight text-white">{title}</h2>
           <p className="mt-1 leading-relaxed text-text-dim">{purpose}</p>
         </div>
       </div>
       <div className="grid gap-3 md:grid-cols-3">
-        {state && <HelpPill icon={<CheckCircle2 size={14} />} label="Current state" text={state} />}
-        {nextAction && <HelpPill icon={<ArrowRight size={14} />} label="Next action" text={nextAction} />}
-        {disabledReason && <HelpPill icon={<AlertCircle size={14} />} label="Why disabled" text={disabledReason} />}
+        {state && <HelpPill icon={<CheckCircle2 size={14} />} label={tx("uiLegacy.components.help.helpblock.002")} text={state} />}
+        {nextAction && <HelpPill icon={<ArrowRight size={14} />} label={tx("uiLegacy.components.help.helpblock.003")} text={nextAction} />}
+        {disabledReason && <HelpPill icon={<AlertCircle size={14} />} label={tx("uiLegacy.components.help.helpblock.004")} text={disabledReason} />}
       </div>
     </aside>
   );

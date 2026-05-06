@@ -8,7 +8,7 @@ import { useToast } from '../ui/Toast';
 import { useGithubSettings } from '../../hooks/useGithubSettings';
 import { createGithubIssue } from '../../services/githubClient';
 import { StatusBadge } from '../ui/StatusBadge';
-import { useI18n } from '../../i18n/I18nProvider';
+import { useI18n , tx } from '../../i18n/I18nProvider';
 
 /**
  * Handles the live build feed admin workflow for BlueprintForge users or services.
@@ -128,19 +128,15 @@ export function LiveBuildFeedAdmin() {
       <div className="max-w-6xl mx-auto space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
-            <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center gap-4">
-              Founder Command Center
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center gap-4">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.001")}<span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             </h1>
-            <p className="text-sm text-text-dim max-w-md leading-relaxed font-medium">
-              Architect the next phase of the project. Polish raw thoughts, broadcast signals, and manage focus.
-            </p>
+            <p className="text-sm text-text-dim max-w-md leading-relaxed font-medium">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.002")}</p>
           </div>
           
           <div className="flex gap-4">
              <div className="bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-3 flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-[10px] font-black text-text-dim uppercase tracking-widest">Active Focus</p>
+                  <p className="text-[10px] font-black text-text-dim uppercase tracking-widest">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.003")}</p>
                   <p className={`text-xl font-black ${focusedCount >= 3 ? 'text-accent' : 'text-white'}`}>{focusedCount}/3</p>
                 </div>
                 <div className={`w-2 h-10 rounded-full ${focusedCount >= 3 ? 'bg-accent' : 'bg-white/10'}`} />
@@ -154,16 +150,16 @@ export function LiveBuildFeedAdmin() {
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <Sparkles size={20} className="text-accent" />
-                <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Publish New Request</h2>
+                <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.004")}</h2>
               </div>
               
               <div className="bg-[#111] border border-white/10 rounded-[32px] p-6 md:p-8 space-y-6 shadow-2xl">
                 <label className="block space-y-2">
-                  <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-2">Raw Founder Input</span>
+                  <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-2">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.005")}</span>
                   <textarea
                     value={rawInput}
                     onChange={(e) => setRawInput(e.target.value)}
-                    placeholder="Say what you want to build, change, or improve..."
+                    placeholder={tx("uiLegacy.components.buildfeed.livebuildfeedadmin.006")}
                     className="w-full h-40 bg-black/40 border border-white/5 rounded-2xl p-6 text-sm text-white focus:outline-none focus:border-accent/40 resize-none placeholder:text-white/10 scrollbar-thin transition-colors"
                   />
                 </label>
@@ -173,9 +169,7 @@ export function LiveBuildFeedAdmin() {
                     <button
                       onClick={() => setPolishedResult(null)}
                       className="px-6 py-3 bg-white/5 text-text-dim hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
-                    >
-                      Reset
-                    </button>
+                    >{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.007")}</button>
                   )}
                   <button
                     onClick={handlePolish}
@@ -183,7 +177,7 @@ export function LiveBuildFeedAdmin() {
                     className="flex items-center gap-3 bg-white text-black px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all disabled:opacity-50"
                   >
                     {isPolishing ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Zap size={16} fill="currentColor" />}
-                    {polishedResult ? "Re-Polish Draft" : "Polish into Spec"}
+                    {polishedResult ?tx("uiStrings.components.buildfeed.livebuildfeedadmin.001") :tx("uiStrings.components.buildfeed.livebuildfeedadmin.002")}
                   </button>
                 </div>
               </div>
@@ -192,7 +186,7 @@ export function LiveBuildFeedAdmin() {
                 <div className="bg-accent/5 border border-accent/20 rounded-[32px] p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 shadow-2xl shadow-accent/5">
                   <div className="flex items-center justify-between gap-4 border-b border-accent/10 pb-6">
                     <div className="flex-1">
-                       <p className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">Spec Title</p>
+                       <p className="text-[10px] font-black text-accent uppercase tracking-[0.2em] mb-2">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.008")}</p>
                        {isEditing ? (
                          <input
                            type="text"
@@ -215,7 +209,7 @@ export function LiveBuildFeedAdmin() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-6">
                        <label className="block space-y-2">
-                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Context</span>
+                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.009")}</span>
                          <textarea 
                            readOnly={!isEditing}
                            value={polishedResult.polished_context} 
@@ -226,7 +220,7 @@ export function LiveBuildFeedAdmin() {
                     </div>
                     <div className="space-y-6">
                        <label className="block space-y-2">
-                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Requested Change</span>
+                         <span className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.010")}</span>
                          <textarea 
                            readOnly={!isEditing}
                            value={polishedResult.polished_change} 
@@ -251,7 +245,7 @@ export function LiveBuildFeedAdmin() {
                          onChange={e => updateField('priority', e.target.value)}
                          className="bg-black/60 border border-white/5 rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest text-text-dim outline-none focus:border-accent/40"
                        >
-                         {['Low', 'Medium', 'High', 'Critical'].map(p => <option key={p} value={p}>{p} Priority</option>)}
+                         {['Low', 'Medium', 'High', 'Critical'].map(p => <option key={p} value={p}>{p}{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.011")}</option>)}
                        </select>
                     </div>
                     
@@ -260,9 +254,7 @@ export function LiveBuildFeedAdmin() {
                       disabled={isPublishing}
                       className="w-full md:w-auto flex items-center justify-center gap-4 bg-accent text-white px-12 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] hover:bg-accent/90 transition-all shadow-2xl shadow-accent/20 disabled:opacity-50"
                     >
-                      {isPublishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send size={16} />}
-                      Publish to Stream
-                    </button>
+                      {isPublishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send size={16} />}{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.012")}</button>
                   </div>
                 </div>
               )}
@@ -272,7 +264,7 @@ export function LiveBuildFeedAdmin() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Radio size={20} className="text-accent" />
-                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Active Build Stream</h2>
+                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.013")}</h2>
                 </div>
               </div>
               
@@ -303,7 +295,7 @@ export function LiveBuildFeedAdmin() {
                           }`}
                         >
                           <Target size={12} />
-                          {req.is_current_focus ? 'Unfocus' : 'Focus'}
+                          {req.is_current_focus ?tx("uiStrings.components.buildfeed.livebuildfeedadmin.003") :tx("uiStrings.components.buildfeed.livebuildfeedadmin.004")}
                         </button>
                       </div>
                     </div>
@@ -316,15 +308,15 @@ export function LiveBuildFeedAdmin() {
              <div className="space-y-6">
                 <div className="flex items-center gap-3">
                   <Radio size={20} className="text-accent" />
-                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">Daily Signal</h2>
+                  <h2 className="text-sm font-black text-white uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.014")}</h2>
                 </div>
                 
                 <div className="bg-[#111] border border-white/10 rounded-[32px] p-8 space-y-6 shadow-2xl">
-                   <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">Broadcast to all builders</p>
+                   <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em]">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.015")}</p>
                    <textarea
                      value={signalText}
                      onChange={(e) => setSignalText(e.target.value)}
-                     placeholder="Good morning vibe coders. Today we focus on..."
+                     placeholder={tx("uiLegacy.components.buildfeed.livebuildfeedadmin.016")}
                      className="w-full h-32 bg-black/40 border border-white/5 rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-accent/40 resize-none placeholder:text-white/10 scrollbar-thin"
                    />
                    <button
@@ -332,13 +324,11 @@ export function LiveBuildFeedAdmin() {
                      onClick={handlePostSignal}
                      className="w-full flex items-center justify-center gap-3 bg-accent text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:opacity-50"
                    >
-                     {isPostingSignal ? <Loader2 className="w-4 h-4 animate-spin" /> : <Radio size={14} />}
-                     Broadcast Daily Signal
-                   </button>
+                     {isPostingSignal ? <Loader2 className="w-4 h-4 animate-spin" /> : <Radio size={14} />}{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.017")}</button>
                 </div>
 
                 <div className="space-y-4 pt-6">
-                  <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-4">Signal History</p>
+                  <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] ml-4">{tx("uiLegacy.components.buildfeed.livebuildfeedadmin.018")}</p>
                   <div className="space-y-3 max-h-[300px] overflow-auto scrollbar-none">
                      {dailySignals.map((s, i) => (
                        <div key={s.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl space-y-2">

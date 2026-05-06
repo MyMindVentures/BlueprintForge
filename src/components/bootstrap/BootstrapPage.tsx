@@ -14,7 +14,7 @@ import { useToast } from '../ui/Toast';
 import { StatusBadge } from '../ui/StatusBadge';
 import { BuildRequest, BuildPriority, BuildDifficulty, BuildType } from '../../types/buildFeed';
 import { isFounderAdminRole } from '../../authRoles';
-import { useI18n } from '../../i18n/I18nProvider';
+import { useI18n , tx } from '../../i18n/I18nProvider';
 
 /**
  * Handles the bootstrap page workflow for BlueprintForge users or services.
@@ -137,52 +137,36 @@ export function BootstrapPage() {
         {/* HERO SECTION */}
         <section className="min-h-[50vh] flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
            <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-accent/20 bg-accent/10 px-4 py-1.5 text-[10px] font-black leading-snug text-accent">
-            <Zap size={14} fill="currentColor" className="animate-pulse" />
-            Venture Studio Movement
-          </div>
+            <Zap size={14} fill="currentColor" className="animate-pulse" />{tx("uiLegacy.components.bootstrap.bootstrappage.001")}</div>
           <div className="space-y-6 max-w-5xl">
-            <h1 className="break-words text-5xl font-black leading-[0.9] tracking-tight md:text-8xl">
-              BlueprintForge AI:<br />
-              <span className="text-accent underline decoration-white/10 underline-offset-[12px] italic">Where Vision</span><br />
-              Becomes Buildable Reality
-            </h1>
-            <p className="text-lg md:text-2xl text-text-dim max-w-3xl mx-auto leading-relaxed font-medium">
-              I’m The Architect. I bring raw vision, app concepts and direction. Builders bring execution. Together we turn ideas into real products.
-            </p>
+            <h1 className="break-words text-5xl font-black leading-[0.9] tracking-tight md:text-8xl">{tx("uiLegacy.components.bootstrap.bootstrappage.002")}<br />
+              <span className="text-accent underline decoration-white/10 underline-offset-[12px] italic">{tx("uiLegacy.components.bootstrap.bootstrappage.003")}</span><br />{tx("uiLegacy.components.bootstrap.bootstrappage.004")}</h1>
+            <p className="text-lg md:text-2xl text-text-dim max-w-3xl mx-auto leading-relaxed font-medium">{tx("uiLegacy.components.bootstrap.bootstrappage.005")}</p>
           </div>
           <div className="flex w-full flex-wrap items-stretch justify-center gap-4 pt-4 sm:gap-6">
-             <button className="glass-btn-primary min-w-0 flex-1 basis-56 justify-center !px-6 !py-5 text-center whitespace-normal break-words shadow-[0_0_60px_rgba(255,107,0,0.3)] sm:flex-none sm:!px-10">
-               Join as Builder
-             </button>
-             <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/5 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">
-               View Live Build Feed
-             </button>
-             <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/5 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">
-               Open GitHub Repo
-             </button>
+             <button className="glass-btn-primary min-w-0 flex-1 basis-56 justify-center !px-6 !py-5 text-center whitespace-normal break-words shadow-[0_0_60px_rgba(255,107,0,0.3)] sm:flex-none sm:!px-10">{tx("uiLegacy.components.bootstrap.bootstrappage.006")}</button>
+             <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/5 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">{tx("uiLegacy.components.bootstrap.bootstrappage.007")}</button>
+             <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/5 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">{tx("uiLegacy.components.bootstrap.bootstrappage.008")}</button>
           </div>
         </section>
 
         {/* ABOUT THE ARCHITECT */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[10px] font-black leading-snug text-white/40">
-              Section 01 / The Founder
-            </div>
-            <h2 className="break-words text-4xl font-black leading-none tracking-tighter md:text-6xl">
-              The Mind<br />Behind the<br /><span className="text-accent">Architect</span>
+            <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[10px] font-black leading-snug text-white/40">{tx("uiLegacy.components.bootstrap.bootstrappage.009")}</div>
+            <h2 className="break-words text-4xl font-black leading-none tracking-tighter md:text-6xl">{tx("uiLegacy.components.bootstrap.bootstrappage.010")}<br />{tx("uiLegacy.components.bootstrap.bootstrappage.011")}<br /><span className="text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.012")}</span>
             </h2>
           </div>
           <div className="space-y-8 bg-white/[0.02] border border-white/5 rounded-[48px] p-8 md:p-12 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <Quote size={48} className="text-accent/20 mb-4" />
             <div className="space-y-6 text-lg md:text-xl text-text-dim font-medium leading-relaxed italic">
-              <p>“I’m a visionary app thinker with ADHD. My brain constantly generates product ideas, platform concepts, improvements and future-facing systems.”</p>
-              <p>“For months I fought inside AI build tools because I could see what needed to exist, but I could not always build it alone.”</p>
-              <p>“BlueprintForge AI is my answer: a system where my thoughts no longer disappear, but become structured tickets that builders can pick up, implement and improve.”</p>
+              <p>{tx("uiLegacy.components.bootstrap.bootstrappage.013")}</p>
+              <p>{tx("uiLegacy.components.bootstrap.bootstrappage.014")}</p>
+              <p>{tx("uiLegacy.components.bootstrap.bootstrappage.015")}</p>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/5 pt-8">
-               <p className="min-w-0 break-words font-mono text-sm text-white/20">— Kevin De Vlieger</p>
+               <p className="min-w-0 break-words font-mono text-sm text-white/20">{tx("uiLegacy.components.bootstrap.bootstrappage.016")}</p>
                <div className="w-12 h-1 bg-accent" />
             </div>
           </div>
@@ -196,12 +180,12 @@ export function BootstrapPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { t: "Bootstrap Platform", d: "A system designed to rapidly prototype and evolve through collective decentralized intelligence." },
-              { t: "Vision to Spec", d: "Converts raw founder intuition into structured technical requirements without losing intent." },
-              { t: "Open Ecosystem", d: "Every ticket is a mirrored GitHub issue, allowing builders to work in a native coding environment." },
-              { t: "Reputation Layer", d: "Builders earn stars and status by shipping verified improvements to the core platform." },
-              { t: "Rapid Branching", d: "Fork, branch, build, and PR. The standard git workflow applied to high-speed innovation." },
-              { t: "Collective Growth", d: "Accepted code doesn't just sit in a repo—it immediately improves the workspace you build in." }
+              { t:tx("uiStrings.components.bootstrap.bootstrappage.001"), d:tx("uiStrings.components.bootstrap.bootstrappage.002") },
+              { t:tx("uiStrings.components.bootstrap.bootstrappage.003"), d:tx("uiStrings.components.bootstrap.bootstrappage.004") },
+              { t:tx("uiStrings.components.bootstrap.bootstrappage.005"), d:tx("uiStrings.components.bootstrap.bootstrappage.006") },
+              { t:tx("uiStrings.components.bootstrap.bootstrappage.007"), d:tx("uiStrings.components.bootstrap.bootstrappage.008") },
+              { t:tx("uiStrings.components.bootstrap.bootstrappage.009"), d:tx("uiStrings.components.bootstrap.bootstrappage.010") },
+              { t:tx("uiStrings.components.bootstrap.bootstrappage.011"), d:tx("uiStrings.components.bootstrap.bootstrappage.012") }
             ].map((item, i) => (
               <div key={i} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl hover:bg-white/[0.04] transition-colors group">
                 <h4 className="mb-3 break-words text-lg font-black text-white transition-colors group-hover:text-accent">{item.t}</h4>
@@ -216,9 +200,9 @@ export function BootstrapPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
              <div className="space-y-4">
                <h2 className="break-words text-[10px] font-black leading-snug text-accent">{t("bootstrap.workflowEyebrow")}</h2>
-               <h3 className="break-words text-4xl font-black tracking-tight">The Bootstrap Loop</h3>
+               <h3 className="break-words text-4xl font-black tracking-tight">{tx("uiLegacy.components.bootstrap.bootstrappage.017")}</h3>
              </div>
-             <p className="text-text-dim max-w-sm text-sm font-medium">How we turn abstract vision into production-ready features in 7 steps.</p>
+             <p className="text-text-dim max-w-sm text-sm font-medium">{tx("uiLegacy.components.bootstrap.bootstrappage.018")}</p>
           </div>
 
           <div className="relative">
@@ -246,8 +230,8 @@ export function BootstrapPage() {
         {isAdmin && (
           <section className="p-12 md:p-24 bg-accent/5 border border-accent/20 rounded-[64px] space-y-16">
             <div className="text-center space-y-4">
-              <h2 className="break-words text-4xl font-black tracking-tighter sm:text-5xl">Turn my thought into a build ticket</h2>
-              <p className="text-text-dim text-lg font-medium italic">"Watch the AI turn raw founder energy into actionable truth."</p>
+              <h2 className="break-words text-4xl font-black tracking-tighter sm:text-5xl">{tx("uiLegacy.components.bootstrap.bootstrappage.019")}</h2>
+              <p className="text-text-dim text-lg font-medium italic">{tx("uiLegacy.components.bootstrap.bootstrappage.020")}</p>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-12">
@@ -256,7 +240,7 @@ export function BootstrapPage() {
                   <textarea
                     value={rawInput}
                     onChange={(e) => setRawInput(e.target.value)}
-                    placeholder="Write what you want BlueprintForge AI to improve, build, fix or explore…"
+                    placeholder={tx("uiLegacy.components.bootstrap.bootstrappage.021")}
                     className="w-full h-64 bg-black/60 border border-white/10 rounded-[40px] p-10 text-xl text-white placeholder:text-white/10 focus:outline-none focus:border-accent/40 transition-all resize-none shadow-inner"
                   />
                   <div className="absolute bottom-10 right-10">
@@ -265,9 +249,7 @@ export function BootstrapPage() {
                       disabled={isPolishing || !rawInput.trim()}
                       className="flex min-w-0 items-center justify-center gap-3 rounded-2xl bg-white px-6 py-4 text-center text-xs font-black leading-snug text-black shadow-2xl transition-all hover:bg-accent hover:text-white disabled:opacity-50 whitespace-normal break-words sm:px-8"
                     >
-                      {isPolishing ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />}
-                      Convert to Ticket
-                    </button>
+                      {isPolishing ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />}{tx("uiLegacy.components.bootstrap.bootstrappage.022")}</button>
                   </div>
                 </div>
 
@@ -282,7 +264,7 @@ export function BootstrapPage() {
                       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 p-6 sm:p-8">
                          <div className="flex min-w-0 items-center gap-3">
                            <div className="w-2 h-2 rounded-full bg-accent animate-ping" />
-                           <h4 className="min-w-0 break-words text-lg font-black tracking-tight text-white">Draft Specification Preview</h4>
+                           <h4 className="min-w-0 break-words text-lg font-black tracking-tight text-white">{tx("uiLegacy.components.bootstrap.bootstrappage.023")}</h4>
                          </div>
                          <div className="flex min-w-0 flex-wrap gap-2">
                             <StatusBadge status={polishedResult.status || 'Open'} />
@@ -293,21 +275,21 @@ export function BootstrapPage() {
                       <div className="grid grid-cols-1 gap-8 p-6 sm:p-10 md:grid-cols-2 md:gap-12">
                          <div className="space-y-6">
                             <div>
-                               <p className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Title</p>
+                               <p className="mb-2 break-words text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.024")}</p>
                                <p className="break-words text-2xl font-black leading-tight text-white">{polishedResult.polished_title}</p>
                             </div>
                             <div>
-                               <p className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Problem / Context</p>
+                               <p className="mb-2 break-words text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.025")}</p>
                                <p className="break-words text-sm leading-relaxed text-text-dim">{polishedResult.polished_context}</p>
                             </div>
                             <div>
-                               <p className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Expected Behavior</p>
+                               <p className="mb-2 break-words text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.026")}</p>
                                <p className="break-words text-sm font-bold leading-relaxed text-white">{polishedResult.polished_change}</p>
                             </div>
                          </div>
                          <div className="space-y-6">
                             <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-4">
-                               <p className="break-words text-[10px] font-black leading-snug text-text-dim">Acceptance Criteria</p>
+                               <p className="break-words text-[10px] font-black leading-snug text-text-dim">{tx("uiLegacy.components.bootstrap.bootstrappage.027")}</p>
                                <ul className="space-y-3">
                                  {polishedResult.acceptance_criteria?.map((c, i) => (
                                    <li key={i} className="flex min-w-0 gap-3 text-xs text-white/70">
@@ -319,11 +301,11 @@ export function BootstrapPage() {
                             </div>
                             <div className="flex min-w-0 flex-wrap gap-4">
                                <div className="min-w-0 flex-1 basis-32 rounded-2xl border border-white/5 bg-white/5 p-4">
-                                 <p className="mb-1 break-words text-[10px] font-black leading-snug text-text-dim">Priority</p>
+                                 <p className="mb-1 break-words text-[10px] font-black leading-snug text-text-dim">{tx("uiLegacy.components.bootstrap.bootstrappage.028")}</p>
                                  <p className="text-xs font-black text-white">{polishedResult.priority}</p>
                                </div>
                                <div className="min-w-0 flex-1 basis-32 rounded-2xl border border-white/5 bg-white/5 p-4">
-                                 <p className="mb-1 break-words text-[10px] font-black leading-snug text-text-dim">Difficulty</p>
+                                 <p className="mb-1 break-words text-[10px] font-black leading-snug text-text-dim">{tx("uiLegacy.components.bootstrap.bootstrappage.029")}</p>
                                  <p className="text-xs font-black text-white">{polishedResult.difficulty}</p>
                                </div>
                             </div>
@@ -331,15 +313,13 @@ export function BootstrapPage() {
                       </div>
 
                       <div className="flex flex-wrap justify-end gap-3 border-t border-accent/20 bg-accent/10 p-6 sm:p-8">
-                         <button onClick={() => setPolishedResult(null)} className="min-w-0 rounded-xl px-6 py-3 text-[10px] font-black leading-snug text-white hover:bg-white/5 whitespace-normal break-words sm:px-8">Cancel</button>
+                         <button onClick={() => setPolishedResult(null)} className="min-w-0 rounded-xl px-6 py-3 text-[10px] font-black leading-snug text-white hover:bg-white/5 whitespace-normal break-words sm:px-8">{tx("uiLegacy.components.bootstrap.bootstrappage.030")}</button>
                          <button 
                            onClick={handlePublish}
                            disabled={isPublishing}
                            className="flex min-w-0 items-center justify-center gap-3 rounded-xl bg-accent px-6 py-3 text-center text-[10px] font-black leading-snug text-white shadow-xl shadow-accent/20 hover:bg-accent/90 whitespace-normal break-words sm:px-10"
                          >
-                           {isPublishing ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-                           Publish Ticket
-                         </button>
+                           {isPublishing ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}{tx("uiLegacy.components.bootstrap.bootstrappage.031")}</button>
                       </div>
                     </motion.div>
                   )}
@@ -352,12 +332,12 @@ export function BootstrapPage() {
                       <Zap size={24} fill="currentColor" />
                     </div>
                     <div className="space-y-2">
-                       <h5 className="break-words text-sm font-bold leading-snug text-white">When you publish:</h5>
+                       <h5 className="break-words text-sm font-bold leading-snug text-white">{tx("uiLegacy.components.bootstrap.bootstrappage.032")}</h5>
                        <ul className="space-y-4">
                          {[
-                           { icon: MessageSquare, t: "Signal Broadcasted", d: "Ticket appears in the Live Build Feed instantly." },
-                           { icon: Github, t: "GitHub Mirror", d: "Issue created in repo if configured." },
-                           { icon: Users, t: "Builder Alert", d: "Coders can now claim, fork, and build." }
+                           { icon: MessageSquare, t:tx("uiStrings.components.bootstrap.bootstrappage.013"), d:tx("uiStrings.components.bootstrap.bootstrappage.014") },
+                           { icon: Github, t:tx("uiStrings.components.bootstrap.bootstrappage.015"), d:tx("uiStrings.components.bootstrap.bootstrappage.016") },
+                           { icon: Users, t:tx("uiStrings.components.bootstrap.bootstrappage.017"), d:tx("uiStrings.components.bootstrap.bootstrappage.018") }
                          ].map((item, i) => (
                            <li key={i} className="flex min-w-0 flex-wrap gap-4">
                              <item.icon size={16} className="text-white/20 shrink-0 mt-1" />
@@ -378,23 +358,21 @@ export function BootstrapPage() {
         {/* FOR BUILDERS SECTION */}
         <section className="space-y-20">
           <div className="text-center space-y-6">
-            <h2 className="break-words text-[10px] font-black leading-snug text-accent">The Engine</h2>
-            <h3 className="break-words text-4xl font-black tracking-tight md:text-6xl">Builders: This is where you come in</h3>
-            <p className="text-lg text-text-dim max-w-2xl mx-auto font-medium">
-              “You don’t need to guess what to build. Open a ticket, accept it, fork the repo, create your branch and start shipping.”
-            </p>
+            <h2 className="break-words text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.033")}</h2>
+            <h3 className="break-words text-4xl font-black tracking-tight md:text-6xl">{tx("uiLegacy.components.bootstrap.bootstrappage.034")}</h3>
+            <p className="text-lg text-text-dim max-w-2xl mx-auto font-medium">{tx("uiLegacy.components.bootstrap.bootstrappage.035")}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { i: UserPlus, t: "Create Profile", d: "Set up your Vibe Coder identity." },
-              { i: Target, t: "Pick a Ticket", d: "Choose from the Live Build Feed." },
-              { i: Github, t: "Open Issue", d: "See tech specs on GitHub." },
-              { i: Rocket, t: "Claim & Fork", d: "Take ownership and fork the repo." },
-              { i: Code2, t: "Branch & Code", d: "Work on your dedicated branch." },
-              { i: Sparkles, t: "Implement", d: "Build the requested feature." },
-              { i: Send, t: "Submit PR", d: "Send your pull request for review." },
-              { i: Star, t: "Earn Stars", d: "Get reputation when merged." }
+              { i: UserPlus, t:tx("uiStrings.components.bootstrap.bootstrappage.019"), d:tx("uiStrings.components.bootstrap.bootstrappage.020") },
+              { i: Target, t:tx("uiStrings.components.bootstrap.bootstrappage.021"), d:tx("uiStrings.components.bootstrap.bootstrappage.022") },
+              { i: Github, t:tx("uiStrings.components.bootstrap.bootstrappage.023"), d:tx("uiStrings.components.bootstrap.bootstrappage.024") },
+              { i: Rocket, t:tx("uiStrings.components.bootstrap.bootstrappage.025"), d:tx("uiStrings.components.bootstrap.bootstrappage.026") },
+              { i: Code2, t:tx("uiStrings.components.bootstrap.bootstrappage.027"), d:tx("uiStrings.components.bootstrap.bootstrappage.028") },
+              { i: Sparkles, t:tx("uiStrings.components.bootstrap.bootstrappage.029"), d:tx("uiStrings.components.bootstrap.bootstrappage.030") },
+              { i: Send, t:tx("uiStrings.components.bootstrap.bootstrappage.031"), d:tx("uiStrings.components.bootstrap.bootstrappage.032") },
+              { i: Star, t:tx("uiStrings.components.bootstrap.bootstrappage.033"), d:tx("uiStrings.components.bootstrap.bootstrappage.034") }
             ].map((step, idx) => (
               <div key={idx} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl hover:border-accent/30 transition-all group">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
@@ -407,15 +385,15 @@ export function BootstrapPage() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            <button className="glass-btn-primary min-w-0 flex-1 basis-56 justify-center !px-6 !py-4 text-center whitespace-normal break-words sm:flex-none sm:!px-8">Create Builder Profile</button>
-            <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center !px-6 !py-4 text-center whitespace-normal break-words sm:flex-none sm:!px-8">Claim a Ticket</button>
+            <button className="glass-btn-primary min-w-0 flex-1 basis-56 justify-center !px-6 !py-4 text-center whitespace-normal break-words sm:flex-none sm:!px-8">{tx("uiLegacy.components.bootstrap.bootstrappage.036")}</button>
+            <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center !px-6 !py-4 text-center whitespace-normal break-words sm:flex-none sm:!px-8">{tx("uiLegacy.components.bootstrap.bootstrappage.037")}</button>
           </div>
         </section>
 
         {/* GOALS SECTION */}
         <section className="space-y-16">
           <div className="text-center">
-            <h3 className="break-words text-4xl font-black tracking-tight">The Bootstrap Goals</h3>
+            <h3 className="break-words text-4xl font-black tracking-tight">{tx("uiLegacy.components.bootstrap.bootstrappage.038")}</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -439,10 +417,8 @@ export function BootstrapPage() {
         {/* OPEN SOURCE RULES */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-20 py-24 border-t border-white/5">
           <div className="space-y-8">
-            <h3 className="break-words text-4xl font-black tracking-tight">How Contributions Work</h3>
-            <p className="text-text-dim font-medium leading-relaxed max-w-md italic">
-              "We follow a strict decentralized high-speed protocol to ensure quality and visibility."
-            </p>
+            <h3 className="break-words text-4xl font-black tracking-tight">{tx("uiLegacy.components.bootstrap.bootstrappage.039")}</h3>
+            <p className="text-text-dim font-medium leading-relaxed max-w-md italic">{tx("uiLegacy.components.bootstrap.bootstrappage.040")}</p>
           </div>
           <div className="space-y-4">
             {[
@@ -464,17 +440,13 @@ export function BootstrapPage() {
 
         {/* TRUST SECTION */}
         <section className="text-center py-32 space-y-12">
-          <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-accent/40 bg-accent/20 px-4 py-1.5 text-[10px] font-black leading-snug text-accent">
-            The Fellowship
-          </div>
+          <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-accent/40 bg-accent/20 px-4 py-1.5 text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.041")}</div>
           <div className="max-w-4xl mx-auto space-y-10">
-            <h3 className="break-words text-5xl font-black leading-none tracking-tighter md:text-7xl">The Architect Needs Builders</h3>
-            <p className="text-xl md:text-3xl text-text-dim italic font-medium leading-relaxed">
-              “The pain is simple: vision without execution stays trapped. BlueprintForge AI exists to connect The Architect and The Builders.”
-            </p>
+            <h3 className="break-words text-5xl font-black leading-none tracking-tighter md:text-7xl">{tx("uiLegacy.components.bootstrap.bootstrappage.042")}</h3>
+            <p className="text-xl md:text-3xl text-text-dim italic font-medium leading-relaxed">{tx("uiLegacy.components.bootstrap.bootstrappage.043")}</p>
             <div className="pt-8 space-y-4">
-               <p className="break-words text-3xl font-black tracking-tighter text-accent">Together this becomes more than an app.</p>
-               <p className="break-words text-3xl font-black tracking-tighter text-white">It becomes a bootstrap movement.</p>
+               <p className="break-words text-3xl font-black tracking-tighter text-accent">{tx("uiLegacy.components.bootstrap.bootstrappage.044")}</p>
+               <p className="break-words text-3xl font-black tracking-tighter text-white">{tx("uiLegacy.components.bootstrap.bootstrappage.045")}</p>
             </div>
           </div>
         </section>
@@ -482,9 +454,8 @@ export function BootstrapPage() {
         {/* LIVE TICKETS PREVIEW */}
         <section className="space-y-12">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 pb-8">
-            <h3 className="break-words text-2xl font-black leading-tight">Active Tickets Blast</h3>
-            <button className="flex min-w-0 items-center gap-2 break-words text-[10px] font-black leading-snug text-accent hover:underline">
-              View all tickets <ArrowRight size={14} />
+            <h3 className="break-words text-2xl font-black leading-tight">{tx("uiLegacy.components.bootstrap.bootstrappage.046")}</h3>
+            <button className="flex min-w-0 items-center gap-2 break-words text-[10px] font-black leading-snug text-accent hover:underline">{tx("uiLegacy.components.bootstrap.bootstrappage.047")}<ArrowRight size={14} />
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -502,15 +473,12 @@ export function BootstrapPage() {
                     <div className="flex min-w-0 items-center gap-3">
                       {req.claimed_by ? (
                         <div className="flex min-w-0 items-center gap-2 break-words text-[10px] font-black text-green-400">
-                          <CheckCircle2 size={14} /> Claimed
-                        </div>
+                          <CheckCircle2 size={14} />{tx("uiLegacy.components.bootstrap.bootstrappage.048")}</div>
                       ) : (
                         <button 
                           onClick={() => claimRequest(req.id)}
                           className="min-w-0 rounded-lg border border-accent/20 bg-accent/10 px-4 py-2 text-center text-[10px] font-black leading-snug text-accent shadow-xl shadow-accent/10 transition-all hover:bg-accent hover:text-white whitespace-normal break-words"
-                        >
-                          Claim
-                        </button>
+                        >{tx("uiLegacy.components.bootstrap.bootstrappage.049")}</button>
                       )}
                     </div>
                     {req.github_issue_url && (
@@ -528,20 +496,13 @@ export function BootstrapPage() {
         <section className="text-center py-32 bg-accent/5 rounded-[80px] border border-accent/20 space-y-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,107,0,0.05)_0%,transparent_70%)] animate-pulse" />
           <div className="relative z-10 space-y-8 px-6">
-            <h3 className="break-words text-4xl font-black tracking-tight text-white text-balance md:text-6xl">
-              Don’t just watch the vision.<br />
-              <span className="text-accent italic">Build it.</span>
+            <h3 className="break-words text-4xl font-black tracking-tight text-white text-balance md:text-6xl">{tx("uiLegacy.components.bootstrap.bootstrappage.050")}<br />
+              <span className="text-accent italic">{tx("uiLegacy.components.bootstrap.bootstrappage.051")}</span>
             </h3>
             <div className="flex w-full flex-wrap items-stretch justify-center gap-4 pt-6 sm:gap-6">
-               <button className="glass-btn-primary min-w-0 flex-1 basis-56 justify-center border-none !bg-white !px-6 !py-5 text-center !text-black shadow-2xl whitespace-normal break-words hover:!bg-accent hover:!text-white sm:flex-none sm:!px-10">
-                 Join as Builder
-               </button>
-               <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/10 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">
-                 View Current Focus
-               </button>
-               <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/10 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">
-                 Open GitHub Repo
-               </button>
+               <button className="glass-btn-primary min-w-0 flex-1 basis-56 justify-center border-none !bg-white !px-6 !py-5 text-center !text-black shadow-2xl whitespace-normal break-words hover:!bg-accent hover:!text-white sm:flex-none sm:!px-10">{tx("uiLegacy.components.bootstrap.bootstrappage.052")}</button>
+               <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/10 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">{tx("uiLegacy.components.bootstrap.bootstrappage.053")}</button>
+               <button className="glass-btn-secondary min-w-0 flex-1 basis-56 justify-center border-white/10 !px-6 !py-5 text-center whitespace-normal break-words hover:bg-white/5 sm:flex-none sm:!px-10">{tx("uiLegacy.components.bootstrap.bootstrappage.054")}</button>
             </div>
           </div>
         </section>

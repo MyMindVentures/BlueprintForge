@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from "react";
 import { motion } from "motion/react";
 import { Loader2, CheckCircle2, XCircle } from "lucide-react";
@@ -35,7 +36,7 @@ export function PipelineStepList({ steps, currentStepId }: PipelineStepListProps
             </div>
           </div>
           {step.status === "Running" && (
-            <div className="text-[8px] font-black text-accent uppercase tracking-widest animate-pulse px-2 py-1 bg-accent/20 rounded border border-accent/30">Active</div>
+            <div className="text-[8px] font-black text-accent uppercase tracking-widest animate-pulse px-2 py-1 bg-accent/20 rounded border border-accent/30">{tx("uiLegacy.components.pipeline.pipelinesteplist.001")}</div>
           )}
         </motion.div>
       ))}

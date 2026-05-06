@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle2, XCircle, ImageIcon, Terminal, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
@@ -40,11 +41,11 @@ export function ImagePipelineProgressOverlay({ pipeline, onClose }: ImagePipelin
               </div>
               <div className="min-w-0">
                 <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight uppercase mb-1 truncate">
-                  {pipeline.status === "Running" ? "Rendering UI" : pipeline.status}
+                  {pipeline.status === "Running" ?tx("uiStrings.components.pipeline.imagepipelineprogressoverlay.001") : pipeline.status}
                 </h2>
                 <p className="text-[9px] sm:text-[10px] font-black text-text-dim uppercase tracking-[0.2em] sm:tracking-[0.3em] flex items-center gap-2 truncate">
                   <span className="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0" />
-                  <span className="truncate">Generating Screen Mockups</span>
+                  <span className="truncate">{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.001")}</span>
                 </p>
               </div>
             </div>
@@ -53,13 +54,13 @@ export function ImagePipelineProgressOverlay({ pipeline, onClose }: ImagePipelin
           <div className="px-6 md:px-10 py-5 sm:py-8 border-b border-white/5 bg-white/[0.02] relative z-10 overflow-y-auto min-h-0 flex-1">
             <div className="flex justify-between items-center mb-4">
                <div>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Overall Progress</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white/40">{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.002")}</span>
                   <div className="text-xl sm:text-2xl font-black text-white mt-1">
                      {pipeline.completedScreens} <span className="text-white/20 font-light mx-1 sm:mx-2">/</span> {pipeline.totalScreens}
                   </div>
                </div>
                <div className="text-right max-w-[50%]">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Status</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white/40">{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.003")}</span>
                   <div className="text-accent font-mono text-xs sm:text-sm mt-1 uppercase tracking-tighter truncate">
                      {pipeline.currentScreenCode || "Awaiting Data..."}
                   </div>
@@ -75,11 +76,11 @@ export function ImagePipelineProgressOverlay({ pipeline, onClose }: ImagePipelin
 
             <div className="grid grid-cols-2 gap-4 mt-6">
                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                  <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">Completed</div>
+                  <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.004")}</div>
                   <div className="text-xl font-black text-emerald-400">{pipeline.completedScreens}</div>
                </div>
                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                  <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">Failed</div>
+                  <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.005")}</div>
                   <div className="text-xl font-black text-red-400">{pipeline.failedScreens}</div>
                </div>
             </div>
@@ -90,7 +91,7 @@ export function ImagePipelineProgressOverlay({ pipeline, onClose }: ImagePipelin
                onClick={() => setShowLogs(!showLogs)}
                className="w-full h-12 flex items-center justify-between px-6 md:px-10 text-[10px] font-black text-white/30 uppercase tracking-widest hover:bg-white/5"
              >
-               <div className="flex items-center gap-2"><Terminal size={14} /> Production Logs</div>
+               <div className="flex items-center gap-2"><Terminal size={14} />{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.006")}</div>
                {showLogs ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
              </button>
              <AnimatePresence>
@@ -103,9 +104,7 @@ export function ImagePipelineProgressOverlay({ pipeline, onClose }: ImagePipelin
               <button 
                 onClick={onClose} 
                 className="glass-btn-primary w-full sm:w-auto !h-12 sm:!h-14 !px-10 !text-[10px] sm:!text-[11px] !font-black !uppercase !tracking-widest"
-              >
-                View UI Assets
-              </button>
+              >{tx("uiLegacy.components.pipeline.imagepipelineprogressoverlay.007")}</button>
             </div>
           )}
         </GlassPanel>

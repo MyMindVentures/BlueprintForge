@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from 'react';
 import { motion } from 'motion/react';
 import { AlertCircle, ArrowLeft, Home } from 'lucide-react';
@@ -25,7 +26,7 @@ export function ErrorPage({ onNavigate, message = "The vision you are looking fo
         </div>
         
         <div className="space-y-4">
-          <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">404 Exception</h1>
+          <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">{tx("uiLegacy.components.layout.errorpage.001")}</h1>
           <p className="text-lg text-text-dim font-medium italic">"{message}"</p>
         </div>
 
@@ -34,8 +35,7 @@ export function ErrorPage({ onNavigate, message = "The vision you are looking fo
             onClick={() => onNavigate("landing")}
             className="flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors uppercase tracking-widest text-[10px] font-black"
           >
-            <Home size={14} /> Back to Hub
-          </button>
+            <Home size={14} />{tx("uiLegacy.components.layout.errorpage.002")}</button>
         </div>
       </motion.div>
     </div>

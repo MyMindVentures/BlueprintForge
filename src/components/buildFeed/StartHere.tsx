@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from 'react';
 import { motion } from 'motion/react';
 import { UserPlus, Target, Github, Rocket, ArrowRight, Zap } from 'lucide-react';
@@ -14,26 +15,26 @@ export function StartHere({ onAction }: StartHereProps) {
   const steps = [
     {
       icon: UserPlus,
-      title: "Create Profile",
-      desc: "Set up your Vibe Coder identity and skills.",
+      title:tx("uiStrings.components.buildfeed.starthere.001"),
+      desc:tx("uiStrings.components.buildfeed.starthere.002"),
       id: "profile"
     },
     {
       icon: Target,
-      title: "Pick Focus",
-      desc: "Choose a request from the Current Focus list.",
+      title:tx("uiStrings.components.buildfeed.starthere.003"),
+      desc:tx("uiStrings.components.buildfeed.starthere.004"),
       id: "focus"
     },
     {
       icon: Github,
-      title: "Open Issue",
-      desc: "Go to the GitHub issue to see technical details.",
+      title:tx("uiStrings.components.buildfeed.starthere.005"),
+      desc:tx("uiStrings.components.buildfeed.starthere.006"),
       id: "repo"
     },
     {
       icon: Rocket,
-      title: "Claim & Ship",
-      desc: "Claim the ticket and start building right away.",
+      title:tx("uiStrings.components.buildfeed.starthere.007"),
+      desc:tx("uiStrings.components.buildfeed.starthere.008"),
       id: "focus"
     }
   ];
@@ -47,18 +48,14 @@ export function StartHere({ onAction }: StartHereProps) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-4">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em]">
-               <Zap size={12} fill="currentColor" />
-               Vibe Coder Onboarding
-             </div>
-             <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight">New here? Start here.</h2>
-             <p className="text-lg text-text-dim max-w-xl leading-relaxed">
-               “Don’t overthink it. Pick one focus request, open the GitHub issue, claim it, and ship one useful improvement.”
-             </p>
+               <Zap size={12} fill="currentColor" />{tx("uiLegacy.components.buildfeed.starthere.001")}</div>
+             <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight">{tx("uiLegacy.components.buildfeed.starthere.002")}</h2>
+             <p className="text-lg text-text-dim max-w-xl leading-relaxed">{tx("uiLegacy.components.buildfeed.starthere.003")}</p>
           </div>
           
           <div className="hidden lg:block text-right space-y-2">
-            <p className="text-2xl font-black text-white/10 uppercase tracking-tighter select-none">BUILD REAL PRODUCTS</p>
-            <p className="text-2xl font-black text-white/5 uppercase tracking-tighter select-none">SHIP FAST. SHIP VALUABLE.</p>
+            <p className="text-2xl font-black text-white/10 uppercase tracking-tighter select-none">{tx("uiLegacy.components.buildfeed.starthere.004")}</p>
+            <p className="text-2xl font-black text-white/5 uppercase tracking-tighter select-none">{tx("uiLegacy.components.buildfeed.starthere.005")}</p>
           </div>
         </div>
 
@@ -100,24 +97,18 @@ export function StartHere({ onAction }: StartHereProps) {
               onClick={() => onAction('profile')}
               className="glass-btn-primary !px-8 !py-3 flex items-center gap-2 group/btn"
             >
-              <UserPlus size={16} />
-              Create Builder Profile
-              <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+              <UserPlus size={16} />{tx("uiLegacy.components.buildfeed.starthere.006")}<ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
             </button>
             <button 
               onClick={() => onAction('focus')}
               className="glass-btn-secondary !px-8 !py-3 flex items-center gap-2"
             >
-              <Target size={16} />
-              View Current Focus
-            </button>
+              <Target size={16} />{tx("uiLegacy.components.buildfeed.starthere.007")}</button>
             <button 
               onClick={() => onAction('repo')}
               className="glass-btn-secondary !px-8 !py-3 flex items-center gap-2 border-white/5"
             >
-              <Github size={16} />
-              Open GitHub Repo
-            </button>
+              <Github size={16} />{tx("uiLegacy.components.buildfeed.starthere.008")}</button>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
@@ -47,7 +48,7 @@ export function PipelineProgressOverlay({ job, onClose, onRetry, onGenerateImage
                 <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight uppercase mb-1 truncate">{job.status}</h2>
                 <p className="text-[9px] sm:text-[10px] font-black text-text-dim uppercase tracking-[0.2em] sm:tracking-[0.3em] flex items-center gap-2 truncate">
                   <span className="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0" />
-                  <span className="truncate">{job.status === "Running" ? "Sequence active..." : "Protocol terminated."}</span>
+                  <span className="truncate">{job.status === "Running" ?tx("uiStrings.components.pipeline.pipelineprogressoverlay.001") :tx("uiStrings.components.pipeline.pipelineprogressoverlay.002")}</span>
                 </p>
               </div>
             </div>
@@ -55,7 +56,7 @@ export function PipelineProgressOverlay({ job, onClose, onRetry, onGenerateImage
 
           <div className="px-6 md:px-10 py-5 border-b border-white/5 bg-white/[0.02] relative z-10 shrink-0">
             <div className="flex justify-between items-center mb-3 text-[10px] font-black uppercase tracking-widest">
-               <span className="text-white/40">Sequence Progress</span>
+               <span className="text-white/40">{tx("uiLegacy.components.pipeline.pipelineprogressoverlay.001")}</span>
                <span className="text-white font-mono">{Math.round(overallProgress)}%</span>
             </div>
             <div className="h-2 bg-white/5 rounded-full overflow-hidden p-0.5 border border-white/10">
@@ -75,7 +76,7 @@ export function PipelineProgressOverlay({ job, onClose, onRetry, onGenerateImage
                onClick={() => setShowLogs(!showLogs)}
                className="w-full h-12 flex items-center justify-between px-6 md:px-10 text-[10px] font-black text-white/30 uppercase tracking-widest hover:bg-white/5"
              >
-               <div className="flex items-center gap-2"><Terminal size={14} /> Details</div>
+               <div className="flex items-center gap-2"><Terminal size={14} />{tx("uiLegacy.components.pipeline.pipelineprogressoverlay.002")}</div>
                {showLogs ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
              </button>
              <AnimatePresence>
@@ -86,7 +87,7 @@ export function PipelineProgressOverlay({ job, onClose, onRetry, onGenerateImage
           {isFinished && (
             <div className="p-6 md:p-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-end gap-4 relative z-10 shrink-0">
               {job.status === "Failed" && (
-                <button onClick={onRetry} className="glass-btn-secondary w-full sm:w-auto !h-12 sm:!h-14 !px-8">Retry</button>
+                <button onClick={onRetry} className="glass-btn-secondary w-full sm:w-auto !h-12 sm:!h-14 !px-8">{tx("uiLegacy.components.pipeline.pipelineprogressoverlay.003")}</button>
               )}
               {job.status === "Success" && onGenerateImages && (
                 <button 
@@ -95,12 +96,10 @@ export function PipelineProgressOverlay({ job, onClose, onRetry, onGenerateImage
                     onGenerateImages();
                   }} 
                   className="glass-btn-secondary w-full sm:w-auto !h-12 sm:!h-14 !px-8 text-accent border-accent/20"
-                >
-                  Generate Screen UI Images
-                </button>
+                >{tx("uiLegacy.components.pipeline.pipelineprogressoverlay.004")}</button>
               )}
               <button onClick={onClose} className="glass-btn-primary w-full sm:w-auto !h-12 sm:!h-14 !px-10">
-                {job.status === "Success" ? "Launch Workspace" : "Close"}
+                {job.status === "Success" ?tx("uiStrings.components.pipeline.pipelineprogressoverlay.003") :tx("uiStrings.components.pipeline.pipelineprogressoverlay.004")}
               </button>
             </div>
           )}

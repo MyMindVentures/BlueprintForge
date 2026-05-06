@@ -4,7 +4,7 @@ import { Brain, Star, Clock, Copy, Trash2, Settings2, LayoutTemplate, Cpu } from
 import { AIAgent } from "../../types";
 import { GlassCard } from "../ui/GlassCard";
 import { StatusBadge } from "../ui/StatusBadge";
-import { useI18n } from '../../i18n/I18nProvider';
+import { useI18n , tx } from '../../i18n/I18nProvider';
 
 interface AgentCardProps {
   agent: AIAgent;
@@ -23,7 +23,7 @@ export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }
   return (
     <GlassCard 
       onClick={() => onOpen(agent.id)}
-      className={`h-full flex flex-col relative overflow-hidden ${agent.isDefault ? 'ring-2 ring-accent/30 shadow-[0_24px_48px_-12px_rgba(255,107,0,0.15)] bg-white/[0.05]' : ''}`}
+      className={`h-full flex flex-col relative overflow-hidden ${agent.isDefault ?tx("uiStrings.components.agents.agentcard.001") : ''}`}
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-[50px] -mr-16 -mt-16 group-hover:bg-accent/10 transition-colors" />
 
@@ -60,7 +60,7 @@ export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }
 
         <div className="grid grid-cols-2 gap-4 mb-2">
             <div className="p-4 glass bg-black/20 rounded-2xl border-white/5">
-              <span className="text-[9px] font-black text-white/30 uppercase tracking-widest block mb-1">Architecture</span>
+              <span className="text-[9px] font-black text-white/30 uppercase tracking-widest block mb-1">{tx("uiLegacy.components.agents.agentcard.001")}</span>
               <div className="flex items-center gap-2">
                  <LayoutTemplate size={12} className="text-accent" />
                  <span className="text-[10px] text-white font-black uppercase truncate">{agent.outputType.split(' ')[0]}</span>
@@ -68,7 +68,7 @@ export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }
             </div>
             
             <div className="p-4 glass bg-black/20 rounded-2xl border-white/5">
-              <span className="text-[9px] font-black text-white/30 uppercase tracking-widest block mb-1">Engine</span>
+              <span className="text-[9px] font-black text-white/30 uppercase tracking-widest block mb-1">{tx("uiLegacy.components.agents.agentcard.002")}</span>
               <div className="flex items-center gap-2">
                  <Cpu size={12} className="text-emerald-400" />
                  <span className="text-[10px] text-white font-black uppercase truncate">{agent.preferredModelId?.split('/').pop() || "Auto"}</span>
@@ -94,16 +94,14 @@ export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }
                icon={<Trash2 size={15} />} 
                variant="danger" 
                title="Decommission" 
-               onClick={() => { if(confirm("Decommission agent?")) onDelete(agent.id); }} 
+               onClick={() => { if(confirm(tx("uiStrings.components.agents.agentcard.002"))) onDelete(agent.id); }} 
              />
            )}
            <div className="h-4 w-[1px] bg-white/10 mx-1" />
            <button
               onClick={() => onOpen(agent.id)}
               className="px-5 py-2 glass rounded-xl border border-white/5 text-[9px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
-           >
-              Configure
-           </button>
+           >{tx("uiLegacy.components.agents.agentcard.003")}</button>
         </div>
       </div>
     </GlassCard>
@@ -117,8 +115,8 @@ function IconButton({ icon, title, onClick, variant = "normal" }: { icon: React.
       onClick={onClick}
       className={`p-2 glass rounded-xl transition-all ${
         variant === "danger" 
-          ? "hover:bg-red-500/20 text-text-dim hover:text-red-400 border-white/10" 
-          : "hover:bg-white/10 text-white/40 hover:text-white border-white/10"
+          ?tx("uiStrings.components.agents.agentcard.003") 
+          :tx("uiStrings.components.agents.agentcard.004")
       }`}
     >
       {icon}

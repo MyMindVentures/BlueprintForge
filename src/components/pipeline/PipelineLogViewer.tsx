@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from "react";
 import { motion } from "motion/react";
 import { PipelineLog } from "../../types";
@@ -20,7 +21,7 @@ export function PipelineLogViewer({ logs }: PipelineLogViewerProps) {
     >
       <div className="p-8 h-full overflow-y-auto font-mono text-[10px] space-y-2 scrollbar-thin">
         {logs.length === 0 ? (
-          <span className="text-zinc-600 italic">Listening for protocol feedback...</span>
+          <span className="text-zinc-600 italic">{tx("uiLegacy.components.pipeline.pipelinelogviewer.001")}</span>
         ) : (
           logs.map((log, i) => (
             <div key={i} className="flex gap-4">

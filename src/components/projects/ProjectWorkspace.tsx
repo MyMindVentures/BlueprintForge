@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React, { useState, useEffect } from "react";
 import { AnimatePresence } from "motion/react";
 import { Project, AIAgent, LLMSettings } from "../../types";
@@ -34,11 +35,11 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
 
   const handleGenerate = async () => {
     if (!inputValue.trim()) {
-      toast.warn("App concept required.");
+      toast.warn(tx("uiStrings.components.projects.projectworkspace.001"));
       return;
     }
     if (!llmSettings.openRouterApiKey) {
-      toast.error("Config missing: OpenRouter Key.");
+      toast.error(tx("uiStrings.components.projects.projectworkspace.002"));
       return;
     }
 
@@ -50,7 +51,7 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
           runImagePipeline(project.id);
         }
       });
-      toast.success("Pipeline engaged.");
+      toast.success(tx("uiStrings.components.projects.projectworkspace.003"));
     } catch (e: any) {
       toast.error(`Pipeline aborted: ${e.message}`);
     }
@@ -59,28 +60,28 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.success("Copied to clipboard.");
+      toast.success(tx("uiStrings.components.projects.projectworkspace.004"));
     } catch {
-      toast.error("Copy failed.");
+      toast.error(tx("uiStrings.components.projects.projectworkspace.005"));
     }
   };
 
   const handleDownload = () => {
     if (!project.markdownExport) return;
     downloadTextFile(`${project.name.toLowerCase().replace(/\s+/g, '_')}_spec.md`, project.markdownExport);
-    toast.success("Documentation exported.");
+    toast.success(tx("uiStrings.components.projects.projectworkspace.006"));
   };
 
   const tabs = [
-    { id: "input", label: "Parameters", disabled: false },
-    { id: "cards", label: "Structure", disabled: !project.cardStructure },
-    { id: "markdown", label: "Spec", disabled: !project.cardStructure },
-    { id: "polished", label: "Polished", disabled: !project.polishedConcept },
-    { id: "validation", label: "Audit", disabled: !project.validationReport },
-    { id: "strategy", label: "Strategy", disabled: !project.strategyReport },
-    { id: "ux", label: "Experience", disabled: !project.uxReport },
-    { id: "architecture", label: "Engine", disabled: !project.architectureReport },
-    { id: "images", label: "Visuals", disabled: !project.cardStructure },
+    { id: "input", label:tx("uiStrings.components.projects.projectworkspace.007"), disabled: false },
+    { id: "cards", label:tx("uiStrings.components.projects.projectworkspace.008"), disabled: !project.cardStructure },
+    { id: "markdown", label:tx("uiStrings.components.projects.projectworkspace.009"), disabled: !project.cardStructure },
+    { id: "polished", label:tx("uiStrings.components.projects.projectworkspace.010"), disabled: !project.polishedConcept },
+    { id: "validation", label:tx("uiStrings.components.projects.projectworkspace.011"), disabled: !project.validationReport },
+    { id: "strategy", label:tx("uiStrings.components.projects.projectworkspace.012"), disabled: !project.strategyReport },
+    { id: "ux", label:tx("uiStrings.components.projects.projectworkspace.013"), disabled: !project.uxReport },
+    { id: "architecture", label:tx("uiStrings.components.projects.projectworkspace.014"), disabled: !project.architectureReport },
+    { id: "images", label:tx("uiStrings.components.projects.projectworkspace.015"), disabled: !project.cardStructure },
   ].filter(tab => tab.id === "input" || tab.id === "cards" || tab.id === "markdown" || !tab.disabled);
 
   return (
@@ -88,7 +89,7 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
       <ProjectHeader 
         projectName={project.name} 
         onBack={onBack} 
-        onSave={() => { onUpdate({ rawConcept: inputValue }); toast.success("Snapshot saved."); }} 
+        onSave={() => { onUpdate({ rawConcept: inputValue }); toast.success(tx("uiStrings.components.projects.projectworkspace.016")); }} 
         tabs={tabs}
         activeTab={activeTab as any}
         setActiveTab={setActiveTab as any}
@@ -114,10 +115,10 @@ export function ProjectWorkspace({ project, agents, llmSettings, onUpdate, onBac
           onDownload={handleDownload}
           runImagePipeline={() => runImagePipeline(project.id)}
           onUsePolishedConcept={() => {
-            if (confirm("This will replace the current Raw Concept input. Continue?")) {
+            if (confirm(tx("uiStrings.components.projects.projectworkspace.017"))) {
               setInputValue(project.polishedConcept!);
               onUpdate({ rawConcept: project.polishedConcept! });
-              toast.success("Polished concept copied to Raw Input. You can now edit or add extras before generating specs again.", 5000);
+              toast.success(tx("uiStrings.components.projects.projectworkspace.018"), 5000);
             }
           }}
         />

@@ -44,6 +44,8 @@ const readStoredLanguage = () => {
   return isSupportedLanguage(browserLanguage) ? browserLanguage : DEFAULT_LANGUAGE;
 };
 
+let activeLanguage: LanguageCode = readStoredLanguage();
+
 const parseTranslationKey = (key: string, namespace?: I18nNamespace): ParsedTranslationKey => {
   const separatorIndex = key.indexOf(':');
   if (separatorIndex > 0) {
@@ -93,6 +95,11 @@ const resolveTranslation = (language: LanguageCode, key: string, options?: Trans
   return null;
 };
 
+export const tx = (key: string, options?: TranslationOptions) => {
+  const translated = resolveTranslation(activeLanguage, key, options);
+  return translated ? interpolate(translated, options) : key;
+};
+
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const { profile } = useAuth();
   const [language, setLanguageState] = useState<LanguageCode>(readStoredLanguage);
@@ -105,6 +112,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, [language, profile?.preferred_language]);
 
   useEffect(() => {
+    activeLanguage = language;
     document.documentElement.lang = language;
     document.documentElement.dir = 'ltr';
   }, [language]);
@@ -115,6 +123,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, [language]);
 
   const setLanguage = useCallback(async (nextLanguage: LanguageCode) => {
+    activeLanguage = nextLanguage;
     setLanguageState(nextLanguage);
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
     if (profile) {

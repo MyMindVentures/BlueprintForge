@@ -7,7 +7,7 @@ import { StartHere } from './StartHere';
 import { BuildStatus } from '../../types/buildFeed';
 import { StatusBadge } from '../ui/StatusBadge';
 import { isFounderAdminRole, normalizeRole } from '../../authRoles';
-import { useI18n } from '../../i18n/I18nProvider';
+import { useI18n , tx } from '../../i18n/I18nProvider';
 
 /**
  * Handles the live build feed workflow for BlueprintForge users or services.
@@ -56,12 +56,12 @@ export function LiveBuildFeed() {
   
   const canClaim = role === 'vibe_coder' && Boolean(currentUserProfile) && currentUserProfile?.status !== 'Incomplete Profile';
   const claimDisabledReason = role === 'anonymous'
-    ? 'Sign in and create a builder profile before claiming work.'
+    ?tx("uiStrings.components.buildfeed.livebuildfeed.001")
     : !currentUserProfile
-      ? 'Create your builder profile before claiming a request.'
+      ?tx("uiStrings.components.buildfeed.livebuildfeed.002")
       : currentUserProfile.status === 'Incomplete Profile'
-        ? 'Complete required profile fields to become eligible to claim.'
-        : 'This request can be claimed when it is Open and unclaimed.';
+        ?tx("uiStrings.components.buildfeed.livebuildfeed.003")
+        :tx("uiStrings.components.buildfeed.livebuildfeed.004");
 
   return (
     <div className="flex-1 overflow-auto bg-[#0A0A0A] p-4 md:p-8 space-y-12 scrollbar-thin">
@@ -71,13 +71,9 @@ export function LiveBuildFeed() {
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,25rem)]">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h1 className="mb-2 flex min-w-0 items-center gap-4 break-words text-3xl font-black leading-tight text-white">
-                Live Build Feed
-                <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+              <h1 className="mb-2 flex min-w-0 items-center gap-4 break-words text-3xl font-black leading-tight text-white">{tx("uiLegacy.components.buildfeed.livebuildfeed.001")}<span className="w-2 h-2 rounded-full bg-accent animate-ping" />
               </h1>
-              <p className="max-w-md break-words text-sm font-medium leading-relaxed text-text-dim">
-                Real-time build requests from the founder. High signal, low noise. Claim a ticket and start building.
-              </p>
+              <p className="max-w-md break-words text-sm font-medium leading-relaxed text-text-dim">{tx("uiLegacy.components.buildfeed.livebuildfeed.002")}</p>
             </div>
             
             <DailySignal 
@@ -90,14 +86,14 @@ export function LiveBuildFeed() {
           <div className="hidden lg:block space-y-4 bg-white/[0.02] border border-white/5 rounded-3xl p-6">
              <div className="flex min-w-0 items-center gap-2 text-accent">
                <Zap size={16} fill="currentColor" />
-               <span className="break-words text-[10px] font-black leading-snug">Platform Stats</span>
+               <span className="break-words text-[10px] font-black leading-snug">{tx("uiLegacy.components.buildfeed.livebuildfeed.003")}</span>
              </div>
              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                {[
-                 { label: 'Builds', val: requests.length },
-                 { label: 'Open', val: requests.filter(r => r.status === 'Open').length },
-                 { label: 'Completed', val: requests.filter(r => r.status === 'Accepted').length },
-                 { label: 'Coders', val: profiles.length }
+                 { label:tx("uiStrings.components.buildfeed.livebuildfeed.005"), val: requests.length },
+                 { label:tx("uiStrings.components.buildfeed.livebuildfeed.006"), val: requests.filter(r => r.status === 'Open').length },
+                 { label:tx("uiStrings.components.buildfeed.livebuildfeed.007"), val: requests.filter(r => r.status === 'Accepted').length },
+                 { label:tx("uiStrings.components.buildfeed.livebuildfeed.008"), val: profiles.length }
                ].map((stat, i) => (
                  <div key={i} className="p-3 bg-black/40 rounded-xl border border-white/5">
                    <p className="break-words text-[10px] font-bold leading-snug text-text-dim">{stat.label}</p>
@@ -138,7 +134,7 @@ export function LiveBuildFeed() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
             <div className="flex min-w-0 items-center gap-3">
               <Filter size={16} className="text-accent" />
-              <h3 className="break-words text-sm font-black leading-snug text-white">Filter Stream</h3>
+              <h3 className="break-words text-sm font-black leading-snug text-white">{tx("uiLegacy.components.buildfeed.livebuildfeed.004")}</h3>
             </div>
             
             <div className="flex min-w-0 flex-wrap gap-2">
@@ -166,15 +162,13 @@ export function LiveBuildFeed() {
                 <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                   <Zap size={24} className="text-text-dim" />
                 </div>
-                <StatusBadge status="Read" label="Empty State" />
-                <p className="break-words text-xs font-black leading-snug text-text-dim">No matching requests found in the stream.</p>
-                <p className="mx-auto max-w-md break-words text-xs text-white/45">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
+                <StatusBadge status="Read" label={tx("uiLegacy.components.buildfeed.livebuildfeed.005")} />
+                <p className="break-words text-xs font-black leading-snug text-text-dim">{tx("uiLegacy.components.buildfeed.livebuildfeed.006")}</p>
+                <p className="mx-auto max-w-md break-words text-xs text-white/45">{tx("uiLegacy.components.buildfeed.livebuildfeed.007")}</p>
                 <button 
                   onClick={() => setFilter('All')}
                   className="mt-4 break-words text-[10px] font-black leading-snug text-accent hover:underline"
-                >
-                  Clear all filters
-                </button>
+                >{tx("uiLegacy.components.buildfeed.livebuildfeed.008")}</button>
               </div>
             ) : (
               filteredRequests.map(req => {
@@ -194,13 +188,11 @@ export function LiveBuildFeed() {
                           <StatusBadge status={req.status} />
                           {req.is_current_focus && (
                             <span className="flex min-w-0 items-center gap-1 rounded-md border border-accent/20 bg-accent/10 px-2 py-1 text-[10px] font-black leading-snug text-accent">
-                              <Target size={12} /> Focus
-                            </span>
+                              <Target size={12} />{tx("uiLegacy.components.buildfeed.livebuildfeed.009")}</span>
                           )}
                           {req.status === 'Accepted' && (
                             <span className="flex min-w-0 items-center gap-1.5 rounded-md border border-amber-400/20 bg-amber-400/10 px-2 py-1 text-[10px] font-black leading-snug text-amber-400">
-                              <Star size={12} className="fill-amber-400" /> Star Awarded
-                            </span>
+                              <Star size={12} className="fill-amber-400" />{tx("uiLegacy.components.buildfeed.livebuildfeed.010")}</span>
                           )}
                         </div>
                         
@@ -219,13 +211,12 @@ export function LiveBuildFeed() {
                           <div className="flex min-w-0 flex-wrap gap-2">
                             {req.github_issue_url ? (
                               <a href={req.github_issue_url} target="_blank" rel="noreferrer" className="inline-flex min-w-0 items-center gap-1.5 break-words text-[10px] font-black leading-snug text-white/50 transition-colors hover:text-accent">
-                                <Github size={14} /> Issue #{req.github_issue_number}
+                                <Github size={14} />{tx("uiLegacy.components.buildfeed.livebuildfeed.011")}{req.github_issue_number}
                               </a>
                             ) : null}
                             {req.implementation_pr_url && (
                                <a href={req.implementation_pr_url} target="_blank" rel="noreferrer" className="inline-flex min-w-0 items-center gap-1.5 break-words text-[10px] font-black leading-snug text-purple-400 hover:text-purple-300">
-                                <Link2 size={14} /> PR Submitted
-                              </a>
+                                <Link2 size={14} />{tx("uiLegacy.components.buildfeed.livebuildfeed.012")}</a>
                             )}
                           </div>
                         </div>
@@ -253,7 +244,7 @@ export function LiveBuildFeed() {
                                   : 'bg-accent/10 text-accent border-accent/20 hover:bg-accent/20'
                               }`}
                             >
-                              {req.is_current_focus ? 'Remove Focus' : 'Mark as Current Focus'}
+                              {req.is_current_focus ?tx("uiStrings.components.buildfeed.livebuildfeed.009") :tx("uiStrings.components.buildfeed.livebuildfeed.010")}
                             </button>
                          )}
                       </div>
@@ -263,13 +254,13 @@ export function LiveBuildFeed() {
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-4 border-b border-white/5 bg-white/[0.01] px-6 py-4 md:px-8">
                        <div className="flex min-w-0 items-center gap-3">
                          <div className="w-2 h-2 rounded-full bg-accent/40" />
-                         <p className="break-words text-[10px] font-black leading-snug text-text-dim">Latest Momentum</p>
+                         <p className="break-words text-[10px] font-black leading-snug text-text-dim">{tx("uiLegacy.components.buildfeed.livebuildfeed.013")}</p>
                        </div>
                        <div className="flex-1 flex items-center gap-3 overflow-hidden">
                           {lastProgressUpdate ? (
                              <p className="break-words text-xs font-medium italic text-white/50">"{lastProgressUpdate.update_text}"</p>
                           ) : (
-                             <p className="break-words text-[10px] font-bold italic leading-snug text-text-dim">No update yet — waiting for builder signal.</p>
+                             <p className="break-words text-[10px] font-bold italic leading-snug text-text-dim">{tx("uiLegacy.components.buildfeed.livebuildfeed.014")}</p>
                           )}
                        </div>
                     </div>
@@ -278,11 +269,11 @@ export function LiveBuildFeed() {
                     <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-8">
                       <div className="space-y-6">
                         <div>
-                          <h4 className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Context & Problem</h4>
+                          <h4 className="mb-2 break-words text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.buildfeed.livebuildfeed.015")}</h4>
                           <p className="text-sm text-white/70 leading-relaxed">{req.polished_context}</p>
                         </div>
                         <div>
-                          <h4 className="mb-2 break-words text-[10px] font-black leading-snug text-accent">Technical Implementation</h4>
+                          <h4 className="mb-2 break-words text-[10px] font-black leading-snug text-accent">{tx("uiLegacy.components.buildfeed.livebuildfeed.016")}</h4>
                           <p className="text-sm text-white/90 leading-relaxed font-semibold">{req.polished_change}</p>
                         </div>
                         
@@ -291,13 +282,13 @@ export function LiveBuildFeed() {
                             <button
                               onClick={() => claimRequest(req.id)}
                               disabled={!canClaim}
-                              title={!canClaim ? claimDisabledReason : 'Claim this Open request and start the builder workflow.'}
+                              title={!canClaim ? claimDisabledReason :tx("uiStrings.components.buildfeed.livebuildfeed.011")}
                               className="w-full min-w-0 rounded-[20px] bg-accent px-6 py-3 text-center text-xs font-black leading-snug text-white shadow-xl shadow-accent/20 transition-all hover:bg-accent/90 disabled:grayscale disabled:opacity-50 whitespace-normal break-words md:w-auto md:px-10"
                             >
-                              {role === 'anonymous' ? "Sign in to claim this request" : canClaim ? "Claim this request" : "Complete profile to claim"}
+                              {role === 'anonymous' ?tx("uiStrings.components.buildfeed.livebuildfeed.012") : canClaim ?tx("uiStrings.components.buildfeed.livebuildfeed.013") :tx("uiStrings.components.buildfeed.livebuildfeed.014")}
                             </button>
                             {!canClaim && (
-                              <p className="break-words text-[10px] font-bold leading-snug text-amber-300/80">Why disabled: {claimDisabledReason}</p>
+                              <p className="break-words text-[10px] font-bold leading-snug text-amber-300/80">{tx("uiLegacy.components.buildfeed.livebuildfeed.017")}{claimDisabledReason}</p>
                             )}
                           </div>
                         )}
@@ -305,7 +296,7 @@ export function LiveBuildFeed() {
                       
                       <div className="space-y-6">
                          <div className="bg-black/40 p-6 rounded-3xl border border-white/5 space-y-4">
-                           <h4 className="break-words text-[10px] font-black leading-snug text-text-dim">Acceptance Criteria</h4>
+                           <h4 className="break-words text-[10px] font-black leading-snug text-text-dim">{tx("uiLegacy.components.buildfeed.livebuildfeed.018")}</h4>
                            <ul className="space-y-3">
                              {req.acceptance_criteria?.map((crt, i) => (
                                <li key={i} className="flex min-w-0 items-start gap-3 break-words text-xs text-white/60 group/li">
@@ -325,7 +316,7 @@ export function LiveBuildFeed() {
                       <div className="bg-black/40 border-t border-white/5 p-6 md:p-8 space-y-6">
                         {reqUpdates.length > 0 && (
                           <div className="space-y-4">
-                            <h4 className="break-words text-[10px] font-black leading-snug text-text-dim">Build Stream</h4>
+                            <h4 className="break-words text-[10px] font-black leading-snug text-text-dim">{tx("uiLegacy.components.buildfeed.livebuildfeed.019")}</h4>
                             {reqUpdates.map(u => {
                               const uProfile = u.profile_id ? profiles.find(p => p.id === u.profile_id) : null;
                               return (
@@ -353,7 +344,7 @@ export function LiveBuildFeed() {
                               type="text"
                               value={updateTexts[req.id] || ''}
                               onChange={e => setUpdateTexts({ ...updateTexts, [req.id]: e.target.value })}
-                              placeholder="Add a progress update/note..."
+                              placeholder={tx("uiLegacy.components.buildfeed.livebuildfeed.020")}
                               className="min-w-0 flex-1 rounded-xl border border-white/10 bg-[#111] px-4 py-2 text-sm text-white focus:border-accent/40 focus:outline-none"
                               onKeyDown={e => {
                                 if (e.key === 'Enter' && updateTexts[req.id]?.trim()) {
@@ -373,8 +364,7 @@ export function LiveBuildFeed() {
                                 onClick={() => updateRequestStatus(req.id, 'In Progress')}
                                 className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-blue-400/20 px-4 py-2 text-center text-xs font-black leading-snug text-blue-400 hover:bg-blue-400/10 whitespace-normal break-words"
                               >
-                                <PlayCircle size={14} /> Start Progress
-                              </button>
+                                <PlayCircle size={14} />{tx("uiLegacy.components.buildfeed.livebuildfeed.021")}</button>
                             )}
                             
                             {(req.status === 'In Progress' || req.status === 'Needs Changes') && (
@@ -383,7 +373,7 @@ export function LiveBuildFeed() {
                                   type="text"
                                   value={prUrls[req.id] || req.implementation_pr_url || ''}
                                   onChange={e => setPrUrls({...prUrls, [req.id]: e.target.value})}
-                                  placeholder="GitHub PR URL"
+                                  placeholder={tx("uiLegacy.components.buildfeed.livebuildfeed.022")}
                                   className="min-w-0 flex-1 basis-64 rounded-xl border border-white/10 bg-black px-4 py-2 text-xs text-white"
                                 />
                                 <button
@@ -393,9 +383,7 @@ export function LiveBuildFeed() {
                                     updateRequest(req.id, { implementation_pr_url: url, status: 'Ready for Review' });
                                   }}
                                   className="min-w-0 rounded-xl border border-purple-500/20 bg-purple-500/20 px-6 py-2 text-center text-[10px] font-black leading-snug text-purple-400 whitespace-normal break-words"
-                                >
-                                  Submit Review
-                                </button>
+                                >{tx("uiLegacy.components.buildfeed.livebuildfeed.023")}</button>
                               </div>
                             )}
                           </div>
@@ -412,14 +400,11 @@ export function LiveBuildFeed() {
                                }}
                                className="flex min-w-0 items-center justify-center gap-2 rounded-xl bg-amber-500 px-6 py-2 text-center text-[10px] font-black leading-snug text-black whitespace-normal break-words"
                              >
-                               <Star size={14} fill="currentColor" /> Accept & Star
-                             </button>
+                               <Star size={14} fill="currentColor" />{tx("uiLegacy.components.buildfeed.livebuildfeed.024")}</button>
                              <button
                                onClick={() => updateRequest(req.id, { status: 'Needs Changes' })}
                                className="min-w-0 rounded-xl border border-white/10 px-6 py-2 text-center text-[10px] font-black leading-snug text-white whitespace-normal break-words"
-                             >
-                               Needs Changes
-                             </button>
+                             >{tx("uiLegacy.components.buildfeed.livebuildfeed.025")}</button>
                           </div>
                         )}
                       </div>

@@ -1,3 +1,4 @@
+import { tx } from '../../i18n/I18nProvider';
 import React from "react";
 import { ChevronLeft, Save } from "lucide-react";
 
@@ -27,14 +28,14 @@ export function ProjectHeader({ projectName, onBack, onSave, tabs, activeTab, se
           </button>
           <div className="h-4 w-[1px] bg-white/10" />
           <h2 className="font-black text-[10px] text-white flex items-center gap-2 truncate max-w-[150px] sm:max-w-[200px] uppercase tracking-[0.2em]">
-            <span className="text-white/20 font-bold hidden sm:inline">PROJECT /</span> {projectName}
+            <span className="text-white/20 font-bold hidden sm:inline">{tx("uiLegacy.components.projects.projectheader.001")}</span> {projectName}
           </h2>
         </div>
         
         <button 
           onClick={onSave}
           className="p-2 glass hover:bg-white/10 rounded-xl text-text-dim hover:text-white transition-all md:hidden"
-          title="Manual Save Protocol"
+          title={tx("uiLegacy.components.projects.projectheader.002")}
         >
           <Save size={18} />
         </button>
@@ -65,7 +66,7 @@ export function ProjectHeader({ projectName, onBack, onSave, tabs, activeTab, se
         <button 
           onClick={onSave}
           className="p-2 glass hover:bg-white/10 rounded-xl text-text-dim hover:text-white transition-all group"
-          title="Manual Save Protocol"
+          title={tx("uiLegacy.components.projects.projectheader.003")}
         >
           <Save size={18} className="group-hover:scale-110 transition-transform" />
         </button>
