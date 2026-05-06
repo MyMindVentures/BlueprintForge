@@ -190,10 +190,7 @@ export function LLMSettingsPage({
                     </div>
 
                     <div className="flex items-center gap-4 pt-2">
-                       <StatusBadge 
-                         label={settings.connectionStatus} 
-                         status={settings.connectionStatus === 'Connected' ? 'success' : 'idle'} 
-                       />
+                       <StatusBadge status={settings.connectionStatus} />
                        {settings.lastTestedAt && (
                          <span className="text-[10px] font-black text-text-dim/40 uppercase tracking-widest">Checked {formatRelativeTime(settings.lastTestedAt)}</span>
                        )}

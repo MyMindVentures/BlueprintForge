@@ -166,7 +166,7 @@ export function LiveBuildFeed() {
                 <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                   <Zap size={24} className="text-text-dim" />
                 </div>
-                <StatusBadge status="Read" label="Empty State" />
+                <StatusBadge status="Read" labelKey="statuses.emptyState" />
                 <p className="text-text-dim font-black uppercase tracking-[0.2em] text-xs">No matching requests found in the stream.</p>
                 <p className="text-xs text-white/45 max-w-md mx-auto">This filter has no visible work right now. Clear filters to see all requests, or check Current Founder Focus for the highest-priority next action.</p>
                 <button 

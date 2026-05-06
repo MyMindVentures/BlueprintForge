@@ -58,12 +58,6 @@ export function ProjectCard({
     }
   };
 
-  const statusMap: Record<string, "info" | "success" | "warning" | "idle"> = {
-    Draft: "idle",
-    Converted: "success",
-    Updated: "warning"
-  };
-
   return (
     <GlassCard 
       className="group flex flex-col h-[340px] relative overflow-hidden flex-shrink-0"
@@ -73,10 +67,7 @@ export function ProjectCard({
       <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-[60px] -translate-y-1/2 translate-x-1/2 group-hover:bg-accent/10 transition-colors" />
       
       <div className="flex items-start justify-between mb-6 relative z-10">
-        <StatusBadge 
-          label={project.status} 
-          status={statusMap[project.status] || "idle"} 
-        />
+        <StatusBadge status={project.status} />
         
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
           <IconButton 

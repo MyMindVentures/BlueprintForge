@@ -11,6 +11,65 @@ import { guideSections, screenGuidance, statusGlossary } from '../../content/gui
 import { StatusBadge } from '../ui/StatusBadge';
 import { useI18n } from '../../i18n/I18nProvider';
 
+
+const guideStatusLabelKeys: Record<string, string> = {
+  'founder-guide': 'statuses.founderWorkflowActive',
+  'builder-guide': 'statuses.builderWorkflowReady',
+  'visitor-guide': 'statuses.readOnlyVisitorMode',
+  'investor-observer-guide': 'statuses.observerViewAvailable',
+  'demo-guide': 'statuses.demoModeExplained',
+  'github-contribution-guide': 'statuses.githubFlowDocumented',
+  'openrouter-ai-guide': 'statuses.aiSetupGuide',
+  'version-changelog-guide': 'statuses.versionFlowVisible',
+  'notifications-guide': 'statuses.notificationsExplained'
+};
+
+const statusGlossaryLabelKeys: Record<string, string> = {
+  'Draft': 'statuses.draft',
+  'Published': 'statuses.published',
+  'Open': 'statuses.open',
+  'Claimed': 'statuses.claimed',
+  'In Progress': 'statuses.inProgress',
+  'PR Submitted / Ready for Review': 'statuses.prSubmittedReadyForReview',
+  'In Review': 'statuses.inReview',
+  'Changes Requested': 'statuses.changesRequested',
+  'Accepted': 'statuses.accepted',
+  'Rejected': 'statuses.rejected',
+  'Archived': 'statuses.archived',
+  'Profile Incomplete / Complete': 'statuses.profileIncompleteComplete',
+  'Verified / Not Verified': 'statuses.verifiedNotVerified',
+  'Repo Not Connected / Repo Connected': 'statuses.repoNotConnectedConnected',
+  'Issue Pending / Issue Created / Issue Failed': 'statuses.issuePendingCreatedFailed',
+  'PR Waiting / PR Submitted / PR Reviewed': 'statuses.prWaitingSubmittedReviewed',
+  'OpenRouter Not Configured / Configured / Connected / Failed': 'statuses.openRouterNotConfiguredConfiguredConnectedFailed',
+  'Unread / Read / Action Required': 'statuses.unreadReadActionRequired',
+  'Demo Mode / Demo Data Active / Production Protected': 'statuses.demoModeDataActiveProductionProtected',
+  'Draft Version / Published Version / Latest Version / Acknowledged': 'statuses.draftPublishedLatestAcknowledged'
+};
+
+const statusGlossaryBadgeStatuses: Record<string, string> = {
+  'Draft': 'Draft',
+  'Published': 'Published',
+  'Open': 'Open',
+  'Claimed': 'Claimed',
+  'In Progress': 'In Progress',
+  'PR Submitted / Ready for Review': 'Ready for Review',
+  'In Review': 'In Review',
+  'Changes Requested': 'Changes Requested',
+  'Accepted': 'Accepted',
+  'Rejected': 'Rejected',
+  'Archived': 'Archived',
+  'Profile Incomplete / Complete': 'Complete',
+  'Verified / Not Verified': 'Verified',
+  'Repo Not Connected / Repo Connected': 'Repo Connected',
+  'Issue Pending / Issue Created / Issue Failed': 'Issue Pending',
+  'PR Waiting / PR Submitted / PR Reviewed': 'PR Submitted',
+  'OpenRouter Not Configured / Configured / Connected / Failed': 'Not Configured',
+  'Unread / Read / Action Required': 'Action Required',
+  'Demo Mode / Demo Data Active / Production Protected': 'Demo Mode',
+  'Draft Version / Published Version / Latest Version / Acknowledged': 'Latest Version'
+};
+
 /**
  * Presents the central self-explaining BlueprintForge guide, changelog and demo recorder.
  * Used by visitors, builders, founders and observers to understand screens, roles, statuses and next actions.
@@ -187,7 +246,7 @@ export function GuidePage() {
                     <p className="text-[9px] font-black uppercase tracking-[0.25em] text-accent">{section.audience} guide</p>
                     <h4 className="mt-1 text-lg font-black uppercase tracking-tight text-white">{section.title}</h4>
                   </div>
-                  <StatusBadge status="Published" label={section.statusLabel} />
+                  <StatusBadge status="Published" labelKey={guideStatusLabelKeys[section.id]} />
                 </div>
                 <p className="text-sm leading-relaxed text-text-dim">{section.summary}</p>
                 <ol className="space-y-2">
@@ -242,12 +301,12 @@ export function GuidePage() {
               <h2 className="text-[10px] font-black text-accent uppercase tracking-[0.6em]">Status Glossary</h2>
               <h3 className="mt-3 text-3xl md:text-5xl font-black uppercase tracking-tight">What each badge means</h3>
             </div>
-            <StatusBadge status="Published Version" label="Glossary Complete" />
+            <StatusBadge status="Published Version" labelKey="statuses.glossaryComplete" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {statusGlossary.map(([label, meaning]) => (
               <div key={label} className="flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-4">
-                <StatusBadge status={label} label={label} />
+                <StatusBadge status={statusGlossaryBadgeStatuses[label] || 'idle'} labelKey={statusGlossaryLabelKeys[label]} />
                 <p className="text-xs leading-relaxed text-text-dim">{meaning}</p>
               </div>
             ))}

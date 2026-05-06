@@ -32,10 +32,7 @@ export function AgentCard({ agent, onOpen, onDelete, onDuplicate, onSetDefault }
           <div className="px-3 py-1 glass bg-black/40 rounded-lg text-[11px] text-accent font-black font-mono tracking-widest border border-white/5">
             {agent.code}
           </div>
-          <StatusBadge 
-            label={agent.status} 
-            status={agent.status === 'Active' ? 'success' : 'idle'} 
-          />
+          <StatusBadge status={agent.status} />
         </div>
         
         {agent.isDefault && (

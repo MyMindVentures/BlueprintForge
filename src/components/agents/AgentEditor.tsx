@@ -48,7 +48,7 @@ export function AgentEditor({ agent, llmSettings, onUpdate, onBack, onDelete }: 
                 <h1 className="text-xs sm:text-sm font-black text-white uppercase tracking-widest leading-none mb-1 truncate">{agent.name}</h1>
                 <div className="flex flex-wrap items-center gap-2 hidden sm:flex">
                    <span className="text-[9px] font-black text-accent uppercase tracking-tighter">Protocol Configuration</span>
-                   <StatusBadge label={agent.status} status={agent.status === 'Active' ? 'success' : 'idle'} dot={false} />
+                   <StatusBadge status={agent.status} dot={false} />
                 </div>
               </div>
             </div>
