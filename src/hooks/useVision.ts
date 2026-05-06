@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FounderVision } from '../types/vision';
 import { useAuth } from './useAuth';
 import { apiRequest, pollingIntervalMs } from '../services/apiClient';
+import { isFounderAdminRole } from '../authRoles';
 
 export function useVision() {
   const [visions, setVisions] = useState<FounderVision[]>([]);
@@ -19,7 +20,7 @@ export function useVision() {
   }, []);
 
   const publishVision = async (vision: Omit<FounderVision, 'id' | 'created_at'>) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
+    if (!currentUser || !isFounderAdminRole(currentUser.role)) return;
     const response = await apiRequest<{ id: string }>('/api/visions', { method: 'POST', user: currentUser, body: JSON.stringify({ vision }) });
     return { id: response.id, ...vision };
   };

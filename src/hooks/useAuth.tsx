@@ -1,8 +1,9 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { onAuthStateChanged, User, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { browserLocalPersistence, onAuthStateChanged, setPersistence, User, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { UserContext } from '../types/buildFeed';
 import { apiRequest } from '../services/apiClient';
+import { logAdminAccessDebug, normalizeRole } from '../authRoles';
 
 interface AuthContextType {
   user: User | null;
@@ -11,6 +12,7 @@ interface AuthContextType {
   signIn: () => Promise<void>;
   logout: () => Promise<void>;
   acknowledgeVersion: (version: string) => Promise<void>;
+  authError: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -19,19 +21,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserContext | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
+    void setPersistence(auth, browserLocalPersistence).catch((error) => {
+      console.error('Firebase auth persistence setup failed:', error);
+      setAuthError('Firebase auth persistence could not be initialized. Refresh may require signing in again.');
+    });
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
+      setAuthError(null);
+      logAdminAccessDebug('auth-state-changed', {
+        signedIn: Boolean(firebaseUser),
+        uid: firebaseUser?.uid,
+        email: firebaseUser?.email,
+        providerIds: firebaseUser?.providerData.map((provider) => provider.providerId)
+      });
       if (firebaseUser) {
         try {
           const postgresProfile = await apiRequest<UserContext>('/api/auth/firebase-profile', {
             method: 'POST',
             body: JSON.stringify({ uid: firebaseUser.uid, email: firebaseUser.email, name: firebaseUser.displayName })
           });
-          setProfile(postgresProfile);
+          const normalizedProfile = { ...postgresProfile, role: normalizeRole(postgresProfile.role) as UserContext['role'] };
+          logAdminAccessDebug('role-resolved', {
+            uid: firebaseUser.uid,
+            profileId: normalizedProfile.id,
+            resolvedRole: normalizedProfile.role,
+            rawRole: postgresProfile.role,
+            roleResolution: (postgresProfile as any).role_resolution
+          });
+          setProfile(normalizedProfile);
         } catch (error) {
           console.error('Error setting up PostgreSQL user profile:', error);
+          setAuthError(error instanceof Error ? error.message : 'PostgreSQL profile setup failed.');
           setProfile(null);
         }
       } else {
@@ -50,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(updated);
   };
 
-  return <AuthContext.Provider value={{ user, profile, loading, signIn, logout, acknowledgeVersion }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, profile, loading, signIn, logout, acknowledgeVersion, authError }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

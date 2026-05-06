@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useBuildFeed } from '../../hooks/useBuildFeed';
 import { ShieldCheck, Search, Globe, Code2, User, PlayCircle, AlertCircle } from 'lucide-react';
+import { isFounderAdminRole } from '../../authRoles';
 
 /**
  * Handles the vibe coder directory workflow for BlueprintForge users or services.
@@ -10,7 +11,7 @@ export function VibeCoderDirectory() {
   const { profiles, currentUser, verifyProfile, requests } = useBuildFeed();
   const [searchTerm, setSearchTerm] = useState('');
 
-  if (currentUser?.role !== 'admin') {
+  if (!isFounderAdminRole(currentUser?.role)) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-[#0A0A0A] p-8">
         <div className="text-center space-y-4">

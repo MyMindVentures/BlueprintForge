@@ -8,6 +8,7 @@ import { useBuildFeed } from "../../hooks/useBuildFeed";
 import { useAuth } from "../../hooks/useAuth";
 import { LogOut, User as UserIcon } from "lucide-react";
 import { NewVersionPopup } from "./NewVersionPopup";
+import { isFounderAdminRole, normalizeRole } from "../../authRoles";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -25,15 +26,16 @@ export function AppShell({ children, currentView, setView: onViewChange, onAddPr
   const { lastNotification } = useBuildFeed();
   const { profile, user, logout } = useAuth();
   
-  const role = profile?.role || 'visitor';
+  const role = normalizeRole(profile?.role || 'visitor');
+  const hasFounderAccess = isFounderAdminRole(role);
 
   const tabs = [
     { id: "landing", label: "Home", icon: Home },
     { id: "bootstrap", label: "Bootstrap", icon: Zap },
     { id: "guide", label: "Guide", icon: HelpCircle },
     { id: "vision", label: "Founder Vision", icon: Compass },
-    ...(role === 'admin' ? [{ id: "feed_admin", label: "Command Center", icon: Tv }] : []),
-    ...(role === 'admin' ? [{ id: "coder_directory", label: "Global Network", icon: Users }] : []),
+    ...(hasFounderAccess ? [{ id: "feed_admin", label: "Command Center", icon: Tv }] : []),
+    ...(hasFounderAccess ? [{ id: "coder_directory", label: "Global Network", icon: Users }] : []),
     ...(role === 'vibe_coder' ? [{ id: "coder_profile", label: "Builder Profile", icon: UserIcon }] : []),
     { id: "feed_coder", label: "Live Feed", icon: Radio },
     ...(user ? [

@@ -5,6 +5,7 @@ import { Compass, Send, CheckCircle2, FlaskConical, Target, BrainCircuit, Chevro
 import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '../ui/Toast';
 import { VisionStatus } from '../../types/vision';
+import { isFounderAdminRole } from '../../authRoles';
 
 /**
  * Handles the founder vision page workflow for BlueprintForge users or services.
@@ -88,7 +89,7 @@ export function FounderVisionPage() {
           </p>
         </header>
 
-        {currentUser?.role === 'admin' && (
+        {isFounderAdminRole(currentUser?.role) && (
           <form onSubmit={handleSubmit} className="bg-[#111] border border-white/10 rounded-3xl p-8 space-y-6">
             <h2 className="text-sm font-black text-white uppercase tracking-widest border-b border-white/5 pb-4">Draft New Vision</h2>
             

@@ -7,6 +7,7 @@ import { useProjects } from "./useProjects";
 import { useAgents } from "./useAgents";
 import { useLLMSettings } from "./useLLMSettings";
 import { usePipeline } from "./usePipeline";
+import { isFounderAdminRole, logAdminAccessDebug, normalizeRole } from "../authRoles";
 import { useImagePipeline } from "./useImagePipeline";
 
 /**
@@ -59,8 +60,15 @@ export function useWorkspace() {
       return;
     }
 
+    const resolvedRole = normalizeRole(profile?.role);
+    if (!isFounderAdminRole(resolvedRole)) {
+      logAdminAccessDebug('workspace-skip-admin-load', { userId: user.uid, resolvedRole, hasProfile: Boolean(profile) });
+      setIsLoaded(true);
+      return;
+    }
+
     let active = true;
-    const userContext = { id: user.uid, name: profile?.name || user.uid, role: profile?.role || ('vibe_coder' as const) };
+    const userContext = { id: user.uid, name: profile?.name || user.uid, role: normalizeRole(profile?.role) as any };
     const load = async () => {
       try {
         const [loadedProjects, loadedAgents, loadedSettings] = await Promise.all([
@@ -89,7 +97,7 @@ export function useWorkspace() {
 
   const updateLLMSettings = async (updates: Partial<LLMSettings>) => {
     if (!user) return;
-    const userContext = { id: user.uid, name: profile?.name || user.uid, role: profile?.role || ('vibe_coder' as const) };
+    const userContext = { id: user.uid, name: profile?.name || user.uid, role: normalizeRole(profile?.role) as any };
     await apiRequest('/api/settings', { method: 'PATCH', user: userContext, body: JSON.stringify({ data: updates }) });
     setSettings(prev => ({ ...prev, ...updates }));
   };

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BuildRequest, BuildRequestUpdate, VibeCoderProfile, DailySignal } from '../types/buildFeed';
 import { buildFeedService } from '../services/buildFeedService';
 import { useAuth } from './useAuth';
+import { isFounderAdminRole } from '../authRoles';
 
 export function useBuildFeed() {
   const { profile: currentUser } = useAuth();
@@ -19,17 +20,17 @@ export function useBuildFeed() {
     setDailySignals(snapshot.dailySignals);
   }), []);
 
-  const publishRequest = async (request: any) => currentUser?.role === 'admin' ? buildFeedService.publishRequest(request, currentUser) : undefined;
+  const publishRequest = async (request: any) => isFounderAdminRole(currentUser?.role) ? buildFeedService.publishRequest(request, currentUser) : undefined;
   const updateRequest = async (id: string, updates: Partial<BuildRequest>) => currentUser ? buildFeedService.updateRequest(id, updates, currentUser) : undefined;
   const claimRequest = async (id: string) => currentUser && currentUserProfile ? buildFeedService.claimTicket(id, currentUser, currentUserProfile.id) : undefined;
   const updateRequestStatus = async (id: string, status: BuildRequest['status']) => updateRequest(id, { status });
   const postUpdate = async (build_request_id: string, update_text: string) => currentUser ? buildFeedService.postUpdate(build_request_id, currentUser, currentUserProfile?.id || null, update_text) : undefined;
   const saveProfile = async (profileData: Partial<VibeCoderProfile>) => currentUser ? buildFeedService.saveProfile(profileData, currentUser, currentUserProfile?.id) : undefined;
-  const verifyProfile = async (profileId: string) => currentUser?.role === 'admin' ? buildFeedService.verifyProfile(profileId, currentUser) : undefined;
-  const awardStar = async (profileId: string, buildRequestId: string) => currentUser?.role === 'admin' ? buildFeedService.awardStar(profileId, buildRequestId, currentUser) : undefined;
-  const postDailySignal = async (message: string) => currentUser?.role === 'admin' ? buildFeedService.postDailySignal(message, currentUser) : undefined;
+  const verifyProfile = async (profileId: string) => isFounderAdminRole(currentUser?.role) ? buildFeedService.verifyProfile(profileId, currentUser) : undefined;
+  const awardStar = async (profileId: string, buildRequestId: string) => isFounderAdminRole(currentUser?.role) ? buildFeedService.awardStar(profileId, buildRequestId, currentUser) : undefined;
+  const postDailySignal = async (message: string) => isFounderAdminRole(currentUser?.role) ? buildFeedService.postDailySignal(message, currentUser) : undefined;
   const toggleFocus = async (id: string, reason?: string) => {
-    if (!currentUser || currentUser.role !== 'admin') return;
+    if (!currentUser || !isFounderAdminRole(currentUser.role)) return;
     const request = requests.find(r => r.id === id);
     if (!request) return;
     const currentlyFocused = requests.filter(r => r.is_current_focus).length;

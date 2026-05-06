@@ -5,14 +5,21 @@ import { notificationRepository } from './repositories/notificationRepository';
 import { versionRepository } from './repositories/versionRepository';
 import { genericRepository } from './repositories/genericRepository';
 import { getDb, sqlValue } from './db/postgres';
+import { FOUNDER_ROLE, isFounderAdminRole, normalizeRole } from '../authRoles';
 
 const actor = (req: express.Request) => String(req.headers['x-user-id'] || req.body?.userId || 'anonymous');
-const role = (req: express.Request) => String(req.headers['x-user-role'] || req.body?.role || 'anonymous');
-const requireAdmin = (req: express.Request) => { if (role(req) !== 'admin') throw new Error('Admin access required.'); };
+const role = (req: express.Request) => normalizeRole(String(req.headers['x-user-role'] || req.body?.role || 'anonymous'));
+const requireAdmin = (req: express.Request) => {
+  if (!isFounderAdminRole(role(req))) {
+    const error = new Error(`Admin access required. Resolved role: ${role(req)}. Missing permission: ${FOUNDER_ROLE}.`);
+    error.name = 'AdminAccessError';
+    throw error;
+  }
+};
 
 export function registerApiRoutes(app: express.Express) {
   const wrap = (handler: express.RequestHandler): express.RequestHandler => async (req, res) => {
-    try { await handler(req, res, () => undefined); } catch (error: any) { res.status(error.message?.includes('Admin') ? 403 : 500).json({ error: error.message || 'Request failed' }); }
+    try { await handler(req, res, () => undefined); } catch (error: any) { res.status(error.name === 'AdminAccessError' || error.message?.includes('Admin') ? 403 : 500).json({ error: error.message || 'Request failed', resolvedRole: error.name === 'AdminAccessError' ? role(req) : undefined, missingPermission: error.name === 'AdminAccessError' ? FOUNDER_ROLE : undefined }); }
   };
 
   app.post('/api/auth/firebase-profile', wrap(async (req, res) => res.json(await userRepository.upsertFirebaseUser(req.body))));
@@ -34,8 +41,8 @@ export function registerApiRoutes(app: express.Express) {
 
   app.get('/api/guide', wrap(async (_req, res) => res.json(await versionRepository.listGuide())));
   app.post('/api/guide/versions', wrap(async (req, res) => { requireAdmin(req); res.json({ id: await versionRepository.publish(req.body.version, actor(req)) }); }));
-  app.post('/api/guide/demo-sessions', wrap(async (req, res) => res.json(await versionRepository.startDemoSession(req.body.session, actor(req)))));
-  app.post('/api/guide/demo-sessions/:id/complete', wrap(async (req, res) => { await versionRepository.completeDemoSession(req.params.id, req.body.recording, actor(req)); res.json({ ok: true }); }));
+  app.post('/api/guide/demo-sessions', wrap(async (req, res) => { requireAdmin(req); res.json(await versionRepository.startDemoSession(req.body.session, actor(req))); }));
+  app.post('/api/guide/demo-sessions/:id/complete', wrap(async (req, res) => { requireAdmin(req); await versionRepository.completeDemoSession(req.params.id, req.body.recording, actor(req)); res.json({ ok: true }); }));
 
   app.get('/api/visions', wrap(async (_req, res) => res.json((await getDb().query('SELECT id::text, title, vision_statement, context, goal, status, created_by, created_at FROM founder_visions ORDER BY created_at DESC')))));
   app.post('/api/visions', wrap(async (req, res) => { requireAdmin(req); const v = req.body.vision; const rows = await getDb().query(`INSERT INTO founder_visions (title, vision_statement, context, goal, status, created_by) VALUES (${sqlValue(v.title)}, ${sqlValue(v.vision_statement)}, ${sqlValue(v.context || '')}, ${sqlValue(v.goal || '')}, ${sqlValue(v.status || 'Thinking')}, ${sqlValue(actor(req))}) RETURNING id::text`); res.json({ id: rows[0].id }); }));
@@ -44,8 +51,8 @@ export function registerApiRoutes(app: express.Express) {
   app.post('/api/workspace/:table', wrap(async (req, res) => res.json({ id: await genericRepository.create(req.params.table, actor(req), req.body.data) })));
   app.patch('/api/workspace/:table/:id', wrap(async (req, res) => { await genericRepository.update(req.params.table, req.params.id, actor(req), req.body.data); res.json({ ok: true }); }));
   app.delete('/api/workspace/:table/:id', wrap(async (req, res) => { await genericRepository.delete(req.params.table, req.params.id, actor(req)); res.json({ ok: true }); }));
-  app.get('/api/settings', wrap(async (req, res) => res.json(await genericRepository.getSettings(actor(req)) || {})));
-  app.patch('/api/settings', wrap(async (req, res) => { await genericRepository.updateSettings(actor(req), req.body.data); res.json({ ok: true }); }));
-  app.get('/api/github-settings', wrap(async (_req, res) => res.json(await genericRepository.getGithubSettings() || {})));
+  app.get('/api/settings', wrap(async (req, res) => { requireAdmin(req); res.json(await genericRepository.getSettings(actor(req)) || {}); }));
+  app.patch('/api/settings', wrap(async (req, res) => { requireAdmin(req); await genericRepository.updateSettings(actor(req), req.body.data); res.json({ ok: true }); }));
+  app.get('/api/github-settings', wrap(async (req, res) => { requireAdmin(req); res.json(await genericRepository.getGithubSettings() || {}); }));
   app.patch('/api/github-settings', wrap(async (req, res) => { requireAdmin(req); await genericRepository.updateGithubSettings(req.body.data); res.json({ ok: true }); }));
 }

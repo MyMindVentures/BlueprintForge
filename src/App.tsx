@@ -21,6 +21,7 @@ import { ToastProvider } from "./components/ui/Toast";
 import { HelpBlock } from "./components/help/HelpBlock";
 import { LoadingState } from "./components/state/LoadingState";
 import { screenGuidance } from "./content/guides/blueprintGuides";
+import { describeMissingAdminAccess, isFounderAdminRole, logAdminAccessDebug, normalizeRole } from "./authRoles";
 
 export type AppView = "landing" | "bootstrap" | "guide" | "projects" | "agents" | "llm" | "diagnostics" | "feed_admin" | "feed_coder" | "coder_profile" | "coder_directory" | "vision" | "not_found";
 
@@ -43,7 +44,7 @@ export default function App() {
  * Used after providers initialize and adds universal guidance so every major view explains state and next actions.
  */
 function AppContent() {
-  const { user, profile, loading, signIn } = useAuth();
+  const { user, profile, loading, signIn, authError } = useAuth();
   const {
     projects,
     agents,
@@ -91,6 +92,10 @@ function AppContent() {
   } as const;
 
   const currentGuidance = guidanceByView[view];
+  const resolvedRole = normalizeRole(profile?.role || (user ? "missing" : "anonymous"));
+  const founderAdminViews: AppView[] = ["projects", "agents", "llm", "diagnostics", "feed_admin"];
+  const requiresFounderAdmin = founderAdminViews.includes(view);
+  const hasFounderAdminAccess = isFounderAdminRole(resolvedRole);
 
   if (loading || !isLoaded) {
     return (
@@ -116,6 +121,25 @@ function AppContent() {
 
   if (!user && !isPublicView) {
     return <LandingPage onEnter={signIn} />;
+  }
+
+  if (user && requiresFounderAdmin && !hasFounderAdminAccess) {
+    const denial = describeMissingAdminAccess(profile, view);
+    logAdminAccessDebug("route-protection-denied", {
+      view,
+      userId: user.uid,
+      resolvedRole,
+      profileRole: profile?.role,
+      missingPermission: denial.missingPermission,
+      hasProfile: Boolean(profile),
+      authError
+    });
+
+    return (
+      <AppShell currentView={view} setView={(v) => { setView(v); setActiveProjectId(null); setActiveAgentId(null); }}>
+        <AdminAccessDenied {...denial} authError={authError} onNavigate={setView} />
+      </AppShell>
+    );
   }
 
   return (
@@ -222,5 +246,38 @@ function AppContent() {
       {view === "vision" && <FounderVisionPage />}
       {view === "not_found" && <ErrorPage onNavigate={(v) => setView(v)} />}
     </AppShell>
+  );
+}
+
+
+function AdminAccessDenied({
+  title,
+  message,
+  view,
+  resolvedRole,
+  missingPermission,
+  authError,
+  onNavigate
+}: ReturnType<typeof describeMissingAdminAccess> & { authError: string | null; onNavigate: (view: AppView) => void }) {
+  return (
+    <div className="flex min-h-full items-center justify-center px-6 py-12">
+      <div className="w-full max-w-2xl rounded-3xl border border-red-500/30 bg-red-500/10 p-8 shadow-2xl">
+        <p className="mb-3 text-xs font-black uppercase tracking-[0.35em] text-red-300">Access denied</p>
+        <h1 className="text-3xl font-black text-white">{title}</h1>
+        <p className="mt-3 text-sm leading-6 text-white/75">{message}</p>
+        <div className="mt-6 grid gap-3 rounded-2xl border border-white/10 bg-black/40 p-4 text-sm">
+          <div className="flex justify-between gap-4"><span className="text-white/50">Requested screen</span><span className="font-mono text-white">{view}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white/50">Resolved role</span><span className="font-mono text-yellow-200">{resolvedRole}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white/50">Missing permission</span><span className="font-mono text-red-200">{missingPermission}</span></div>
+          {authError && <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-yellow-100">Auth/profile error: {authError}</div>}
+        </div>
+        <p className="mt-5 text-xs leading-5 text-white/55">If you are the founder, verify that your Firebase email or UID is listed in FOUNDER_ADMIN_EMAILS or FOUNDER_ADMIN_UIDS on Railway, then sign out and sign back in so PostgreSQL can hydrate your ROLE-01 profile.</p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <button onClick={() => onNavigate("landing")} className="rounded-xl bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-black">Go Home</button>
+          <button onClick={() => onNavigate("guide")} className="rounded-xl border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10">Open Guide</button>
+          <button onClick={() => onNavigate("feed_coder")} className="rounded-xl border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10">Live Feed</button>
+        </div>
+      </div>
+    </div>
   );
 }

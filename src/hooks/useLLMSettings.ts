@@ -5,6 +5,7 @@ import { syncOpenRouterModels, mergeSyncedModels, validateSyncedModels } from ".
 import { generateModelIntelligence } from "../services/modelIntelligenceService";
 import { apiRequest } from '../services/apiClient';
 import { useAuth } from './useAuth';
+import { normalizeRole } from '../authRoles';
 
 export interface SyncStatus {
   phase: "idle" | "syncing" | "intelligence" | "success" | "error" | "warning";
@@ -31,7 +32,7 @@ export function useLLMSettings(
   setSettings: (s: LLMSettings | ((prev: LLMSettings) => LLMSettings)) => void,
   agentNames: string[]
 ) {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [syncStatus, setSyncStatus] = useState<SyncStatus>({
     phase: "idle", total: 0, completed: 0, failed: 0, mappingFailed: 0, currentModelName: "", error: null
   });
@@ -45,7 +46,7 @@ export function useLLMSettings(
       return;
     }
     try {
-      await apiRequest('/api/settings', { method: 'PATCH', user: { id: user.uid, name: user.displayName || user.uid, role: 'vibe_coder' }, body: JSON.stringify({ data: updates }) });
+      await apiRequest('/api/settings', { method: 'PATCH', user: { id: user.uid, name: profile?.name || user.displayName || user.uid, role: normalizeRole(profile?.role) as any }, body: JSON.stringify({ data: updates }) });
     } catch (e) {
       console.error('PostgreSQL settings update failed:', e);
     }

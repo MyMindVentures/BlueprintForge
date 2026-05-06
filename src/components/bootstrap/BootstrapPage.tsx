@@ -13,6 +13,7 @@ import { AIService } from '../../services/aiService';
 import { useToast } from '../ui/Toast';
 import { StatusBadge } from '../ui/StatusBadge';
 import { BuildRequest, BuildPriority, BuildDifficulty, BuildType } from '../../types/buildFeed';
+import { isFounderAdminRole } from '../../authRoles';
 
 /**
  * Handles the bootstrap page workflow for BlueprintForge users or services.
@@ -32,7 +33,7 @@ export function BootstrapPage() {
   const [polishedResult, setPolishedResult] = useState<Partial<BuildRequest> | null>(null);
   const [isPublishing, setIsPublishing] = useState(false);
 
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = isFounderAdminRole(currentUser?.role);
 
   const handlePolish = async () => {
     if (!rawInput.trim()) return;
